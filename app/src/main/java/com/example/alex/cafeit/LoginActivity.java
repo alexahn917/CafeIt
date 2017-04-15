@@ -3,6 +3,7 @@ package com.example.alex.cafeit;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -62,6 +63,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
+    private Button LogInButton;
+    private Button SignInButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +96,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        LogInButton = (Button) findViewById(R.id.email_log_in_button);
+        LogInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launch();
+            }
+        });
+        SignInButton = (Button) findViewById(R.id.email_sign_in_button);
+    }
+    private void launch() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private void populateAutoComplete() {
