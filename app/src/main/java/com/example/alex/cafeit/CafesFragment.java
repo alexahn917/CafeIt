@@ -34,6 +34,7 @@ public class CafesFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public CafesFragment() {
+        
     }
 
     // TODO: Customize parameter initialization
