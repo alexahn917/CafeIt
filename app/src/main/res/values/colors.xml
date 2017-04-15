@@ -4,6 +4,8 @@
     <color name="colorPrimaryLight">#fae7cf</color>
     <color name="colorPrimaryDark">#e68f29</color>
     <color name="colorSecondary">#ecc79b</color>
-    <color name="colorAccent">#f06400</color>
-    <color name="colorBlue">#4796f7</color>
+    <color name="colorAccent">#35306F</color>
+    <color name="colorAccentSoft">#21436C</color>
+    <color name="bluntOrange">#f06400</color>
+    <color name="bluntBlue">#4796f7</color>
 </resources>

@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
 
     private Button LogInButton;
-    private Button SignUpButton;
+    private TextView SignUpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,17 +88,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        SignUpButton = (Button) findViewById(R.id.email_sign_up_button);
-        SignUpButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-                launchSignUpActivity();
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        mLoginFormView = findViewById(R.id.login_form);
+
         LogInButton = (Button) findViewById(R.id.email_log_in_button);
         LogInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -107,6 +99,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 launchMainActivity();
             }
         });
+
+        SignUpButton = (TextView) findViewById(R.id.email_sign_up_button);
+        SignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLogin();
+                launchSignUpActivity();
+            }
+        });
+        getSupportActionBar().hide();
     }
 
     private void launchMainActivity() {
