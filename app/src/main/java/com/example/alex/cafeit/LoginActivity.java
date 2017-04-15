@@ -3,6 +3,7 @@ package com.example.alex.cafeit;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -43,6 +44,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final int REQUEST_LOGIN= 1;
+    private static final int REQUEST_SIGNUP = 1;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -61,6 +64,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    private Button LogInButton;
+    private Button SignUpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_up_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,6 +98,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        LogInButton = (Button) findViewById(R.id.email_log_in_button);
+        LogInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchMainActivity();
+            }
+        });
+
+        SignUpButton = (Button) findViewById(R.id.email_sign_up_button);
+        SignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchSignUpActivity();
+            }
+        });
+    }
+    private void launchMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivityForResult(intent, REQUEST_LOGIN);
+        //finish();
+    }
+
+    private void launchSignUpActivity() {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivityForResult(intent, REQUEST_SIGNUP);
     }
 
     private void populateAutoComplete() {
