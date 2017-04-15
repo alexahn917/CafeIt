@@ -44,6 +44,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final int REQUEST_LOGIN= 1;
+    private static final int REQUEST_SIGNUP = 1;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -64,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
 
     private Button LogInButton;
-    private Button SignInButton;
+    private Button SignUpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_up_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,15 +102,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         LogInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                launch();
+                launchMainActivity();
             }
         });
-        SignInButton = (Button) findViewById(R.id.email_sign_in_button);
+
+        SignUpButton = (Button) findViewById(R.id.email_sign_up_button);
+        SignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchSignUpActivity();
+            }
+        });
     }
-    private void launch() {
+    private void launchMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_LOGIN);
+        //finish();
+    }
+
+    private void launchSignUpActivity() {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivityForResult(intent, REQUEST_SIGNUP);
     }
 
     private void populateAutoComplete() {
