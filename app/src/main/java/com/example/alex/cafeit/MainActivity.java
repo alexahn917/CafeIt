@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private TextView mTextMessage;
 
@@ -22,25 +22,28 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_cafes:
                     //mTextMessage.setText(R.string.title_home);
                     getFragmentManager().beginTransaction().replace(R.id.container, CafesListFragment).commit();
+                    setTitle("Cafes List");
                     return true;
                 case R.id.navigation_favorites:
                     //mTextMessage.setText(R.string.title_dashboard);
                     getFragmentManager().beginTransaction().replace(R.id.container, FavoritesFragment).commit();
+                    setTitle("Favorites");
                     return true;
                 case R.id.navigation_history:
                     //mTextMessage.setText(R.string.title_history);
                     getFragmentManager().beginTransaction().replace(R.id.container, HistoryFragment).commit();
+                    setTitle("History");
                     return true;
                 case R.id.navigation_profile:
                     //mTextMessage.setText(R.string.title_notifications);
                     getFragmentManager().beginTransaction().replace(R.id.container, ProfileFragment).commit();
+                    setTitle("Profile");
                     return true;
             }
             return false;
