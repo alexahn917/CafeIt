@@ -176,7 +176,7 @@
                     android:text="Your Payment Method" />
 
                 <Button
-                    android:id="@+id/paymentField"
+                    android:id="@+id/profilePaymentButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -191,6 +191,7 @@
 
 
             <Button
+                android:id="@+id/saveButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
