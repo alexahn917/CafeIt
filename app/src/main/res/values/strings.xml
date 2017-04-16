@@ -35,4 +35,26 @@
     <string name="title_wait">Wait:</string>
 
 
+    <string name="title_activity_order_view">Place an Order</string>
+    <string name="cafe_pic_content">Picture of cafe</string>
+    <string name="cafe_name">Nice-Tea Cafe</string>
+    <string name="hrs_label">Hours:</string>
+    <string name="hrs">7 AM &#8211; 12 AM</string>
+    <string name="address1">3200 N Charles St,</string>
+    <string name="address2">Baltimore, MD, 21218</string>
+    <string name="distance">0.1 mi</string>
+    <string name="cafe_open">Open</string>
+    <string name="cafe_closed">Closed</string>
+
+    <string name="menu_header">Menu Category</string>
+    <string name="menu_item">Menu Item</string>
+    <string name="minus_content">-1</string>
+    <string name="plus_content">+1</string>
+    <string-array name="sizes">
+        <item>$1.50 (S)</item>
+        <item>$2.00 (M)</item>
+        <item>$2.25 (L)</item>
+    </string-array>
+
+    <string name="action_settings">Settings</string>
 </resources>
