@@ -3,6 +3,7 @@ package com.example.alex.cafeit;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -24,7 +25,12 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_notifications);
+                    mTextMessage.setText("");
+                    setTitle("New Lesson");
+                    ProfileFragment fragment = new ProfileFragment();
+                    FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+                    fragTrans.replace(R.id.content, fragment, "ProfileFragment");
+                    fragTrans.commit();
                     return true;
                 case R.id.navigation_history:
                     mTextMessage.setText(R.string.title_history);
