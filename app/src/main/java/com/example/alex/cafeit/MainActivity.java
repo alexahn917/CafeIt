@@ -3,6 +3,9 @@ package com.example.alex.cafeit;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -11,23 +14,33 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
+    private Fragment CafesListFragment = new CafesListFragment();
+    private Fragment FavoritesFragment = new FavoritesFragment();
+    private Fragment HistoryFragment = new HistoryFragment();
+    private Fragment ProfileFragment = new ProfileFragment();
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_cafes:
-                    mTextMessage.setText(R.string.title_home);
+                    //mTextMessage.setText(R.string.title_home);
+                    getFragmentManager().beginTransaction().replace(R.id.container, CafesListFragment).commit();
                     return true;
                 case R.id.navigation_favorites:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_notifications);
+                    //mTextMessage.setText(R.string.title_dashboard);
+                    getFragmentManager().beginTransaction().replace(R.id.container, FavoritesFragment).commit();
                     return true;
                 case R.id.navigation_history:
-                    mTextMessage.setText(R.string.title_history);
+                    //mTextMessage.setText(R.string.title_history);
+                    getFragmentManager().beginTransaction().replace(R.id.container, HistoryFragment).commit();
+                    return true;
+                case R.id.navigation_profile:
+                    //mTextMessage.setText(R.string.title_notifications);
+                    getFragmentManager().beginTransaction().replace(R.id.container, ProfileFragment).commit();
                     return true;
             }
             return false;
@@ -42,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_cafes);
     }
 
 }

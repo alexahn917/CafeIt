@@ -13,20 +13,24 @@ public class Cafe {
     private String location;
     private String startHour;
     private String endHour;
-    private int hasWifi;
 
+    private String bestMenu;
     private float rating;
+    private int hasWifi;
+    private int waitTime;
     private Date registerDate;
 
-    public Cafe (int ID, String name, String location, String startHour, String endHour, int hasWifi) {
+    public Cafe (int ID, String name, String location, String startHour, String endHour, String bestMenu, float rating, int hasWifi, int waitTime) {
         this.ID = ID;
         this.name = name;
         this.location = location;
         this.startHour = startHour;
         this.endHour = endHour;
 
-        rating = 0.0f;
+        this.bestMenu = bestMenu;
+        this.rating = rating;
         this.hasWifi = hasWifi;
+        this.waitTime = waitTime;
 
         registerDate = new Date();
     }

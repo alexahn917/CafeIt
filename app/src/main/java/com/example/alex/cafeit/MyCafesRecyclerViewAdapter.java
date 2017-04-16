@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.alex.cafeit.CafesFragment.OnListFragmentInteractionListener;
+import com.example.alex.cafeit.CafesListFragment.OnListFragmentInteractionListener;
 import com.example.alex.cafeit.dummy.DummyContent.DummyItem;
 
 import java.util.List;

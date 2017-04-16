@@ -2,7 +2,7 @@ package com.example.alex.cafeit;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,15 +13,13 @@ import android.view.ViewGroup;
 import com.example.alex.cafeit.dummy.DummyContent;
 import com.example.alex.cafeit.dummy.DummyContent.DummyItem;
 
-import java.util.List;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class CafesFragment extends Fragment {
+public class CafesListFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -34,14 +32,14 @@ public class CafesFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
 
-    public CafesFragment() {
+    public CafesListFragment() {
 
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static CafesFragment newInstance(int columnCount) {
-        CafesFragment fragment = new CafesFragment();
+    public static CafesListFragment newInstance(int columnCount) {
+        CafesListFragment fragment = new CafesListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
