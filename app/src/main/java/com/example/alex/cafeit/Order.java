@@ -15,7 +15,7 @@ public class Order {
 
     public Order(String orderTime, float price, int remainingTime, String cafeName, String orderMenu) {
         this.orderMenu = orderMenu;
-        this.orderTime = orderMenu;
+        this.orderTime = orderTime;
         this.price = price;
         this.remainingTime = remainingTime;
         this.cafeName = cafeName;

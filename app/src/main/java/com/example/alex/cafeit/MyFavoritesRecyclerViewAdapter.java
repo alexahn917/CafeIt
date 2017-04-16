@@ -4,12 +4,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.alex.cafeit.HistoryFragment.OnListFragmentInteractionListener;
-import com.example.alex.cafeit.Order;
+import com.example.alex.cafeit.FavoritesFragment.OnListFragmentInteractionListener;
+import com.example.alex.cafeit.dummy.DummyContent.Order;
 
 import java.util.List;
 
@@ -18,12 +17,12 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistoryRecyclerViewAdapter.ViewHolder> {
+public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavoritesRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Order> mValues;
+    private final List<com.example.alex.cafeit.Order> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyHistoryRecyclerViewAdapter(List<Order> items, OnListFragmentInteractionListener listener) {
+    public MyFavoritesRecyclerViewAdapter(List<com.example.alex.cafeit.Order> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -31,17 +30,21 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_history, parent, false);
+                .inflate(R.layout.fragment_favorites, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.dateView.setText(mValues.get(position).orderTime);
-        holder.costView.setText("$" + String.format("%.2f", mValues.get(position).price));
-        holder.cafeNameView.setText(mValues.get(position).cafeName);
-        holder.orderMenuView.setText(mValues.get(position).orderMenu);
+        System.out.println(holder.mItem);
+
+
+
+        holder.cafeNameView.setText(holder.mItem.cafeName);
+        holder.timeCostView.setText(Integer.toString(holder.mItem.remainingTime) +  " min"
+                + "  |  $" + String.format("%.2f", holder.mItem.price));
+        holder.menuOrderView.setText(holder.mItem.orderMenu);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +52,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
+                    //mListener.onListFragmentInteraction(holder.mItem);
                     Toast.makeText(v.getContext(), holder.mItem.cafeName, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -62,22 +66,17 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-//        public final ImageView cafeLogoView;
-        public final TextView dateView;
-        public final TextView costView;
         public final TextView cafeNameView;
-        public final TextView orderMenuView;
+        public final TextView timeCostView;
+        public final TextView menuOrderView;
         public com.example.alex.cafeit.Order mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-//            cafeLogoView = (ImageView) view.findViewById(R.id.cafe_logo);
-            dateView = (TextView) view.findViewById(R.id.date);
-            costView = (TextView) view.findViewById(R.id.cost);
-            cafeNameView = (TextView) view.findViewById(R.id.cafeName);
-            orderMenuView = (TextView) view.findViewById(R.id.menu);
-
+            cafeNameView = (TextView) view.findViewById(R.id.cafe_name);
+            timeCostView = (TextView) view.findViewById(R.id.time_remaining);
+            menuOrderView = (TextView) view.findViewById(R.id.order_items);
         }
 
         @Override
