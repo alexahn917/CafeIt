@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,6 +55,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -68,10 +70,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private Button LogInButton;
     private TextView SignUpButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Log.d("DEBUG: ","LoginActivity onCreate 1");
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -88,6 +94,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        Log.d("DEBUG: ","LoginActivity onCreate 2");
+
         mProgressView = findViewById(R.id.login_progress);
         mLoginFormView = findViewById(R.id.login_form);
 
@@ -100,6 +108,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        Log.d("DEBUG: ","LoginActivity onCreate 3");
+
         SignUpButton = (TextView) findViewById(R.id.email_sign_up_button);
         SignUpButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -109,6 +119,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
         getSupportActionBar().hide();
+
+        Log.d("DEBUG: ","LoginActivity onCreate 4");
+
     }
 
     private void launchMainActivity() {

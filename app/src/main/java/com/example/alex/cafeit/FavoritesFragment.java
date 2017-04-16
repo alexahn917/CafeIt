@@ -1,33 +1,33 @@
 package com.example.alex.cafeit;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.example.alex.cafeit.dummy.DummyContent;
 import com.example.alex.cafeit.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
 public class FavoritesFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private ListView FavoritesListView;
+    protected static ArrayList<Order> FavoriteOrderItems;
+    protected static FavoriteListAdapter adapter;
+    private Context context;
+    private View rootView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -36,74 +36,69 @@ public class FavoritesFragment extends Fragment {
     public FavoritesFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static FavoritesFragment newInstance(int columnCount) {
-        FavoritesFragment fragment = new FavoritesFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
+        Log.d("DEBUG: ", "FavoritesFragment onCreateView 1");
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        // Inflate the layout for this fragment
+        rootView =  inflater.inflate(R.layout.fragment_favorites, container, false);
+
+        Log.d("DEBUG: ", "FavoritesFragment onCreateView 2");
+
+        FavoritesListView = (ListView) rootView.findViewById(R.id.favorites_list);
+
+        FavoritesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object listItem = FavoritesListView.getItemAtPosition(position);
+
             }
-            recyclerView.setAdapter(new MyFavoritesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
-        return view;
-    }
+        });
 
+        Log.d("DEBUG: ", "FavoritesFragment onCreateView 3");
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+        return rootView;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onResume() {
+        Log.d("DEBUG: ", "FavoritesFragment onResume 1");
+
+
+        super.onResume();
+
+        FavoriteOrderItems = populateData();
+
+        Log.d("DEBUG: ", "FavoritesFragment onResume 2");
+
+
+        adapter = new FavoriteListAdapter(getActivity(), R.layout.fragment_favorites, FavoriteOrderItems);
+        FavoritesListView.setAdapter(adapter);
+
+        Log.d("DEBUG: ", "FavoritesFragment onResume 3");
+
+
+        getActivity().setTitle(R.string.title_favorites);
+
+        Log.d("DEBUG: ", "FavoritesFragment onResume 4");
+
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+    public ArrayList<Order> populateData() {
+        ArrayList<Order> orders = new ArrayList<Order>();
+
+        orders.add(new Order("04/01/11:13:11", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced (L)"));
+        orders.add(new Order("04/01/11:13:11", 3.50f, 5, "Alkimia", "Latte, Hot (M)"));
+        orders.add(new Order("04/01/11:13:11", 3.00f, 4, "Bird in Hard", "Chai Tea Latte (M)"));
+
+        return orders;
     }
+
+
 }
