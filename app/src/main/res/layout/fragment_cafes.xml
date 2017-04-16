@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1" >
+    >
+
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryLight">
+
+    <View android:id="@+id/primerdivisor1"
+        android:layout_height="1dp"
+        android:layout_width="fill_parent"
+        android:background="#ffffff"/>
+
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@color/colorPrimaryLight">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -11,30 +29,33 @@
         android:orientation="vertical"
         >
 
+        <ImageView
+            android:id="@+id/cafe_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:src="@drawable/cafeit_logo"
+            />
         <TextView
             android:id="@+id/cafe_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
+            android:layout_margin="1dp"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textAlignment="center"
-            android:text="Cafe_name"
-            />
-        <ImageView
-            android:id="@+id/cafe_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_profile"
+            android:text="(cafe_name)"
+            android:layout_gravity="center"
             />
         <TextView
             android:id="@+id/cafe_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
+            android:layout_margin="1dp"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:text="distance"
+            android:text="(cafe_distance)"
             android:textAlignment="center"
+            android:layout_gravity="center"
             />
 
     </LinearLayout>
@@ -56,20 +77,22 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="1dp"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="Best:"
+                android:text="@string/title_best"
                 android:layout_weight="2"
+                android:gravity="right|center_vertical"
             />
 
             <TextView
+                android:id="@+id/best_menu"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="1dp"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="Iced Americano"
+                android:text="(Best Menu)"
                 android:layout_weight="1"
-                android:textAlignment="center"
+                android:gravity="center|center_vertical"
                 />
         </LinearLayout>
 
@@ -83,20 +106,22 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="1dp"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="Rating:"
+                android:text="@string/title_rating"
                 android:layout_weight="2"
+                android:gravity="right|center_vertical"
                 />
 
             <TextView
+                android:id="@+id/rating"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="1dp"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="5"
+                android:text="(Rating)"
                 android:layout_weight="1"
-                android:textAlignment="center"
+                android:gravity="center|center_vertical"
                 />
         </LinearLayout>
 
@@ -110,20 +135,22 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="1dp"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="Wifi:"
+                android:text="@string/title_wifi"
                 android:layout_weight="2"
+                android:gravity="right|center_vertical"
                 />
 
             <TextView
+                android:id="@+id/wifi"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="1dp"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="YES"
+                android:text="(wifi)"
                 android:layout_weight="1"
-                android:textAlignment="center"
+                android:gravity="center|center_vertical"
                 />
         </LinearLayout>
 
@@ -137,22 +164,34 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="1dp"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="Wait:"
+                android:text="@string/title_wait"
                 android:layout_weight="2"
-                />
+                android:gravity="right|center_vertical"
+            />
 
             <TextView
+                android:id="@+id/wait"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="1dp"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="~ 5 minutes"
+                android:text="(wait time)"
                 android:layout_weight="1"
-                android:textAlignment="center"
+                android:gravity="center|center_vertical"
                 />
         </LinearLayout>
+
     </LinearLayout>
 
+    </LinearLayout>
+
+    <View android:id="@+id/primerdivisor2"
+        android:layout_height="5dp"
+        android:layout_width="fill_parent"
+        android:background="#ffffff"/>
+
 </LinearLayout>
+
+</ScrollView>

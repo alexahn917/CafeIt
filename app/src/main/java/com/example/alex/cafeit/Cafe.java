@@ -8,20 +8,20 @@ import java.util.Date;
  */
 
 public class Cafe {
-    private int ID;
-    private String name;
-    private String location;
-    private String startHour;
-    private String endHour;
+    protected int id;
+    protected String name;
+    protected String location;
+    protected String startHour;
+    protected String endHour;
 
-    private String bestMenu;
-    private float rating;
-    private int hasWifi;
-    private int waitTime;
-    private Date registerDate;
+    protected String bestMenu;
+    protected float rating;
+    protected int hasWifi;
+    protected int waitTime;
+    protected Date registerDate;
 
-    public Cafe (int ID, String name, String location, String startHour, String endHour, String bestMenu, float rating, int hasWifi, int waitTime) {
-        this.ID = ID;
+    public Cafe (int id, String name, String location, String startHour, String endHour, String bestMenu, float rating, int hasWifi, int waitTime) {
+        this.id = id;
         this.name = name;
         this.location = location;
         this.startHour = startHour;
@@ -35,4 +35,8 @@ public class Cafe {
         registerDate = new Date();
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

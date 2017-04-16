@@ -28,4 +28,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_best">Best:</string>
+    <string name="title_rating">Rate:</string>
+    <string name="title_wifi">Wifi:</string>
+    <string name="title_wait">Wait:</string>
+
+
 </resources>

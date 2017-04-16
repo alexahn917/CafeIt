@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.alex.cafeit.dummy.DummyContent;
-import com.example.alex.cafeit.dummy.DummyContent.DummyItem;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -26,6 +26,8 @@ public class CafesListFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+
+    private List<Cafe> cafeList;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -69,9 +71,24 @@ public class CafesListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            cafeList = makeDummyCafes();
+            recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
+
         }
         return view;
+    }
+
+    public List makeDummyCafes() {
+        cafeList = new ArrayList<>();
+        cafeList.add(new Cafe(1, "daily grind", "brody b", "9AM",
+                "11pm", "cafe mocha", 1.6f, 1, 5));
+        cafeList.add(new Cafe(2, "alkemia", "gilman", "9AM",
+                "5pm", "americano", 3.4f, 1, 4));
+        cafeList.add(new Cafe(3, "bird in hand", "Nine east", "9AM",
+                "6pm", "drip coffee", 4.1f, 1, 3));
+        cafeList.add(new Cafe(4, "Carma's Cafe", "Near campus", "9AM",
+                "10pm", "Frappucino", 4.2f, 1, 3));
+        return cafeList;
     }
 
 
@@ -104,6 +121,6 @@ public class CafesListFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Cafe item);
     }
 }
