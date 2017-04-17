@@ -1,15 +1,21 @@
 package com.example.alex.cafeit;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -43,8 +49,46 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.menu_item, parent);
+            convertView = inflater.inflate(R.layout.menu_item, parent, false);
         }
+
+        MenuItem cur = (MenuItem) getChild(groupPosition, childPosition);
+
+        final EditText amt = (EditText) convertView.findViewById(R.id.quantity);
+        if (cur.quantity >= 1) {
+            amt.setText(String.format(Locale.US, "%d", cur.quantity));
+        }
+        final Button minus = (Button) convertView.findViewById(R.id.minus);
+        final Button plus = (Button) convertView.findViewById(R.id.plus);
+
+        CheckBox choice = (CheckBox) convertView.findViewById(R.id.checkBox);
+        choice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    amt.setVisibility(View.VISIBLE);
+                    minus.setVisibility(View.VISIBLE);
+                    plus.setVisibility(View.VISIBLE);
+                } else {
+                    amt.setVisibility(View.INVISIBLE);
+                    minus.setVisibility(View.INVISIBLE);
+                    plus.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+        choice.setChecked(cur.selected);
+        choice.setText(cur.name);
+
+        Spinner sizes = (Spinner) convertView.findViewById(R.id.size);
+        // TODO: Populate with real menu prices
+        ArrayAdapter<CharSequence> ad = ArrayAdapter.createFromResource(this._context,
+                R.array.sizes, R.layout.menu_item_size_spinner);
+
+        ad.setDropDownViewResource(R.layout.menu_item_size_spinner);
+        // Apply the adapter to the spinner
+        sizes.setAdapter(ad);
+        // TODO: Add listeners for button clicks here
+
         return convertView;
     }
 
@@ -76,12 +120,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.menu_header, parent);
+            convertView = inflater.inflate(R.layout.menu_header, parent, false);
         }
 
         TextView menuListHeader = (TextView) convertView
                 .findViewById(R.id.menu_header);
-        menuListHeader.setTypeface(null, Typeface.BOLD);
         menuListHeader.setText(headerTitle);
 
         return convertView;

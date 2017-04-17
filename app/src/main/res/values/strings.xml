@@ -48,6 +48,7 @@
 
     <string name="menu_header">Menu Category</string>
     <string name="menu_item">Menu Item</string>
+    <string name="default_count">1</string>
     <string name="minus_content">-1</string>
     <string name="plus_content">+1</string>
     <string-array name="sizes">
@@ -57,4 +58,14 @@
     </string-array>
 
     <string name="action_settings">Settings</string>
+
+    <string name="title_activity_checkout">Checkout</string>
+    <string name="your_order">Your Order:</string>
+    <string name="order_item">Order Item</string>
+    <string name="order_size">(L)</string>
+    <string name="sample_price_sz">2.25</string>
+    <string name="your_total">Your Total:</string>
+    <string name="sample_total">$4.50</string>
+    <string name="additional_notes">Additional Notes:</string>
+    <string name="notes_hint">Extra ice on Americano, etc.</string>
 </resources>
