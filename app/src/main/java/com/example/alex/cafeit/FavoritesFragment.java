@@ -6,13 +6,13 @@ import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
-import com.example.alex.cafeit.dummy.DummyContent;
-import com.example.alex.cafeit.dummy.DummyContent.DummyItem;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,10 +29,14 @@ public class FavoritesFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
+    private List<Order> orderList;
+    private View view;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
+
     public FavoritesFragment() {
     }
 
@@ -48,8 +52,8 @@ public class FavoritesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d("DEBUG: ", "onCreate Favorites Fragment");
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -58,7 +62,10 @@ public class FavoritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
+        Log.d("DEBUG: ", "onCreate Favorites Fragment");
+
+        view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
+
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -69,9 +76,22 @@ public class FavoritesFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyFavoritesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            orderList = makeDummyOrders();
+            Log.d("DEBUG: ", "onCreateView Favorites Fragment" + orderList.toString());
+            recyclerView.setAdapter(new MyFavoritesRecyclerViewAdapter(orderList, mListener));
+
         }
         return view;
+    }
+
+    public List makeDummyOrders() {
+        ArrayList<Order> orders = new ArrayList<Order>();
+        orders.add(new Order("04/01/11:13:11", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced (L)"));
+        orders.add(new Order("04/01/11:13:11", 3.50f, 5, "Alkimia", "Latte, Hot (M)"));
+        orders.add(new Order("04/01/11:13:11", 3.00f, 4, "Bird in Hard", "Chai Tea Latte (M)"));
+        orders.add(new Order("04/01/11:13:11", 3.25f, 4, "Artifact Coffee", "Dirty Chai (M)"));
+        orders.add(new Order("04/01/11:13:11", 3.75f, 4, "One World Cafe", "Coldbrew (L)"));
+        return orders;
     }
 
 
@@ -81,8 +101,8 @@ public class FavoritesFragment extends Fragment {
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+            //throw new RuntimeException(context.toString()
+            //+ " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -104,6 +124,6 @@ public class FavoritesFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Order item);
     }
 }

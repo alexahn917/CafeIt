@@ -9,6 +9,7 @@ import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity{
                     return true;
                 case R.id.navigation_favorites:
                     //mTextMessage.setText(R.string.title_dashboard);
+//                    Toast.makeText(getApplicationContext(), "Favorites tab pressed", Toast.LENGTH_LONG).show();
                     getFragmentManager().beginTransaction().replace(R.id.container, FavoritesFragment).commit();
                     setTitle("Favorites");
                     return true;
