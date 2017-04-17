@@ -2,7 +2,7 @@ package com.example.alex.cafeit;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.alex.cafeit.dummy.DummyContent;
-import com.example.alex.cafeit.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +28,7 @@ public class HistoryFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    List<Order> orders;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -69,9 +70,20 @@ public class HistoryFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyHistoryRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            orders = makeDummyOrders();
+            recyclerView.setAdapter(new MyHistoryRecyclerViewAdapter(orders, mListener));
         }
         return view;
+    }
+
+    public List makeDummyOrders() {
+        ArrayList<Order> orders = new ArrayList<Order>();
+        orders.add(new Order("04/11/17", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced (L)"));
+        orders.add(new Order("04/07/17", 3.50f, 5, "Alkimia", "Latte, Hot (M)"));
+        orders.add(new Order("04/06/17", 3.00f, 4, "Bird in Hard", "Chai Tea Latte (M)"));
+        orders.add(new Order("04/06/17", 3.25f, 4, "Artifact Coffee", "Dirty Chai (M)"));
+        orders.add(new Order("04/04/17", 3.75f, 4, "One World Cafe", "Coldbrew (L)"));
+        return orders;
     }
 
 
@@ -104,6 +116,6 @@ public class HistoryFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Order item);
     }
 }

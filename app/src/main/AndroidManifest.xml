@@ -26,7 +26,24 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" />
-        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".SignUpActivity" />
+        <activity
+            android:name=".OrderView"
+            android:label="@string/title_activity_order_view"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.alex.cafeit.MainActivity" />
+        </activity>
+        <activity android:name=".Checkout"
+            android:label="@string/title_activity_order_view"
+            android:parentActivityName=".OrderView"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.alex.cafeit.OrderView" />
+        </activity>
     </application>
 
 </manifest>

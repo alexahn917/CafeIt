@@ -5,23 +5,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.alex.cafeit.CafesFragment.OnListFragmentInteractionListener;
-import com.example.alex.cafeit.dummy.DummyContent.DummyItem;
+import com.example.alex.cafeit.CafesListFragment.OnListFragmentInteractionListener;
+import com.example.alex.cafeit.dummy.DummyContent.Order;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Order} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Cafe> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyCafesRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyCafesRecyclerViewAdapter(List<Cafe> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,8 +37,24 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        System.out.println(holder.mItem);
+
+        holder.cafeNameView.setText(holder.mItem.name);
+        holder.bestMenuView.setText(holder.mItem.bestMenu);
+        holder.ratingView.setText(holder.mItem.rating + "");
+        String hasWifi;
+        if(holder.mItem.hasWifi == 1) {
+            hasWifi = "Yes";
+        }
+        else {
+            hasWifi = "No";
+        }
+        holder.wifiView.setText(hasWifi);
+        holder.waitView.setText(holder.mItem.waitTime + " minutes");
+
+        //calculate distance from the user to the cafe
+        String distance = "0.5 mi";
+        holder.cafeDistanceView.setText(distance);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +62,8 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    //mListener.onListFragmentInteraction(holder.mItem);
+                    Toast.makeText(v.getContext(), holder.mItem.name, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -58,20 +76,28 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView cafeNameView;
+        public final TextView cafeDistanceView;
+        public final TextView bestMenuView;
+        public final TextView ratingView;
+        public final TextView wifiView;
+        public final TextView waitView;
+        public Cafe mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            cafeNameView = (TextView) view.findViewById(R.id.cafe_name);
+            cafeDistanceView = (TextView) view.findViewById(R.id.cafe_distance);
+            bestMenuView = (TextView) view.findViewById(R.id.best_menu);
+            ratingView = (TextView) view.findViewById(R.id.rating);
+            wifiView = (TextView) view.findViewById(R.id.wifi);
+            waitView = (TextView) view.findViewById(R.id.wait);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + cafeNameView.getText() + "'";
         }
     }
 }
