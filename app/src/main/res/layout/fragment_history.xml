@@ -20,11 +20,13 @@
 
 
         <ImageView
-        android:id="@+id/cafe_logo"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:srcCompat="@drawable/cafeit_logo"
-        android:padding="10dp" />
+            android:id="@+id/cafe_logo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:srcCompat="@drawable/cafeit_logo"
+            android:padding="10dp"
+            android:layout_marginRight="10dp"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +85,7 @@
                 android:padding="5dp"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                android:layout_gravity="right"
+                android:layout_gravity="left"
                 android:textColor="@color/colorAccent" />
 
 
