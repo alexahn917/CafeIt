@@ -70,11 +70,8 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
     }
     @Override
     public void onListFragmentInteraction(Cafe cafe) {
-        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
-        //System.out.println("not working for god sakes");
-        //Intent intent = new Intent(this, OrderView.class);
-        //startActivityForResult(intent, REQUEST_ORDER);
-        //Log.d("hi", "hi");
+        Intent i = new Intent(this, OrderView.class);
+        startActivity(i);
     }
 
 }

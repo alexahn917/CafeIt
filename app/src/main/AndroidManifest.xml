@@ -47,7 +47,8 @@
         </activity>
         <activity
             android:name=".CafeMainActivity"
-            android:label="@string/title_activity_cafe_main"></activity>
+            android:label="@string/title_activity_cafe_main">
+        </activity>
     </application>
 
 </manifest>
