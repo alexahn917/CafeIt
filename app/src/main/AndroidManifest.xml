@@ -36,7 +36,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.alex.cafeit.MainActivity" />
         </activity>
-        <activity android:name=".Checkout"
+        <activity
+            android:name=".Checkout"
             android:label="@string/title_activity_order_view"
             android:parentActivityName=".OrderView"
             android:theme="@style/AppTheme.NoActionBar">
@@ -44,6 +45,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.alex.cafeit.OrderView" />
         </activity>
+        <activity
+            android:name=".CafeMainActivity"
+            android:label="@string/title_activity_cafe_main"></activity>
     </application>
 
 </manifest>

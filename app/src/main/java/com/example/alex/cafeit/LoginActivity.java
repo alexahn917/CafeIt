@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
 
     private Button LogInButton;
+    private Button CafeLoginButton;
     private TextView SignUpButton;
 
 
@@ -110,6 +111,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         Log.d("DEBUG: ","LoginActivity onCreate 3");
 
+        CafeLoginButton = (Button) findViewById(R.id.cafe_log_in_button);
+        CafeLoginButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchCafeMainActivity();
+            }
+        });
+
         SignUpButton = (TextView) findViewById(R.id.email_sign_up_button);
         SignUpButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -127,6 +136,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void launchMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivityForResult(intent, REQUEST_LOGIN);
+        //finish();
+    }
+
+    private void launchCafeMainActivity(){
+        Intent intent = new Intent(this, CafeMainActivity.class);
+        startActivity(intent);
         //finish();
     }
 

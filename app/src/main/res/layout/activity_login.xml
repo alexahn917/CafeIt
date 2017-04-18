@@ -99,6 +99,16 @@
                 android:textStyle="bold"
                 />
 
+            <Button
+                android:id="@+id/cafe_log_in_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Log in as Cafe"
+                android:textStyle="bold"
+                />
+
             <TextView
                 android:id="@+id/email_sign_up_button"
                 android:textAlignment="center"
