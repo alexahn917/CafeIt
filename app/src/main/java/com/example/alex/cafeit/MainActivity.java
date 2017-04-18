@@ -28,23 +28,23 @@ public class MainActivity extends AppCompatActivity{
             switch (item.getItemId()) {
                 case R.id.navigation_cafes:
                     //mTextMessage.setText(R.string.title_home);
-                    getFragmentManager().beginTransaction().replace(R.id.container, CafesListFragment).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content, CafesListFragment).commit();
                     setTitle("Cafes List");
                     return true;
                 case R.id.navigation_favorites:
                     //mTextMessage.setText(R.string.title_dashboard);
 //                    Toast.makeText(getApplicationContext(), "Favorites tab pressed", Toast.LENGTH_LONG).show();
-                    getFragmentManager().beginTransaction().replace(R.id.container, FavoritesFragment).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content, FavoritesFragment).commit();
                     setTitle("Favorites");
                     return true;
                 case R.id.navigation_history:
                     //mTextMessage.setText(R.string.title_history);
-                    getFragmentManager().beginTransaction().replace(R.id.container, HistoryFragment).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content, HistoryFragment).commit();
                     setTitle("History");
                     return true;
                 case R.id.navigation_profile:
                     //mTextMessage.setText(R.string.title_notifications);
-                    getFragmentManager().beginTransaction().replace(R.id.container, ProfileFragment).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content, ProfileFragment).commit();
                     setTitle("Profile");
                     return true;
             }
