@@ -41,14 +41,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/idLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="ID (Baristas will call you my this nickname)" />
+                android:layout_weight="1"
+                android:text="ID (Baristas will call you by this nickname)" />
 
             <EditText
                 android:id="@+id/idField"
