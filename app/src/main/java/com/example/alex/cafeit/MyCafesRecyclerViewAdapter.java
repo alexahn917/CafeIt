@@ -37,7 +37,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        System.out.println(holder.mItem);
+        //System.out.println(holder.mItem);
 
         holder.cafeNameView.setText(holder.mItem.name);
         holder.bestMenuView.setText(holder.mItem.bestMenu);

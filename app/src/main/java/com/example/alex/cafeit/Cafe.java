@@ -19,6 +19,7 @@ public class Cafe {
     protected int hasWifi;
     protected int waitTime;
     protected Date registerDate;
+    //protected float distance;
 
     public Cafe (int id, String name, String location, String startHour, String endHour, String bestMenu, float rating, int hasWifi, int waitTime) {
         this.id = id;

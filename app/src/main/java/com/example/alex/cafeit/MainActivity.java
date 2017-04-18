@@ -1,19 +1,25 @@
 package com.example.alex.cafeit;
 
+import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements CafesListFragment.OnListFragmentInteractionListener {
 
     //private TextView mTextMessage;
+    private static final int REQUEST_ORDER = 1;
 
     private Fragment CafesListFragment = new CafesListFragment();
     private Fragment FavoritesFragment = new FavoritesFragment();
@@ -28,23 +34,23 @@ public class MainActivity extends AppCompatActivity{
             switch (item.getItemId()) {
                 case R.id.navigation_cafes:
                     //mTextMessage.setText(R.string.title_home);
-                    getFragmentManager().beginTransaction().replace(R.id.content, CafesListFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content, CafesListFragment).commit();
                     setTitle("Cafes List");
                     return true;
                 case R.id.navigation_favorites:
                     //mTextMessage.setText(R.string.title_dashboard);
 //                    Toast.makeText(getApplicationContext(), "Favorites tab pressed", Toast.LENGTH_LONG).show();
-                    getFragmentManager().beginTransaction().replace(R.id.content, FavoritesFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content, FavoritesFragment).commit();
                     setTitle("Favorites");
                     return true;
                 case R.id.navigation_history:
                     //mTextMessage.setText(R.string.title_history);
-                    getFragmentManager().beginTransaction().replace(R.id.content, HistoryFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content, HistoryFragment).commit();
                     setTitle("History");
                     return true;
                 case R.id.navigation_profile:
                     //mTextMessage.setText(R.string.title_notifications);
-                    getFragmentManager().beginTransaction().replace(R.id.content, ProfileFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content, ProfileFragment).commit();
                     setTitle("Profile");
                     return true;
             }
@@ -61,6 +67,14 @@ public class MainActivity extends AppCompatActivity{
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_cafes);
+    }
+    @Override
+    public void onListFragmentInteraction(Cafe cafe) {
+        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+        //System.out.println("not working for god sakes");
+        //Intent intent = new Intent(this, OrderView.class);
+        //startActivityForResult(intent, REQUEST_ORDER);
+        //Log.d("hi", "hi");
     }
 
 }
