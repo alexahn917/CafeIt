@@ -6,8 +6,6 @@
     android:name="com.example.alex.cafeit.CafesFragment"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.example.alex.cafeit.CafesListFragment"
     tools:listitem="@layout/fragment_cafes" />
