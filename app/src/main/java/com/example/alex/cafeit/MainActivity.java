@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
     private Context context;
     private SpannableString s;
 
+    private CharSequence mTitle;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -31,27 +33,19 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_cafes:
-                    s = new SpannableString("Cafes");
-                    s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    setTitle(s);
+                    setTitle("Cafes");
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, CafesListFragment).commit();
                     return true;
                 case R.id.navigation_favorites:
-                    s = new SpannableString("Favorites");
-                    s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    setTitle(s);
+                    setTitle("Favorites");
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, FavoritesFragment).commit();
                     return true;
                 case R.id.navigation_history:
-                    s = new SpannableString("History");
-                    s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    setTitle(s);
+                    setTitle("History");
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, HistoryFragment).commit();
                     return true;
                 case R.id.navigation_profile:
-                    s = new SpannableString("Profile");
-                    s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    setTitle(s);
+                    setTitle("Profile");
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, ProfileFragment).commit();
                     return true;
             }
@@ -106,5 +100,13 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void setTitle(CharSequence title) {
+        //mTitle = title;
+        s = new SpannableString(title);
+        s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        super.setTitle(s);
+    }
 
 }
