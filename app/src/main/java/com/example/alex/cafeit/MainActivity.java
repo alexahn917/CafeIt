@@ -24,8 +24,6 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
     private Context context;
     private SpannableString s;
 
-    private CharSequence mTitle;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -64,10 +62,7 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_cafes);
-
-        s = new SpannableString("Cafes");
-        s.setSpan(new TypefaceSpan(this, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        setTitle(s);
+        setTitle("Cafes");
     }
     @Override
     public void onListFragmentInteraction(Cafe cafe) {
