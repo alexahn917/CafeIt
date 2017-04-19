@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_new_lesson"
+        android:id="@+id/current_order"
         android:icon="@drawable/cafeit_logo_cup"
         android:title="Current Order"
         app:showAsAction="ifRoom"
@@ -12,6 +13,7 @@
         android:id="@+id/sort_distance"
         android:orderInCategory="100"
         android:title="Sort By Distance"
+        android:textSize="10sp"
         />
 
     <item

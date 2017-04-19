@@ -31,27 +31,28 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_cafes:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content, CafesListFragment).commit();
                     s = new SpannableString("Cafes");
                     s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     setTitle(s);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content, CafesListFragment).commit();
                     return true;
                 case R.id.navigation_favorites:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content, FavoritesFragment).commit();
                     s = new SpannableString("Favorites");
                     s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     setTitle(s);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content, FavoritesFragment).commit();
                     return true;
                 case R.id.navigation_history:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content, HistoryFragment).commit();
                     s = new SpannableString("History");
                     s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     setTitle(s);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content, HistoryFragment).commit();
                     return true;
                 case R.id.navigation_profile:
                     s = new SpannableString("Profile");
                     s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     setTitle(s);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content, ProfileFragment).commit();
                     return true;
             }
             return false;

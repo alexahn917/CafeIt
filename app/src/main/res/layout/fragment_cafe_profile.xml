@@ -574,7 +574,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Your Payment Method" />
+                        android:text="Set up your Bank Account" />
 
                     <Button
                         android:id="@+id/cafeProfilePaymentButton"
@@ -584,7 +584,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:ems="10"
-                        android:text="Link Payment Account"
+                        android:text="Set up Bank Account"
                         android:textAllCaps="false"
                         android:background="@color/colorPrimary"
                         />
