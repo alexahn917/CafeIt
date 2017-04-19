@@ -35,23 +35,23 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
                 case R.id.navigation_cafes:
                     //mTextMessage.setText(R.string.title_home);
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, CafesListFragment).commit();
-                    setTitle("Cafes List");
+                    //setTitle("Cafes List");
                     return true;
                 case R.id.navigation_favorites:
                     //mTextMessage.setText(R.string.title_dashboard);
 //                    Toast.makeText(getApplicationContext(), "Favorites tab pressed", Toast.LENGTH_LONG).show();
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, FavoritesFragment).commit();
-                    setTitle("Favorites");
+                    //setTitle("Favorites");
                     return true;
                 case R.id.navigation_history:
                     //mTextMessage.setText(R.string.title_history);
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, HistoryFragment).commit();
-                    setTitle("History");
+                    //setTitle("History");
                     return true;
                 case R.id.navigation_profile:
                     //mTextMessage.setText(R.string.title_notifications);
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, ProfileFragment).commit();
-                    setTitle("Profile");
+                    //setTitle("Profile");
                     return true;
             }
             return false;

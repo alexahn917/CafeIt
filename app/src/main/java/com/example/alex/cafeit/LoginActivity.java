@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Log.d("DEBUG: ","LoginActivity onCreate 1");
+        //Log.d("DEBUG: ","LoginActivity onCreate 1");
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 launchSignUpActivity();
             }
         });
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
 
         Log.d("DEBUG: ","LoginActivity onCreate 4");
 
