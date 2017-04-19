@@ -1,0 +1,101 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.alex.cafeit.Current_Order">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:src="@drawable/cafeit_logo"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimaryLight"
+        android:layout_marginBottom="15dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
+            >
+            <ImageView
+                android:src="@drawable/cafeit_logo_cup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:maxWidth="200dp"
+                android:maxHeight="100dp"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="1"
+                />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    >
+                    <TextView
+                        android:id="@+id/current_order_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Mocha Java"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:layout_weight="1"
+                        />
+
+                    <TextView
+                        android:id="@+id/current_order_cafe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Bird in Hand"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_weight="1"
+                        />
+
+                    <TextView
+                        android:id="@+id/current_order_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="$3.25"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_weight="1"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+            <Button
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:id="@+id/next_level_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 Minutes Remaining"
+                android:padding="15dp"
+                android:background="@color/babyBlue"
+                />
+    </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
