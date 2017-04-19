@@ -10,6 +10,9 @@
     <color name="colorAccentSoft">#21436C</color>
     <color name="bluntOrange">#f06400</color>
     <color name="bluntBlue">#4796f7</color>
+    <color name="babyBlue">#7eb5f9</color>
+    <color name="orange">#FFA500</color>
     <color name="open">#60be28</color>
     <color name="duskYellow">#ecb028</color>
+    <color name="dark_orange">#CD7B42</color>
 </resources>

@@ -1,30 +1,28 @@
 package com.example.alex.cafeit;
 
-import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements CafesListFragment.OnListFragmentInteractionListener {
 
-    //private TextView mTextMessage;
     private static final int REQUEST_ORDER = 1;
 
     private Fragment CafesListFragment = new CafesListFragment();
     private Fragment FavoritesFragment = new FavoritesFragment();
     private Fragment HistoryFragment = new HistoryFragment();
     private Fragment ProfileFragment = new ProfileFragment();
+    private Context context;
+    private SpannableString s;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -33,25 +31,27 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_cafes:
-                    //mTextMessage.setText(R.string.title_home);
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, CafesListFragment).commit();
-                    //setTitle("Cafes List");
+                    s = new SpannableString("Cafes");
+                    s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    setTitle(s);
                     return true;
                 case R.id.navigation_favorites:
-                    //mTextMessage.setText(R.string.title_dashboard);
-//                    Toast.makeText(getApplicationContext(), "Favorites tab pressed", Toast.LENGTH_LONG).show();
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, FavoritesFragment).commit();
-                    //setTitle("Favorites");
+                    s = new SpannableString("Favorites");
+                    s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    setTitle(s);
                     return true;
                 case R.id.navigation_history:
-                    //mTextMessage.setText(R.string.title_history);
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, HistoryFragment).commit();
-                    //setTitle("History");
+                    s = new SpannableString("History");
+                    s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    setTitle(s);
                     return true;
                 case R.id.navigation_profile:
-                    //mTextMessage.setText(R.string.title_notifications);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content, ProfileFragment).commit();
-                    //setTitle("Profile");
+                    s = new SpannableString("Profile");
+                    s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    setTitle(s);
                     return true;
             }
             return false;
@@ -61,17 +61,47 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        //mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_cafes);
+
+        s = new SpannableString("Cafes");
+        s.setSpan(new TypefaceSpan(this, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        setTitle(s);
     }
     @Override
     public void onListFragmentInteraction(Cafe cafe) {
         Intent i = new Intent(this, OrderView.class);
         startActivity(i);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.sort_distance) {
+            //Intent intent = new Intent(this, SettingsActivity.class);
+            //startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }

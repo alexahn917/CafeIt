@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_new_lesson"
+        android:icon="@drawable/cafeit_logo_cup"
+        android:title="Current Order"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/sort_distance"
+        android:orderInCategory="100"
+        android:title="Sort By Distance"
+        />
+
+    <item
+        android:id="@+id/sort_wait"
+        android:orderInCategory="100"
+        android:title="Sort By Waittime"
+        />
+
+    <item
+        android:id="@+id/sort_rating"
+        android:orderInCategory="100"
+        android:title="Sort By Rating"
+        />
+
+</menu>
