@@ -1,6 +1,20 @@
 package com.example.alex.cafeit;
 
-import android.app.Fragment;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.support.v4.app.Fragment;
+//import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -13,6 +27,7 @@ public class CafeMainActivity extends AppCompatActivity {
 //    private TextView mTextMessage;
 
     private Fragment profileFragment = new CafeProfileFragment();
+    private Fragment ordersFragment = new OrdersFragment();
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -22,11 +37,13 @@ public class CafeMainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_orders:
+                    setTitle("Orders");
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content, ordersFragment).commit();
                     return true;
                 case R.id.navigation_menu:
                     return true;
                 case R.id.navigation_cafe_profile:
-                    getFragmentManager().beginTransaction().replace(R.id.content_cafe, profileFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content_cafe, profileFragment).commit();
                     setTitle("Profile");
                     return true;
             }
