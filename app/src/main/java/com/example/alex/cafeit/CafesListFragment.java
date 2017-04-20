@@ -2,10 +2,11 @@ package com.example.alex.cafeit;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,9 +97,10 @@ public class CafesListFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
+            //mListener.onListFragmentInteraction(Cafe item);
         } else {
-            //throw new RuntimeException(context.toString()
-            //+ " must implement OnListFragmentInteractionListener");
+            throw new RuntimeException(context.toString()
+            + " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -119,7 +121,7 @@ public class CafesListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Cafe item);
     }
+
 }

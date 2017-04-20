@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.alex.cafeit.OrderView"
+    tools:showIn="@layout/activity_order_view">
+
+    <TextView
+        android:id="@+id/CafeName"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:background="@color/colorPrimaryLight"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="@string/cafe_name"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/CafePic"
+        android:contentDescription="@string/cafe_pic_content"
+        android:layout_width="126dp"
+        android:layout_height="126dp"
+        app:srcCompat="@mipmap/ic_logo"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CafeName" />
+
+    <TextView
+        android:id="@+id/hrs_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/hrs_label"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/CafePic"
+        app:layout_constraintTop_toBottomOf="@+id/CafeName" />
+
+    <TextView
+        android:id="@+id/hrs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hrs"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/hrs_label"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/CafeName" />
+
+    <TextView
+        android:id="@+id/cafe_address1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/address1"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/CafePic"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/hrs" />
+
+    <TextView
+        android:id="@+id/cafe_address2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/address2"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/CafePic"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/cafe_address1" />
+
+    <TextView
+        android:id="@+id/cafe_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/distance"
+        android:textSize="18sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cafe_address2" />
+
+    <TextView
+        android:id="@+id/cafe_op_cl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/cafe_open"
+        android:textSize="18sp"
+        android:textColor="@color/open"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cafe_distance" />
+
+    <RatingBar
+        android:id="@+id/cafe_rating"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:theme="@style/RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rating="3"
+        app:layout_constraintLeft_toRightOf="@+id/CafePic"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        app:layout_constraintTop_toTopOf="@+id/cafe_op_cl" />
+
+    <ExpandableListView
+        android:id="@+id/menu"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CafePic"
+        app:layout_constraintVertical_bias="1.0" />
+
+</android.support.constraint.ConstraintLayout>
