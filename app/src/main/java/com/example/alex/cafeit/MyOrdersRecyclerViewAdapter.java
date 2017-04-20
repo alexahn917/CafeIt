@@ -3,16 +3,18 @@ package com.example.alex.cafeit;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.alex.cafeit.FavoritesFragment.OnListFragmentInteractionListener;
-import com.example.alex.cafeit.dummy.DummyContent.Order;
+import com.example.alex.cafeit.OrdersFragment.OnListFragmentInteractionListener;
+import com.example.alex.cafeit.Order;
 
 import java.util.List;
 
@@ -21,13 +23,14 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavoritesRecyclerViewAdapter.ViewHolder> {
+public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRecyclerViewAdapter.ViewHolder> {
 
-    private final List<com.example.alex.cafeit.Order> mValues;
+    private final List<Order> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private RecyclerView recyclerView;
     private Context context;
 
-    public MyFavoritesRecyclerViewAdapter(List<com.example.alex.cafeit.Order> items, OnListFragmentInteractionListener listener) {
+    public MyOrdersRecyclerViewAdapter(List<Order> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,32 +39,38 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_favorites, parent, false);
+                .inflate(R.layout.fragment_orders, parent, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.orders_list);
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        System.out.println(holder.mItem);
+        holder.nameView.setText(mValues.get(position).name);
+        holder.costView.setText("$" + String.format("%.2f", mValues.get(position).price));
+        holder.noteView.setText(mValues.get(position).note);
+        holder.orderMenuView.setText(mValues.get(position).orderMenu);
 
-
-
-        holder.cafeNameView.setText(holder.mItem.cafeName);
-        holder.timeCostView.setText(Integer.toString(holder.mItem.remainingTime) +  " min"
-                + "  |  $" + String.format("%.2f", holder.mItem.price));
-        holder.menuOrderView.setText(holder.mItem.orderMenu);
-
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been selected.
+                Toast.makeText(v.getContext(), holder.mItem.cafeName, Toast.LENGTH_SHORT).show();
+            }
+        });
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog deleteDialogue = new AlertDialog.Builder(context)
-                        .setTitle("Complete Order")
+                        .setTitle("Order Completed")
                         .setMessage("Are you sure?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Delete from database
-                                Toast.makeText(context, "Order Made: " + holder.mItem.orderMenu, Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Beverage Complete: " + holder.mItem.orderMenu, Toast.LENGTH_LONG).show();
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -83,25 +92,30 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView cafeNameView;
-        public final TextView timeCostView;
-        public final TextView menuOrderView;
+        //        public final ImageView cafeLogoView;
+        public final TextView nameView;
+        public final TextView costView;
+        public final TextView noteView;
+        public final TextView orderMenuView;
         public com.example.alex.cafeit.Order mItem;
         public LinearLayout linearLayout;
-
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            cafeNameView = (TextView) view.findViewById(R.id.cafe_name);
-            timeCostView = (TextView) view.findViewById(R.id.time_remaining);
-            menuOrderView = (TextView) view.findViewById(R.id.order_items);
-            linearLayout = (LinearLayout) view.findViewById(R.id.favoriteLinearLayout);
+//            cafeLogoView = (ImageView) view.findViewById(R.id.cafe_logo);
+            nameView = (TextView) view.findViewById(R.id.name);
+            costView = (TextView) view.findViewById(R.id.cost);
+            noteView = (TextView) view.findViewById(R.id.note);
+            orderMenuView = (TextView) view.findViewById(R.id.menu);
+            linearLayout = (LinearLayout) view.findViewById(R.id.orderLinearLayout);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + cafeNameView.getText() + "'";
+            return super.toString() + " '" + orderMenuView.getText() + "'";
         }
     }
+
+
 }
