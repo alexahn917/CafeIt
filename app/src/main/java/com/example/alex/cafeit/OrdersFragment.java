@@ -59,7 +59,7 @@ public class OrdersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_history_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_orders_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -77,12 +77,27 @@ public class OrdersFragment extends Fragment {
     }
 
     public List makeDummyOrders() {
+        Order a = new Order("04/11/17", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced (L)");
+        a.name = "Daniel";
+        a.note = "Extra ice please";
+        Order b = new Order("04/07/17", 3.50f, 5, "Alkimia", "Latte, Hot (M)");
+        b.name = "Alex";
+        b.note = "No ice please";
+        Order c = new Order("04/06/17", 3.00f, 4, "Bird in Hard", "Chai Tea Latte (M)");
+        c.name = "Anthony";
+        c.note = "I'd like it less sweet";
+        Order d = new Order("04/06/17", 3.25f, 4, "Artifact Coffee", "Dirty Chai (M)");
+        d.name = "Chris";
+        d.note = "Extra ice";
+        Order e = new Order("04/04/17", 3.75f, 4, "One World Cafe", "Coldbrew (L)");
+        e.name = "David";
+        e.note = "n/a";
         ArrayList<Order> orders = new ArrayList<Order>();
-        orders.add(new Order("04/11/17", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced (L)"));
-        orders.add(new Order("04/07/17", 3.50f, 5, "Alkimia", "Latte, Hot (M)"));
-        orders.add(new Order("04/06/17", 3.00f, 4, "Bird in Hard", "Chai Tea Latte (M)"));
-        orders.add(new Order("04/06/17", 3.25f, 4, "Artifact Coffee", "Dirty Chai (M)"));
-        orders.add(new Order("04/04/17", 3.75f, 4, "One World Cafe", "Coldbrew (L)"));
+        orders.add(a);
+        orders.add(b);
+        orders.add(c);
+        orders.add(d);
+        orders.add(e);
         return orders;
     }
 

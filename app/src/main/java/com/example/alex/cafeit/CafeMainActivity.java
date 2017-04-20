@@ -25,6 +25,8 @@ import android.widget.TextView;
 public class CafeMainActivity extends AppCompatActivity {
 
 //    private TextView mTextMessage;
+    private Context context;
+    private SpannableString s;
 
     private Fragment profileFragment = new CafeProfileFragment();
     private Fragment ordersFragment = new OrdersFragment();
@@ -38,7 +40,7 @@ public class CafeMainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_orders:
                     setTitle("Orders");
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content, ordersFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content_cafe, ordersFragment).commit();
                     return true;
                 case R.id.navigation_menu:
                     return true;
@@ -56,13 +58,23 @@ public class CafeMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cafe_main);
+        context = getApplicationContext();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_cafe_layout);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_cafe, ordersFragment).commit();
         setTitle("Orders");
-
-
     }
 
+    @Override
+    public void setTitle(CharSequence title) {
+        //mTitle = title;
+        s = new SpannableString(title);
+        s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        super.setTitle(s);
+    }
 }

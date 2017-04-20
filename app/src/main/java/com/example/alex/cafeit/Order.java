@@ -9,6 +9,8 @@ public class Order {
     public int remainingTime;
     public String cafeName;
     public String orderMenu;
+    public String name;
+    public String note;
 
     public Order() {
     }
