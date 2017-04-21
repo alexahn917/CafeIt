@@ -3,8 +3,10 @@ package com.example.alex.cafeit;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -70,13 +74,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private Button LogInButton;
     private Button CafeLoginButton;
     private TextView SignUpButton;
-
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        context = getApplicationContext();
         //Log.d("DEBUG: ","LoginActivity onCreate 1");
 
         // Set up the login form.
@@ -95,8 +99,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Log.d("DEBUG: ","LoginActivity onCreate 2");
-
         mProgressView = findViewById(R.id.login_progress);
         mLoginFormView = findViewById(R.id.login_form);
 
@@ -108,8 +110,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 launchMainActivity();
             }
         });
-
-        Log.d("DEBUG: ","LoginActivity onCreate 3");
 
         CafeLoginButton = (Button) findViewById(R.id.cafe_log_in_button);
         CafeLoginButton.setOnClickListener(new OnClickListener() {
@@ -127,10 +127,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 launchSignUpActivity();
             }
         });
-        //getSupportActionBar().hide();
 
-        Log.d("DEBUG: ","LoginActivity onCreate 4");
-
+        setTypeFace(LogInButton);
+        setTypeFace(CafeLoginButton);
     }
 
     private void launchMainActivity() {
@@ -401,6 +400,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    public void setTypeFace(Button v) {
+        //Typeface font = Typeface.createFromAsset(getResources().getAssets(), "Bodoni 72.ttc");
+        //v.setTypeface(font);
     }
 }
 

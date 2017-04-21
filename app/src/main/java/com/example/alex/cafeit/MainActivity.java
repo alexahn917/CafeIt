@@ -12,6 +12,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements CafesListFragment.OnListFragmentInteractionListener {
 
@@ -83,13 +84,21 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Intent i = new Intent(this, CurrentOrder.class);
-        startActivity(i);
+        if (id == R.id.current_order) {
+            Intent i = new Intent(this, CurrentOrder.class);
+            startActivity(i);
+        }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.sort_distance) {
-            //Intent intent = new Intent(this, SettingsActivity.class);
-            //startActivity(intent);
+        else if (id == R.id.sort_distance) {
+            Toast.makeText(context, "Sorted by distance", Toast.LENGTH_SHORT).show();
+        }
+
+        else if (id == R.id.sort_wait) {
+            Toast.makeText(context, "Sorted by waiting time", Toast.LENGTH_SHORT).show();
+        }
+
+        else if (id == R.id.sort_rating) {
+            Toast.makeText(context, "Sorted by ratings", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -98,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
 
     @Override
     public void setTitle(CharSequence title) {
-        //mTitle = title;
         s = new SpannableString(title);
         s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         super.setTitle(s);
