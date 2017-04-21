@@ -15,8 +15,7 @@ import android.widget.Toast;
 
 public class Current_Order extends AppCompatActivity {
     // Remove the below line after defining your own ad unit ID.
-    private static final String TOAST_TEXT = "Test ads are being shown. "
-            + "To show live ads, replace the ad unit ID in res/values/strings.xml with your own ad unit ID.";
+    private static final String TOAST_TEXT = "Test ads coming up.";
 
     private static final int START_LEVEL = 1;
     private int mLevel;
