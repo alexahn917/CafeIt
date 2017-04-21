@@ -145,7 +145,7 @@ public class CafesListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Cafe item);
+        void onListFragmentInteraction(Cafe item, int pos);
     }
 
 }

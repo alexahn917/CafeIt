@@ -63,7 +63,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.mItem, 0);
 //                    Toast.makeText(v.getContext(), holder.mItem.name, Toast.LENGTH_SHORT).show();
                 }
             }

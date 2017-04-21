@@ -55,13 +55,14 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog deleteDialogue = new AlertDialog.Builder(context)
-                        .setTitle("Complete Order")
-                        .setMessage("Are you sure?")
+                AlertDialog orderDialogue = new AlertDialog.Builder(context)
+                        .setTitle("One Click Order")
+                        .setMessage("are you sure to order?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Delete from database
                                 Toast.makeText(context, "Order Made: " + holder.mItem.orderMenu, Toast.LENGTH_LONG).show();
+                                mListener.onListFragmentInteraction(holder.mItem, 0);
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

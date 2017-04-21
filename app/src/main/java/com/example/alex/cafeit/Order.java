@@ -9,8 +9,8 @@ public class Order {
     public int remainingTime;
     public String cafeName;
     public String orderMenu;
-    public String name;
     public String note;
+    public String name;
 
     public Order() {
     }
@@ -21,5 +21,9 @@ public class Order {
         this.price = price;
         this.remainingTime = remainingTime;
         this.cafeName = cafeName;
+    }
+
+    public String getOrderMenu() {
+        return this.orderMenu;
     }
 }

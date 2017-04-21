@@ -1,11 +1,13 @@
 package com.example.alex.cafeit;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -17,7 +19,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements
         CafesListFragment.OnListFragmentInteractionListener,
-        HistoryFragment.OnListFragmentInteractionListener {
+        FavoritesFragment.OnListFragmentInteractionListener {
 
     private static final int REQUEST_ORDER = 1;
 
@@ -95,16 +97,16 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onListFragmentInteraction(Cafe cafe) {
+    public void onListFragmentInteraction(Cafe cafe, int pos) {
         Intent i = new Intent(this, OrderView.class);
         startActivity(i);
     }
 
-
     @Override
-    public void onListFragmentInteraction(Order item) {
-        Intent i = new Intent(this, OrderView.class);
-        startActivity(i);
+    public void onListFragmentInteraction(Order item, int pos) {
+        // Make the order!
+        // Add to customer DB
+        // Call SqureApp API
     }
 
 }
