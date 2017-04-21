@@ -14,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements CafesListFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements
+        CafesListFragment.OnListFragmentInteractionListener,
+        HistoryFragment.OnListFragmentInteractionListener {
 
     private static final int REQUEST_ORDER = 1;
 
@@ -65,11 +67,6 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
         navigation.setSelectedItemId(R.id.navigation_cafes);
         setTitle("Cafes");
     }
-    @Override
-    public void onListFragmentInteraction(Cafe cafe) {
-        Intent i = new Intent(this, OrderView.class);
-        startActivity(i);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,6 +107,19 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
         s = new SpannableString(title);
         s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         super.setTitle(s);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Cafe cafe) {
+        Intent i = new Intent(this, OrderView.class);
+        startActivity(i);
+    }
+
+
+    @Override
+    public void onListFragmentInteraction(Order item) {
+        Intent i = new Intent(this, OrderView.class);
+        startActivity(i);
     }
 
 }
