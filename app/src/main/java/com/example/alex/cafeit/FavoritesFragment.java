@@ -1,15 +1,15 @@
 package com.example.alex.cafeit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +22,13 @@ import java.util.List;
  */
 public class FavoritesFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     private List<Order> orderList;
     private View view;
+    private Context context;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -37,6 +36,7 @@ public class FavoritesFragment extends Fragment {
      */
 
     public FavoritesFragment() {
+        setHasOptionsMenu(true);
     }
 
     // TODO: Customize parameter initialization
@@ -56,6 +56,8 @@ public class FavoritesFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        setHasOptionsMenu(true);
+        context = getContext();
     }
 
     @Override
@@ -109,6 +111,26 @@ public class FavoritesFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_favorites, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.add_favorite) {
+            Intent i = new Intent(getActivity(), OrderView.class);
+            startActivity(i);
+        }
+        else if (id == R.id.delete_favorite) {
+            Toast.makeText(context, "Select items to delete.", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

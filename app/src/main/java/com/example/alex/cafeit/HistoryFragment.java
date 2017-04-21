@@ -7,6 +7,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,6 +37,7 @@ public class HistoryFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public HistoryFragment() {
+        setHasOptionsMenu(true);
     }
 
     // TODO: Customize parameter initialization
@@ -54,6 +57,7 @@ public class HistoryFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -102,6 +106,13 @@ public class HistoryFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_history, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     /**

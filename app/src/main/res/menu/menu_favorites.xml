@@ -10,22 +10,15 @@
         />
 
     <item
-        android:id="@+id/sort_distance"
+        android:id="@+id/add_favorite"
         android:orderInCategory="100"
-        android:title="Sort By Distance"
-        android:textSize="10sp"
+        android:title="Add favorite"
         />
 
     <item
-        android:id="@+id/sort_wait"
+        android:id="@+id/delete_favorite"
         android:orderInCategory="100"
-        android:title="Sort By Waittime"
-        />
-
-    <item
-        android:id="@+id/sort_rating"
-        android:orderInCategory="100"
-        android:title="Sort By Rating"
+        android:title="Delete favorite"
         />
 
 </menu>

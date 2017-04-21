@@ -1,15 +1,15 @@
 package com.example.alex.cafeit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,7 @@ public class CafesListFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
 
     private List<Cafe> cafeList;
+    private Context context;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -36,11 +37,10 @@ public class CafesListFragment extends Fragment {
      */
 
     public CafesListFragment() {
-
+        setHasOptionsMenu(true);
     }
 
     // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static CafesListFragment newInstance(int columnCount) {
         CafesListFragment fragment = new CafesListFragment();
         Bundle args = new Bundle();
@@ -55,6 +55,8 @@ public class CafesListFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        setHasOptionsMenu(true);
+        context = getContext();
     }
 
     @Override
@@ -109,6 +111,28 @@ public class CafesListFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_cafes, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.sort_distance) {
+            Toast.makeText(context, "Sorted by distance", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.sort_wait) {
+            Toast.makeText(context, "Sorted by waiting time", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.sort_rating) {
+            Toast.makeText(context, "Sorted by ratings", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
