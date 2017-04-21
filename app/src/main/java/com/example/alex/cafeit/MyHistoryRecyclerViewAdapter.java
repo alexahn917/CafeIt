@@ -1,10 +1,14 @@
 package com.example.alex.cafeit;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +26,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
 
     private final List<Order> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private Context context;
 
     public MyHistoryRecyclerViewAdapter(List<Order> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -30,6 +35,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_history, parent, false);
         return new ViewHolder(view);
@@ -43,14 +49,27 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         holder.cafeNameView.setText(mValues.get(position).cafeName);
         holder.orderMenuView.setText(mValues.get(position).orderMenu);
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    Toast.makeText(v.getContext(), holder.mItem.cafeName, Toast.LENGTH_SHORT).show();
-                }
+            public boolean onLongClick(View v) {
+                AlertDialog deleteDialogue = new AlertDialog.Builder(context)
+                        .setMessage("Add to favorites?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Delete from database
+                                Toast.makeText(context, "Added to favorites: " + holder.mItem.orderMenu
+                                        + " from " + holder.mItem.cafeName, Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                return true;
+//                Toast.makeText(context, "Clicked " + holder.mItem.cafeName, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -68,6 +87,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         public final TextView cafeNameView;
         public final TextView orderMenuView;
         public com.example.alex.cafeit.Order mItem;
+        public LinearLayout linearLayout;
 
         public ViewHolder(View view) {
             super(view);
@@ -77,7 +97,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
             costView = (TextView) view.findViewById(R.id.cost);
             cafeNameView = (TextView) view.findViewById(R.id.cafeName);
             orderMenuView = (TextView) view.findViewById(R.id.menu);
-
+            linearLayout = (LinearLayout) view.findViewById(R.id.historyLinearLayout);
         }
 
         @Override
