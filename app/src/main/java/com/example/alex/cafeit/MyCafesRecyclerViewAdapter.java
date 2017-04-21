@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +42,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
 
         holder.cafeNameView.setText(holder.mItem.name);
         holder.bestMenuView.setText(holder.mItem.bestMenu);
-        holder.ratingView.setText(holder.mItem.rating + "");
+        holder.ratingView.setRating(holder.mItem.rating);
         String hasWifi;
         if(holder.mItem.hasWifi == 1) {
             hasWifi = "Yes";
@@ -79,7 +80,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
         public final TextView cafeNameView;
         public final TextView cafeDistanceView;
         public final TextView bestMenuView;
-        public final TextView ratingView;
+        public final RatingBar ratingView;
         public final TextView wifiView;
         public final TextView waitView;
         public Cafe mItem;
@@ -90,7 +91,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
             cafeNameView = (TextView) view.findViewById(R.id.cafe_name);
             cafeDistanceView = (TextView) view.findViewById(R.id.cafe_distance);
             bestMenuView = (TextView) view.findViewById(R.id.best_menu);
-            ratingView = (TextView) view.findViewById(R.id.rating);
+            ratingView = (RatingBar) view.findViewById(R.id.rating);
             wifiView = (TextView) view.findViewById(R.id.wifi);
             waitView = (TextView) view.findViewById(R.id.wait);
         }

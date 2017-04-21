@@ -27,12 +27,10 @@ public class Cafe {
         this.location = location;
         this.startHour = startHour;
         this.endHour = endHour;
-
         this.bestMenu = bestMenu;
         this.rating = rating;
         this.hasWifi = hasWifi;
         this.waitTime = waitTime;
-
         registerDate = new Date();
     }
 

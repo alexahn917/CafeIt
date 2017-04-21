@@ -107,17 +107,25 @@
                 android:layout_weight="2"
                 android:gravity="right|center_vertical"
                 />
-
-            <TextView
-                android:id="@+id/rating"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="1dp"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:text="(Rating)"
                 android:layout_weight="1"
                 android:gravity="center|center_vertical"
-                />
+                >
+                <RatingBar
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:theme="@style/RatingBar"
+                    android:numStars="5"
+                    android:stepSize="0.1"
+                    android:isIndicator="true"
+                    android:rating="3"
+                    />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
