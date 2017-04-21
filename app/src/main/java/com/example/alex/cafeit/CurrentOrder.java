@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Current_Order extends AppCompatActivity {
+public class CurrentOrder extends AppCompatActivity {
     // Remove the below line after defining your own ad unit ID.
     private static final String TOAST_TEXT = "Test ads coming up.";
 
@@ -26,7 +26,7 @@ public class Current_Order extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_current__order);
+        setContentView(R.layout.activity_current_order);
 
         // Create the next level button, which tries to show an interstitial when clicked.
         mNextLevelButton = ((Button) findViewById(R.id.next_level_button));

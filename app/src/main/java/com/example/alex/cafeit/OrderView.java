@@ -26,6 +26,7 @@ public class OrderView extends AppCompatActivity {
     HashMap<String, List<MenuItem>> listDataChild;
 
     static final int ORDER_SUCCESS = 1;
+    static final int ORDER_CANCEL = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

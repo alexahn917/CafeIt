@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements CafesListFragment
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Intent i = new Intent(this, Current_Order.class);
+        Intent i = new Intent(this, CurrentOrder.class);
         startActivity(i);
 
         //noinspection SimplifiableIfStatement
