@@ -1,37 +1,33 @@
 package com.example.alex.cafeit;
 
 import android.content.Context;
-import android.os.Bundle;
-//import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-//import android.app.Fragment;
 import android.support.v4.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+//import android.app.Fragment;
+import android.widget.ExpandableListView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CafeProfileFragment.OnFragmentInteractionListener} interface
+ * {@link CafeMenuFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CafeProfileFragment#newInstance} factory method to
+ * Use the {@link CafeMenuFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CafeProfileFragment extends Fragment {
+public class CafeMenuFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,13 +37,17 @@ public class CafeProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    ExpandableListAdapter listAdapter;
+    ExpandableListView expListView;
+    List<String> listDataHeader;
+    HashMap<String, List<MenuItem>> listDataChild;
+
+    static final int ORDER_SUCCESS = 1;
+
+
     private OnFragmentInteractionListener mListener;
 
-    private Button saveButton;
-    private Button linkButton;
-
-
-    public CafeProfileFragment() {
+    public CafeMenuFragment() {
         // Required empty public constructor
     }
 
@@ -57,11 +57,11 @@ public class CafeProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CafeProfileFragment.
+     * @return A new instance of fragment CafeMenuFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CafeProfileFragment newInstance(String param1, String param2) {
-        CafeProfileFragment fragment = new CafeProfileFragment();
+    public static CafeMenuFragment newInstance(String param1, String param2) {
+        CafeMenuFragment fragment = new CafeMenuFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -82,22 +82,28 @@ public class CafeProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_cafe_profile, container, false);
+        View v = inflater.inflate(R.layout.fragment_cafe_menu, container, false);
 
-        saveButton = (Button) v.findViewById(R.id.cafeProfileSaveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveProfile();
-            }
-        });
-        linkButton = (Button) v.findViewById(R.id.cafeProfilePaymentButton);
-        linkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                linkPayment();
-            }
-        });
+//        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+
+
+//        ActionBar abar = getSupportActionBar();
+//        if (abar != null) {
+//            abar.setDisplayHomeAsUpEnabled(true);
+//        }
+
+        expListView = (ExpandableListView) v.findViewById(R.id.cafeMenu);
+
+        setup();
+
+        listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
+
+
+
 
         return v;
     }
@@ -141,12 +147,22 @@ public class CafeProfileFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void saveProfile(){
-        Toast.makeText(getActivity().getApplicationContext(), "Saved successfully!",
-                Toast.LENGTH_SHORT).show();
 
-    }
-    private void linkPayment(){
-        Toast.makeText(getActivity().getApplicationContext(), "Sending you to outside payment API...", Toast.LENGTH_SHORT).show();
+    private void setup() {
+
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
+        final int numHeaders = 3;
+        final int numChildren = 4;
+        for (int i = 0; i < numHeaders; i++) {
+            listDataHeader.add(getString(R.string.menu_header) + i);
+            List<MenuItem> childItems = new ArrayList<>();
+            for (int j = 0; j < numChildren; j++) {
+                MenuItem item = new MenuItem(true, getString(R.string.menu_item), 1,
+                        getResources().getStringArray(R.array.sizes));
+                childItems.add(item);
+            }
+            listDataChild.put(listDataHeader.get(i), childItems);
+        }
     }
 }

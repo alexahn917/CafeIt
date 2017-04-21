@@ -13,7 +13,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.Fragment;
 //import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,6 +30,8 @@ public class CafeMainActivity extends AppCompatActivity {
     private Fragment profileFragment = new CafeProfileFragment();
     private Fragment ordersFragment = new OrdersFragment();
 
+    private Fragment menuFragment = new CafeMenuFragment();
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -43,6 +44,8 @@ public class CafeMainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_cafe, ordersFragment).commit();
                     return true;
                 case R.id.navigation_menu:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content_cafe, menuFragment).commit();
+                    setTitle("Menu");
                     return true;
                 case R.id.navigation_cafe_profile:
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_cafe, profileFragment).commit();
