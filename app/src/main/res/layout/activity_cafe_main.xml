@@ -22,18 +22,18 @@
         android:layout_weight="1">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/saveFAB"
+            android:id="@+id/addFAB"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:clickable="true"
-            app:backgroundTint="@color/colorPrimary"
-            app:elevation="0dp"
-            app:fabSize="normal"
             android:layout_gravity="bottom|right"
-            android:layout_marginRight="30dp"
             android:layout_marginBottom="30dp"
+            android:layout_marginRight="30dp"
+            android:clickable="true"
             android:visibility="invisible"
-            app:srcCompat="@android:drawable/ic_menu_save" />
+            app:backgroundTint="@color/colorPrimary"
+            app:elevation="5dp"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_add_white_24dp" />
     </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView

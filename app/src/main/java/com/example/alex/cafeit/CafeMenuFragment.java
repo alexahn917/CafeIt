@@ -37,7 +37,7 @@ public class CafeMenuFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    ExpandableListAdapter listAdapter;
+    CafeExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<MenuItem>> listDataChild;
@@ -97,14 +97,18 @@ public class CafeMenuFragment extends Fragment {
 
         setup();
 
-        listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+        listAdapter = new CafeExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
-
-
-
-
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Intent i = new Intent(getActivity(), CafeMenuItemActivity.class);
+                startActivity(i);
+                return true;
+            }
+        });
         return v;
     }
 

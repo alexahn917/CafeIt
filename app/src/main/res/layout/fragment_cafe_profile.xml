@@ -598,6 +598,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:text="Save Changes"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
