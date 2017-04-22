@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,7 +29,8 @@ public class CafeNewItemActivity extends AppCompatActivity {
 
     private Spinner categorySpinner;
     private Button addButton;
-
+    private RadioButton oneSize, threeSize;
+    private LinearLayout secondSize, thirdSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,24 @@ public class CafeNewItemActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Successfully added!", Toast.LENGTH_SHORT).show();
                 finish();
+            }
+        });
+
+        oneSize = (RadioButton) findViewById(R.id.oneSizeRadio);
+        threeSize = (RadioButton) findViewById(R.id.threeSizeRadio);
+        secondSize = (LinearLayout) findViewById(R.id.secondSize);
+        thirdSize = (LinearLayout) findViewById(R.id.thirdSize);
+
+        oneSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(oneSize.isChecked()){
+                    secondSize.setVisibility(View.GONE);
+                    thirdSize.setVisibility(View.GONE);
+                } else {
+                    secondSize.setVisibility(View.VISIBLE);
+                    thirdSize.setVisibility(View.VISIBLE);
+                }
             }
         });
 

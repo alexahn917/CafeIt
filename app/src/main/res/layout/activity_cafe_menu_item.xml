@@ -24,14 +24,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
 
             <TextView
                 android:id="@+id/menuItemCategoryLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="Category: "
@@ -117,7 +118,7 @@
                     android:visibility="invisible" />
 
                 <RadioButton
-                    android:id="@+id/multiSizeRadio"
+                    android:id="@+id/threeSizeRadio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -167,7 +168,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/secondSize">
 
                 <EditText
                     android:id="@+id/size2"
@@ -197,7 +199,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/thirdSize">
 
                 <EditText
                     android:id="@+id/size3"
