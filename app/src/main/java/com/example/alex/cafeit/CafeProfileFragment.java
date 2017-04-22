@@ -1,5 +1,6 @@
 package com.example.alex.cafeit;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
@@ -20,7 +21,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 /**
@@ -45,6 +51,9 @@ public class CafeProfileFragment extends Fragment {
 
     private Button saveButton;
     private Button linkButton;
+
+    private EditText monStart, monEnd, tueStart, tueEnd, wedStart, wedEnd,
+            thuStart, thuEnd, friStart, friEnd, satStart, satEnd, sunStart, sunEnd;
 
 
     public CafeProfileFragment() {
@@ -98,6 +107,23 @@ public class CafeProfileFragment extends Fragment {
                 linkPayment();
             }
         });
+        monStart = (EditText) v.findViewById(R.id.mondayStartTime);
+        tueStart = (EditText) v.findViewById(R.id.tuesdayStartTime);
+        wedStart = (EditText) v.findViewById(R.id.wednesdayStartTime);
+        thuStart = (EditText) v.findViewById(R.id.thursdayStartTime);
+        friStart = (EditText) v.findViewById(R.id.fridayStartTime);
+        satStart = (EditText) v.findViewById(R.id.saturdayStartTime);
+        sunStart = (EditText) v.findViewById(R.id.sundayStartTime);
+
+        monEnd = (EditText) v.findViewById(R.id.mondayEndTime);
+        tueEnd = (EditText) v.findViewById(R.id.tuesdayEndTime);
+        wedEnd = (EditText) v.findViewById(R.id.wednesdayEndTime);
+        thuEnd = (EditText) v.findViewById(R.id.thursdayEndTime);
+        friEnd = (EditText) v.findViewById(R.id.fridayEndTime);
+        satEnd = (EditText) v.findViewById(R.id.saturdayEndTime);
+        sunEnd = (EditText) v.findViewById(R.id.sundayEndTime);
+
+        bulkSetOnclick();
 
         return v;
     }
@@ -148,5 +174,60 @@ public class CafeProfileFragment extends Fragment {
     }
     private void linkPayment(){
         Toast.makeText(getActivity().getApplicationContext(), "Sending you to outside payment API...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void bulkSetOnclick(){
+        customSetOnclick(monStart);
+        customSetOnclick(tueStart);
+        customSetOnclick(wedStart);
+        customSetOnclick(thuStart);
+        customSetOnclick(friStart);
+        customSetOnclick(satStart);
+        customSetOnclick(sunStart);
+        customSetOnclick(monEnd);
+        customSetOnclick(tueEnd);
+        customSetOnclick(wedEnd);
+        customSetOnclick(thuEnd);
+        customSetOnclick(friEnd);
+        customSetOnclick(satEnd);
+        customSetOnclick(sunEnd);
+    }
+
+    private void customSetOnclick(final EditText etxt){
+        etxt.setFocusable(false);
+        etxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Calendar mcurrentTime = Calendar.getInstance();
+//                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+//                int minute = mcurrentTime.get(Calendar.MINUTE);
+                String s = etxt.getText().toString();
+                int myhour = Integer.parseInt(s.substring(0,s.indexOf(':')));
+                int mymin = Integer.parseInt(s.substring(s.indexOf(':') + 1));
+
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        String h, m;
+                        if(selectedHour < 10) {
+                            h = "0" + selectedHour;
+                        } else {
+                            h = selectedHour + "";
+                        }
+                        if (selectedMinute < 10){
+                            m = "0" + selectedMinute;
+                        } else {
+                            m = selectedMinute + "";
+                        }
+                        etxt.setText( h + ":" + m);
+                    }
+                }, myhour, mymin, false);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+//                String s = monEnd.getText().toString();
+//                mTimePicker.updateTime(Integer.parseInt(s.substring(0,s.indexOf(':'))), Integer.parseInt(s.substring(s.indexOf(':') + 1)));
+                mTimePicker.show();
+            }
+        });
     }
 }
