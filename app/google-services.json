@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "498200782721",
+    "firebase_url": "https://cafeit-63bb7.firebaseio.com",
+    "project_id": "cafeit-63bb7",
+    "storage_bucket": "cafeit-63bb7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498200782721:android:6afd23e257dd47a6",
+        "android_client_info": {
+          "package_name": "com.example.alex.cafeit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498200782721-p04iengcb0ua9jpv8bkomjla0qdipj9o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.alex.cafeit",
+            "certificate_hash": "7eb19dc923ee23443d221824708bee9704a8ee53"
+          }
+        },
+        {
+          "client_id": "498200782721-ejp4bjutm5sfbiiaogg5tf4lcivju5c9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4PQBAyfjeRLuNnhgI56aj_lK0GXr883w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498200782721-ejp4bjutm5sfbiiaogg5tf4lcivju5c9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
