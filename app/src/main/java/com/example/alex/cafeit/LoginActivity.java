@@ -37,6 +37,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -48,7 +55,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -79,14 +86,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private Button LogInButton;
     private Button CafeLoginButton;
     private TextView SignUpButton;
-    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        context = getApplicationContext();
-        //Log.d("DEBUG: ","LoginActivity onCreate 1");
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -136,6 +140,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setTypeFace(LogInButton);
         setTypeFace(CafeLoginButton);
 
+        // Set up Firebase Authentication
+
+        // Key Gen
+        /*
         PackageInfo info;
         try {
             info = getPackageManager().getPackageInfo("com.example.alex.cafeit", PackageManager.GET_SIGNATURES);
@@ -154,7 +162,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } catch (Exception e) {
             Log.e("exception", e.toString());
         }
+        */
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     private void launchMainActivity() {
@@ -170,8 +189,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void launchSignUpActivity() {
-        Intent intent = new Intent(this, SignUpActivity.class);
-        startActivityForResult(intent, REQUEST_SIGNUP);
+        //Intent intent = new Intent(this, SignUpActivity.class);
+        //startActivityForResult(intent, REQUEST_SIGNUP);
+        Intent intent = new Intent(this, Authentication.class);
+        startActivity(intent);
     }
 
     private void populateAutoComplete() {
