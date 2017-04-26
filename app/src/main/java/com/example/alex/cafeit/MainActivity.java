@@ -13,9 +13,14 @@ import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.alex.cafeit.fragments.CafesListFragment;
+import com.example.alex.cafeit.fragments.FavoritesFragment;
+import com.example.alex.cafeit.fragments.HistoryFragment;
+import com.example.alex.cafeit.fragments.ProfileFragment;
+
 public class MainActivity extends AppCompatActivity implements
-        CafesListFragment.OnListFragmentInteractionListener,
-        FavoritesFragment.OnListFragmentInteractionListener {
+        com.example.alex.cafeit.fragments.CafesListFragment.OnListFragmentInteractionListener,
+        com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInteractionListener {
 
     private Fragment CafesListFragment = new CafesListFragment();
     private Fragment FavoritesFragment = new FavoritesFragment();
@@ -94,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onListFragmentInteraction(Cafe cafe, int pos) {
-        Intent i = new Intent(this, OrderView.class);
+        Intent i = new Intent(this, OrderActivity.class);
         startActivity(i);
     }
 

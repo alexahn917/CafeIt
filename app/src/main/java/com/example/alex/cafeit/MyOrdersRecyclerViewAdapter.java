@@ -3,18 +3,15 @@ package com.example.alex.cafeit;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.alex.cafeit.OrdersFragment.OnListFragmentInteractionListener;
-import com.example.alex.cafeit.Order;
+import com.example.alex.cafeit.fragments.OrdersFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 

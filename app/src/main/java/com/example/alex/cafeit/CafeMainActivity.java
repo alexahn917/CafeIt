@@ -15,7 +15,10 @@ import android.text.SpannableString;
 import android.view.MenuItem;
 //import android.app.Fragment;
 import android.view.View;
-import android.widget.Toast;
+
+import com.example.alex.cafeit.fragments.CafeMenuFragment;
+import com.example.alex.cafeit.fragments.CafeProfileFragment;
+import com.example.alex.cafeit.fragments.OrdersFragment;
 
 public class CafeMainActivity extends AppCompatActivity {
 

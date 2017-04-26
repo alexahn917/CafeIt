@@ -1,4 +1,4 @@
-package com.example.alex.cafeit;
+package com.example.alex.cafeit.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.alex.cafeit.R;
 
 
 /**
@@ -154,7 +156,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(DialogInterface dialog, int id) {
                 Toast.makeText(context, "Changes saved successfully.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
-                //setResult(OrderView.ORDER_SUCCESS);
+                //setResult(OrderActivity.ORDER_SUCCESS);
                 //finish();
             }
         });
@@ -162,7 +164,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(DialogInterface dialog, int id) {
                 Toast.makeText(context, "Changes discarded.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
-                //setResult(OrderView.ORDER_CANCEL);
+                //setResult(OrderActivity.ORDER_CANCEL);
                 //finish();
             }
         });

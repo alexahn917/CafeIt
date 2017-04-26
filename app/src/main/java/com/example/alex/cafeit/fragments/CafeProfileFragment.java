@@ -1,32 +1,22 @@
-package com.example.alex.cafeit;
+package com.example.alex.cafeit.fragments;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.content.Context;
 import android.net.Uri;
-import android.os.Bundle;
 //import android.app.Fragment;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import com.example.alex.cafeit.R;
 
 
 /**

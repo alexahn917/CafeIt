@@ -1,18 +1,20 @@
-package com.example.alex.cafeit;
+package com.example.alex.cafeit.fragments;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 //import android.app.Fragment;
 import android.widget.ExpandableListView;
+
+import com.example.alex.cafeit.CafeExpandableListAdapter;
+import com.example.alex.cafeit.CafeMenuItemActivity;
+import com.example.alex.cafeit.MenuItem;
+import com.example.alex.cafeit.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

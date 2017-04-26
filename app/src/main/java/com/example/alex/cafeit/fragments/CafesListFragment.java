@@ -1,4 +1,4 @@
-package com.example.alex.cafeit;
+package com.example.alex.cafeit.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,11 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.widget.Toast;
+
+import com.example.alex.cafeit.Cafe;
+import com.example.alex.cafeit.MyCafesRecyclerViewAdapter;
+import com.example.alex.cafeit.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,27 +22,29 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class HistoryFragment extends Fragment {
+public class CafesListFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    List<Order> orders;
+
+    private List<Cafe> cafeList;
+    private Context context;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public HistoryFragment() {
+
+    public CafesListFragment() {
         setHasOptionsMenu(true);
     }
 
     // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static HistoryFragment newInstance(int columnCount) {
-        HistoryFragment fragment = new HistoryFragment();
+    public static CafesListFragment newInstance(int columnCount) {
+        CafesListFragment fragment = new CafesListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -51,17 +54,17 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         setHasOptionsMenu(true);
+        context = getContext();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_history_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_cafes_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -72,20 +75,24 @@ public class HistoryFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            orders = makeDummyOrders();
-            recyclerView.setAdapter(new MyHistoryRecyclerViewAdapter(orders, mListener));
+            cafeList = makeDummyCafes();
+            recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
+
         }
         return view;
     }
 
-    public List makeDummyOrders() {
-        ArrayList<Order> orders = new ArrayList<Order>();
-        orders.add(new Order("04/11/17", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced (L)"));
-        orders.add(new Order("04/07/17", 3.50f, 5, "Alkimia", "Latte, Hot (M)"));
-        orders.add(new Order("04/06/17", 3.00f, 4, "Bird in Hard", "Chai Tea Latte (M)"));
-        orders.add(new Order("04/06/17", 3.25f, 4, "Artifact Coffee", "Dirty Chai (M)"));
-        orders.add(new Order("04/04/17", 3.75f, 4, "One World Cafe", "Coldbrew (L)"));
-        return orders;
+    public List makeDummyCafes() {
+        cafeList = new ArrayList<>();
+        cafeList.add(new Cafe(1, "Daily grind", "brody b", "9AM",
+                "11pm", "Cafe mocha", 1.6f, 1, 5));
+        cafeList.add(new Cafe(2, "Alkemia", "gilman", "9AM",
+                "5pm", "Americano", 3.4f, 1, 4));
+        cafeList.add(new Cafe(3, "Bird in hand", "Nine east", "9AM",
+                "6pm", "Drip coffee", 4.1f, 1, 3));
+        cafeList.add(new Cafe(4, "Carma's Cafe", "Near campus", "9AM",
+                "10pm", "Frappucino", 4.2f, 1, 3));
+        return cafeList;
     }
 
 
@@ -94,9 +101,10 @@ public class HistoryFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
+            //mListener.onListFragmentInteraction(Cafe item);
         } else {
-            //throw new RuntimeException(context.toString()
-            //        + " must implement OnListFragmentInteractionListener");
+            throw new RuntimeException(context.toString()
+            + " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -108,10 +116,25 @@ public class HistoryFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_history, menu);
+        inflater.inflate(R.menu.menu_cafes, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.sort_distance) {
+            Toast.makeText(context, "Sorted by distance", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.sort_wait) {
+            Toast.makeText(context, "Sorted by waiting time", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.sort_rating) {
+            Toast.makeText(context, "Sorted by ratings", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -124,7 +147,7 @@ public class HistoryFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(Order item);
+        void onListFragmentInteraction(Cafe item, int pos);
     }
+
 }

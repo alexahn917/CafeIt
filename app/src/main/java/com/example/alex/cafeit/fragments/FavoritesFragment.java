@@ -1,4 +1,4 @@
-package com.example.alex.cafeit;
+package com.example.alex.cafeit.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,11 @@ import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
+import com.example.alex.cafeit.MyFavoritesRecyclerViewAdapter;
+import com.example.alex.cafeit.Order;
+import com.example.alex.cafeit.OrderActivity;
+import com.example.alex.cafeit.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,15 +25,14 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class CafesListFragment extends Fragment {
+public class FavoritesFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    private List<Cafe> cafeList;
+    private List<Order> orderList;
+    private View view;
     private Context context;
 
     /**
@@ -36,13 +40,14 @@ public class CafesListFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
 
-    public CafesListFragment() {
+    public FavoritesFragment() {
         setHasOptionsMenu(true);
     }
 
     // TODO: Customize parameter initialization
-    public static CafesListFragment newInstance(int columnCount) {
-        CafesListFragment fragment = new CafesListFragment();
+    @SuppressWarnings("unused")
+    public static FavoritesFragment newInstance(int columnCount) {
+        FavoritesFragment fragment = new FavoritesFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -51,6 +56,7 @@ public class CafesListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d("DEBUG: ", "onCreate Favorites Fragment");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -62,7 +68,10 @@ public class CafesListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cafes_list, container, false);
+        Log.d("DEBUG: ", "onCreate Favorites Fragment");
+
+        view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
+
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -73,24 +82,22 @@ public class CafesListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            cafeList = makeDummyCafes();
-            recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
+            orderList = makeDummyOrders();
+            Log.d("DEBUG: ", "onCreateView Favorites Fragment" + orderList.toString());
+            recyclerView.setAdapter(new MyFavoritesRecyclerViewAdapter(orderList, mListener));
 
         }
         return view;
     }
 
-    public List makeDummyCafes() {
-        cafeList = new ArrayList<>();
-        cafeList.add(new Cafe(1, "Daily grind", "brody b", "9AM",
-                "11pm", "Cafe mocha", 1.6f, 1, 5));
-        cafeList.add(new Cafe(2, "Alkemia", "gilman", "9AM",
-                "5pm", "Americano", 3.4f, 1, 4));
-        cafeList.add(new Cafe(3, "Bird in hand", "Nine east", "9AM",
-                "6pm", "Drip coffee", 4.1f, 1, 3));
-        cafeList.add(new Cafe(4, "Carma's Cafe", "Near campus", "9AM",
-                "10pm", "Frappucino", 4.2f, 1, 3));
-        return cafeList;
+    public List makeDummyOrders() {
+        ArrayList<Order> orders = new ArrayList<Order>();
+        orders.add(new Order("04/01/11:13:11", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced (L)"));
+        orders.add(new Order("04/01/11:13:11", 3.50f, 5, "Alkimia", "Latte, Hot (M)"));
+        orders.add(new Order("04/01/11:13:11", 3.00f, 4, "Bird in Hard", "Chai Tea Latte (M)"));
+        orders.add(new Order("04/01/11:13:11", 3.25f, 4, "Artifact Coffee", "Dirty Chai (M)"));
+        orders.add(new Order("04/01/11:13:11", 3.75f, 4, "One World Cafe", "Coldbrew (L)"));
+        return orders;
     }
 
 
@@ -99,10 +106,9 @@ public class CafesListFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
-            //mListener.onListFragmentInteraction(Cafe item);
         } else {
-            throw new RuntimeException(context.toString()
-            + " must implement OnListFragmentInteractionListener");
+            //throw new RuntimeException(context.toString()
+            //+ " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -114,38 +120,26 @@ public class CafesListFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_cafes, menu);
+        menu.clear();
+        inflater.inflate(R.menu.menu_favorites, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.sort_distance) {
-            Toast.makeText(context, "Sorted by distance", Toast.LENGTH_SHORT).show();
+        if (id == R.id.add_favorite) {
+            Intent i = new Intent(getActivity(), OrderActivity.class);
+            startActivity(i);
         }
-        else if (id == R.id.sort_wait) {
-            Toast.makeText(context, "Sorted by waiting time", Toast.LENGTH_SHORT).show();
-        }
-        else if (id == R.id.sort_rating) {
-            Toast.makeText(context, "Sorted by ratings", Toast.LENGTH_SHORT).show();
+        else if (id == R.id.delete_favorite) {
+            Toast.makeText(context, "Select items to delete.", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Cafe item, int pos);
+        // TODO: Update argument type and name
+        void onListFragmentInteraction(Order item, int pos);
     }
-
 }

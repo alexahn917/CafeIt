@@ -33,7 +33,7 @@
             android:label="@string/title_activity_main" />
         <activity android:name=".SignUpActivity" />
         <activity
-            android:name=".OrderView"
+            android:name=".OrderActivity"
             android:label="@string/title_activity_order_view"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -42,14 +42,14 @@
                 android:value="com.example.alex.cafeit.MainActivity" />
         </activity>
         <activity
-            android:name=".Checkout"
+            android:name=".CheckoutActivity"
             android:label="@string/title_activity_order_view"
-            android:parentActivityName=".OrderView"
+            android:parentActivityName=".OrderActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.alex.cafeit.OrderView" />
+                android:value="com.example.alex.cafeit.OrderActivity" />
         </activity>
         <activity
             android:name=".CafeMainActivity"

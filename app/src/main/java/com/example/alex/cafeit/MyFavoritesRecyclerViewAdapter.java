@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.alex.cafeit.FavoritesFragment.OnListFragmentInteractionListener;
+import com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 

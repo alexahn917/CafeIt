@@ -7,5 +7,5 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.example.alex.cafeit.CafesListFragment"
+    tools:context="com.example.alex.cafeit.fragments.CafesListFragment"
     tools:listitem="@layout/fragment_cafes" />

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.alex.cafeit.CafesListFragment.OnListFragmentInteractionListener;
+import com.example.alex.cafeit.fragments.CafesListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 
