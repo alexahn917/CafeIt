@@ -23,6 +23,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private SpannableString s;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    private static final int PAYMENT_SETUP_REQUEST = 1;
 
     // preferences
     private Context context;
@@ -34,6 +35,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private EditText pw_view;
     private EditText conf_pw_view;
 
+    // private variables
     private boolean paymentSetUp = false;
 
     @Override
@@ -105,8 +107,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public boolean validCreation() {
-        if (validateID() && validatePW() && paymentSetUp) {
-            findViewById(R.id.createButton).setEnabled(true);
+        if (validateID() && validatePW()) {
             return true;
         }
         return false;
@@ -129,7 +130,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
         } else if (i == R.id.signupPaymentButton) {
             if (validCreation()) {
+                // Lanuch activity
+                //Intent intent = new Intent(this, PaymentSetUpActivity.class);
+                //startActivityForResult(intent, PAYMENT_SETUP_REQUEST);
                 paymentSetUp = true;
+                if (paymentSetUp) {
+                    findViewById(R.id.createButton).setEnabled(true);
+                }
             }
         }
     }
