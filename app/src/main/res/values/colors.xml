@@ -16,4 +16,6 @@
     <color name="open">#60be28</color>
     <color name="duskYellow">#ecb028</color>
     <color name="dark_orange">#CD7B42</color>
+    <color name="grey">#A9A9A9</color>
+    <color name="white">#ffffff</color>
 </resources>

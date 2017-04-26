@@ -47,7 +47,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#8FFF"
+                android:background="@drawable/shadow"
                 android:padding="10dp"
                 >
 
@@ -91,30 +91,32 @@
 
             <Button
                 android:id="@+id/email_log_in_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                android:background="@drawable/primary_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:text="@string/action_log_in"
+                android:textColor="@android:color/white"
                 />
 
             <Button
                 android:id="@+id/cafe_log_in_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                android:background="@drawable/primary_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Log in as Cafe"
                 android:layout_marginTop="10dp"
+                android:textColor="@android:color/white"
                 />
 
             <TextView
                 android:id="@+id/email_sign_up_button"
                 android:textAlignment="center"
-                android:textSize="15dp"
+                android:textSize="20dp"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
