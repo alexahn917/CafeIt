@@ -15,9 +15,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
 
     private SpannableString s;
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     // preferences
     private Context context;
@@ -28,6 +33,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private EditText id_view;
     private EditText pw_view;
     private EditText conf_pw_view;
+
+    private boolean paymentSetUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,30 +73,51 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     public boolean validateID() {
         String id = id_view.getText().toString();
-        if (id != null && id.contains("@")) {
-            return true;
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(id);
+
+        if (!matcher.find()) {
+            Toast.makeText(this, "Invalid email.", Toast.LENGTH_SHORT).show();
+            return false;
         }
         else {
-            return false;
+            return true;
         }
     }
 
     public boolean validatePW() {
         String pw1 = pw_view.getText().toString();
         String pw2 = conf_pw_view.getText().toString();
-        if (pw1 != null && pw2 != null && pw1.equals(pw2)) {
-            return true;
-        }
-        else {
+        if (pw1 == null && pw2 == null) {
+            Toast.makeText(this, "Invalid password.", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (pw1.length() < 6) {
+            Toast.makeText(this, "Password should be at least 6 characters long.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (!pw1.equals(pw2)) {
+            Toast.makeText(this, "Confirmation password does not match with password.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public boolean validCreation() {
+        if (validateID() && validatePW() && paymentSetUp) {
+            findViewById(R.id.createButton).setEnabled(true);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void onClick(View v){
+        validCreation();
         int i = v.getId();
         if (i == R.id.createButton) {
-            if (validateID() && validatePW()) {
+            if (validCreation()) {
                 peditor.putString("USER_ID", id_view.getText().toString());
                 peditor.putString("USER_PW", pw_view.getText().toString());
                 peditor.commit();
@@ -100,8 +128,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(this, "Invalid ID / PW", Toast.LENGTH_SHORT).show();
             }
         } else if (i == R.id.signupPaymentButton) {
-            linkPayment();
-            findViewById(R.id.createButton).setEnabled(true);
+            if (validCreation()) {
+                paymentSetUp = true;
+            }
         }
     }
 }

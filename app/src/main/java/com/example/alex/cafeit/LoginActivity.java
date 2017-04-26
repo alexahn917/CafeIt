@@ -69,12 +69,9 @@ public class LoginActivity extends BaseActivity
     private SharedPreferences myPref;
     private SharedPreferences.Editor peditor;
 
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -102,9 +99,6 @@ public class LoginActivity extends BaseActivity
                 return false;
             }
         });
-
-        mProgressView = findViewById(R.id.login_progress);
-        mLoginFormView = findViewById(R.id.login_form);
 
         // Activate Buttons
         findViewById(R.id.email_log_in_button).setOnClickListener(this);
@@ -165,12 +159,6 @@ public class LoginActivity extends BaseActivity
         startActivity(intent);
     }
 
-    private void launchSignUpActivity() {
-        Intent intent = new Intent(this, SignUpActivity.class);
-        startActivityForResult(intent, SIGNUP_REQUEST);
-    }
-
-
     public void setTypeFace(Button v) {
         //Typeface font = Typeface.createFromAsset(getResources().getAssets(), "Bodoni 72.ttc");
         //v.setTypeface(font);
@@ -181,9 +169,7 @@ public class LoginActivity extends BaseActivity
         if (!validateForm()) {
             return;
         }
-
         showProgressDialog();
-
         // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -200,7 +186,6 @@ public class LoginActivity extends BaseActivity
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-
                         // [START_EXCLUDE]
                         if (!task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show();
@@ -250,10 +235,9 @@ public class LoginActivity extends BaseActivity
 
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
-        if (!validateForm()) {
-            return;
-        }
-        showProgressDialog();
+        Log.d(TAG, "ID: " + email);
+        Log.d(TAG, "PW: " + password);
+        //showProgressDialog();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -266,10 +250,9 @@ public class LoginActivity extends BaseActivity
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Failed to sign up for CafeIt.",
+                            Toast.makeText(LoginActivity.this, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
-                        hideProgressDialog();
                     }
                 });
     }
@@ -303,7 +286,7 @@ public class LoginActivity extends BaseActivity
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 String USER_ID = myPref.getString("USER_ID", "");
-                String USER_PW = myPref.getString("USER_ID", "");
+                String USER_PW = myPref.getString("USER_PW", "");
                 createAccount(USER_ID, USER_PW);
             }
         }
@@ -320,8 +303,10 @@ public class LoginActivity extends BaseActivity
             peditor.putString("USER_ID", "");
             peditor.putString("USER_PW", "");
             peditor.commit();
-            launchSignUpActivity();
+            Intent intent = new Intent(this, SignUpActivity.class);
+            startActivityForResult(intent, SIGNUP_REQUEST);
         }
     }
 }
+
 

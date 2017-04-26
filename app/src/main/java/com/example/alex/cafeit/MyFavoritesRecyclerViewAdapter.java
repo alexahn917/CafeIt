@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.cafeit.FavoritesFragment.OnListFragmentInteractionListener;
-import com.example.alex.cafeit.dummy.DummyContent.Order;
 
 import java.util.List;
 

@@ -12,8 +12,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.alex.cafeit.dummy.DummyContent;
-
 import java.util.ArrayList;
 import java.util.List;
 
