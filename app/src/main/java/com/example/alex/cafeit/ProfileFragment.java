@@ -1,9 +1,11 @@
 package com.example.alex.cafeit;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +34,7 @@ public class ProfileFragment extends Fragment {
     private String mParam2;
     private Button saveButton;
     private Button linkButton;
+    private Context context;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,6 +68,7 @@ public class ProfileFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         setHasOptionsMenu(true);
+        context = getContext();
     }
 
     @Override
@@ -137,10 +141,32 @@ public class ProfileFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
     private void saveProfile(){
-        Toast.makeText(getActivity().getApplicationContext(), "Saved successfully!",
-                Toast.LENGTH_SHORT).show();
+        createAndShowAlertDialog();
     }
     private void linkPayment(){
         Toast.makeText(getActivity().getApplicationContext(), "Sending you to outside payment API...", Toast.LENGTH_SHORT).show();
+    }
+
+    public void createAndShowAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Save changes?");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Toast.makeText(context, "Changes saved successfully.", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                //setResult(OrderView.ORDER_SUCCESS);
+                //finish();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Toast.makeText(context, "Changes discarded.", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                //setResult(OrderView.ORDER_CANCEL);
+                //finish();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
