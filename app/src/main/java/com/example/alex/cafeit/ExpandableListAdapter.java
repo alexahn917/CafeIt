@@ -1,9 +1,14 @@
 package com.example.alex.cafeit;
 
 import android.content.Context;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
@@ -52,7 +57,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.menu_item, parent, false);
         }
 
-        MenuItem cur = (MenuItem) getChild(groupPosition, childPosition);
+        final MenuItem cur = (MenuItem) getChild(groupPosition, childPosition);
 
         final EditText amt = (EditText) convertView.findViewById(R.id.quantity);
         if (cur.quantity >= 1) {
@@ -76,7 +81,75 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 }
             }
         });
-        choice.setChecked(cur.selected);
+
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end,
+                                       Spanned dest, int dstart, int dend) {
+                StringBuilder builder = new StringBuilder(dest);
+                builder.replace(dstart, dend, source
+                        .subSequence(start, end).toString());
+                if (!builder.toString().matches(
+                        "([1-9]?[0-9]?)?"
+                )) {
+                    if (source.length() == 0)
+                        return dest.subSequence(dstart, dend);
+                    return "";
+                }
+
+                return null;
+
+            }
+        };
+
+        amt.setFilters(new InputFilter[] { filter });
+        amt.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    String text = amt.getText().toString();
+                    if (text.length() != 0) {
+                        cur.quantity = Integer.parseInt(text);
+                    }
+                    amt.setText(String.format(Locale.US, "%d", cur.quantity));
+                    amt.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) v.getContext()
+                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+                return false;
+            }
+        });
+
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = amt.getText().toString();
+                if (text.length() != 0) {
+                    int amount = Integer.parseInt(text);
+                    if (amount < 99) {
+                        cur.quantity++;
+                        amt.setText(String.format(Locale.US, "%d", cur.quantity));
+                    }
+                }
+            }
+        });
+
+        minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = amt.getText().toString();
+                if (text.length() != 0) {
+                    int amount = Integer.parseInt(text);
+                    if (amount > 1) {
+                        cur.quantity--;
+                        amt.setText(String.format(Locale.US, "%d", cur.quantity));
+                    }
+                }
+            }
+        });
+
+//        choice.setChecked(cur.selected);
         choice.setText(cur.name);
 
         Spinner sizes = (Spinner) convertView.findViewById(R.id.size);
