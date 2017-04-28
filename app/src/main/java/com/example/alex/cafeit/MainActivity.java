@@ -12,6 +12,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.alex.cafeit.fragments.CafesListFragment;
 import com.example.alex.cafeit.fragments.FavoritesFragment;

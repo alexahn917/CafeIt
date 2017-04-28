@@ -1,6 +1,7 @@
 package com.example.alex.cafeit.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,8 @@ import android.view.*;
 import android.widget.Toast;
 
 import com.example.alex.cafeit.Cafe;
+import com.example.alex.cafeit.CurrentOrder;
+import com.example.alex.cafeit.MapsActivity;
 import com.example.alex.cafeit.MyCafesRecyclerViewAdapter;
 import com.example.alex.cafeit.R;
 
@@ -131,6 +134,10 @@ public class CafesListFragment extends Fragment {
         }
         else if (id == R.id.sort_rating) {
             Toast.makeText(context, "Sorted by ratings", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.google_maps) {
+            Toast.makeText(context, "Opening Maps View...", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(context, MapsActivity.class);
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }
