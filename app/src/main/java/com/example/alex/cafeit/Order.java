@@ -2,28 +2,28 @@ package com.example.alex.cafeit;
 
 
 
-public class Order {
+public class Order extends OrderItem {
 
     public String orderTime;
-    public float price;
     public int remainingTime;
     public String cafeName;
-    public String orderMenu;
     public String note;
-    public String name;
+    public String customerName;
 
     public Order() {
     }
 
-    public Order(String orderTime, float price, int remainingTime, String cafeName, String orderMenu) {
-        this.orderMenu = orderMenu;
+    public Order(String orderTime, float price, int remainingTime, String cafeName, String itemName,
+                 String size) {
+        super.itemName = itemName;
+        super.price = price;
+        super.size = size;
+        super.remainingTime = remainingTime;
         this.orderTime = orderTime;
-        this.price = price;
-        this.remainingTime = remainingTime;
         this.cafeName = cafeName;
     }
 
-    public String getOrderMenu() {
-        return this.orderMenu;
+    public String getItemName() {
+        return super.itemName;
     }
 }

@@ -77,21 +77,21 @@ public class OrdersFragment extends Fragment {
         return view;
     }
 
-    public List makeDummyOrders() {
-        Order a = new Order("04/11/17", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced (L)");
-        a.name = "Daniel";
+    public List<Order> makeDummyOrders() {
+        Order a = new Order("04/11/17", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced", "(L)");
+        a.customerName = "Daniel";
         a.note = "Extra ice please";
-        Order b = new Order("04/07/17", 3.50f, 5, "Alkimia", "Latte, Hot (M)");
-        b.name = "Alex";
+        Order b = new Order("04/07/17", 3.50f, 5, "Alkimia", "Latte, Hot", "(M)");
+        b.customerName = "Alex";
         b.note = "No ice please";
-        Order c = new Order("04/06/17", 3.00f, 4, "Bird in Hard", "Chai Tea Latte (M)");
-        c.name = "Anthony";
+        Order c = new Order("04/06/17", 3.00f, 4, "Bird in Hard", "Chai Tea Latte", "(M)");
+        c.customerName = "Anthony";
         c.note = "I'd like it less sweet";
-        Order d = new Order("04/06/17", 3.25f, 4, "Artifact Coffee", "Dirty Chai (M)");
-        d.name = "Chris";
+        Order d = new Order("04/06/17", 3.25f, 4, "Artifact Coffee", "Dirty Chai", "(M)");
+        d.customerName = "Chris";
         d.note = "Extra ice";
-        Order e = new Order("04/04/17", 3.75f, 4, "One World Cafe", "Coldbrew (L)");
-        e.name = "David";
+        Order e = new Order("04/04/17", 3.75f, 4, "One World Cafe", "Coldbrew", "(L)");
+        e.customerName = "David";
         e.note = "n/a";
         ArrayList<Order> orders = new ArrayList<Order>();
         orders.add(a);

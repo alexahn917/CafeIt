@@ -1,5 +1,6 @@
 package com.example.alex.cafeit;
 
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,6 +20,7 @@ public class Cafe {
     protected int hasWifi;
     protected int waitTime;
     protected Date registerDate;
+    protected URL imURL;
     //protected float distance;
 
     public Cafe (int id, String name, String location, String startHour, String endHour, String bestMenu, float rating, int hasWifi, int waitTime) {

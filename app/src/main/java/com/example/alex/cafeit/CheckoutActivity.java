@@ -36,7 +36,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         orderlist = (ListView) findViewById(R.id.order_list);
         setup();
-        orderAdapter = new OrderItemListAdapter(this, orders, this);
+        orderAdapter = new OrderItemListAdapter(this, orders);
         orderlist.setAdapter(orderAdapter);
 
         Button checkout = (Button) findViewById(R.id.checkout_button);
@@ -55,7 +55,7 @@ public class CheckoutActivity extends AppCompatActivity {
             String name = getString(R.string.order_item);
             String size = getString(R.string.order_size);
             float price = Float.parseFloat(getString(R.string.sample_price_sz));
-            OrderItem item = new OrderItem(name, size, price);
+            OrderItem item = new OrderItem(name, size, price, 3);
             orders.add(item);
         }
     }
@@ -83,4 +83,3 @@ public class CheckoutActivity extends AppCompatActivity {
         dialog.show();
     }
 }
-

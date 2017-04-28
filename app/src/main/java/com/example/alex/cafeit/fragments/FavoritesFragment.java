@@ -92,11 +92,11 @@ public class FavoritesFragment extends Fragment {
 
     public List makeDummyOrders() {
         ArrayList<Order> orders = new ArrayList<Order>();
-        orders.add(new Order("04/01/11:13:11", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced (L)"));
-        orders.add(new Order("04/01/11:13:11", 3.50f, 5, "Alkimia", "Latte, Hot (M)"));
-        orders.add(new Order("04/01/11:13:11", 3.00f, 4, "Bird in Hard", "Chai Tea Latte (M)"));
-        orders.add(new Order("04/01/11:13:11", 3.25f, 4, "Artifact Coffee", "Dirty Chai (M)"));
-        orders.add(new Order("04/01/11:13:11", 3.75f, 4, "One World Cafe", "Coldbrew (L)"));
+        orders.add(new Order("04/01/11:13:11", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced", "(L)"));
+        orders.add(new Order("04/01/11:13:11", 3.50f, 5, "Alkimia", "Latte, Hot", "(M)"));
+        orders.add(new Order("04/01/11:13:11", 3.00f, 4, "Bird in Hard", "Chai Tea Latte", "(M)"));
+        orders.add(new Order("04/01/11:13:11", 3.25f, 4, "Artifact Coffee", "Dirty Chai", "(M)"));
+        orders.add(new Order("04/01/11:13:11", 3.75f, 4, "One World Cafe", "Coldbrew", "(L)"));
         return orders;
     }
 
