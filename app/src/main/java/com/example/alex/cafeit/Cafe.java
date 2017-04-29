@@ -15,17 +15,19 @@ public class Cafe {
     protected String location;
     protected String startHour;
     protected String endHour;
+    protected String address;
+    protected float latitude;
+    protected float longitude;
 
     protected String bestMenu;
     protected float rating;
     protected int hasWifi;
     protected int waitTime;
+
 //    protected Date registerDate;
 //    protected URL imURL;
 
-    protected String address;
-    protected float latitude;
-    protected float longitude;
+
 
     public Cafe(){
 
