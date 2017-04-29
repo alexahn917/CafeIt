@@ -42,6 +42,7 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main" />
         <activity android:name=".SignUpUserActivity" />
+        <activity android:name=".SignUpCafeActivity" />
         <activity
             android:name=".OrderActivity"
             android:label="@string/title_activity_order_view"

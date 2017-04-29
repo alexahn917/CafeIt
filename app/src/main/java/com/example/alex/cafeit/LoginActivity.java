@@ -287,7 +287,7 @@ public class LoginActivity extends BaseActivity
             peditor.putString("USER_PW", "");
             peditor.putString("USER_NAME", "");
             peditor.commit();
-            Intent intent = new Intent(this, SignUpUserActivity.class);
+            Intent intent = new Intent(this, SignUpCafeActivity.class);
             startActivityForResult(intent, SIGNUP_CAFE_REQUEST);
         }
     }
