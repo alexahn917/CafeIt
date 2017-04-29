@@ -3,10 +3,7 @@
     package="com.example.alex.cafeit">
 
     <!--Get location permission for Google Maps API-->
-    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.example.currentplacedetailsonmap">
-        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    </manifest>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />

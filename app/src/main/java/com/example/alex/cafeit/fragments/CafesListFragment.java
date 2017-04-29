@@ -88,13 +88,13 @@ public class CafesListFragment extends Fragment {
     public List makeDummyCafes() {
         cafeList = new ArrayList<>();
         cafeList.add(new Cafe(1, "Daily grind", "brody b", "9AM",
-                "11pm", "Cafe mocha", 1.6f, 1, 5));
+                "11pm", "Cafe mocha", 1.6f, 1, 5, 0f, 0f));
         cafeList.add(new Cafe(2, "Alkemia", "gilman", "9AM",
-                "5pm", "Americano", 3.4f, 1, 4));
+                "5pm", "Americano", 3.4f, 1, 4, 0f, 0f));
         cafeList.add(new Cafe(3, "Bird in hand", "Nine east", "9AM",
-                "6pm", "Drip coffee", 4.1f, 1, 3));
+                "6pm", "Drip coffee", 4.1f, 1, 3, 0f, 0f));
         cafeList.add(new Cafe(4, "Carma's Cafe", "Near campus", "9AM",
-                "10pm", "Frappucino", 4.2f, 1, 3));
+                "10pm", "Frappucino", 4.2f, 1, 3, 0f, 0f));
         return cafeList;
     }
 
