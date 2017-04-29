@@ -22,8 +22,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A login screen that offers login via email/password.
@@ -47,6 +50,8 @@ public class LoginActivity extends BaseActivity
     // Firebase
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    boolean isCafeAcct;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +128,14 @@ public class LoginActivity extends BaseActivity
     }
 
     private void launchMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Toast.makeText(context, isCafeAcct + " given", Toast.LENGTH_SHORT).show();
+        if(isCafeAcct) {
+            Intent intent = new Intent(this, CafeMainActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void launchCafeMainActivity(){
@@ -152,7 +163,25 @@ public class LoginActivity extends BaseActivity
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            launchMainActivity();
+
+                            mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    User loginUser = dataSnapshot.getValue(User.class);
+                                    isCafeAcct = loginUser.isCafe;
+                                    launchMainActivity();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    System.out.println("The read failed: " + databaseError.getCode());
+                                }
+                            });
+
+
+                            mDatabase.child(user.getUid());
+                            Toast.makeText(context, "isCafeAcct: " + isCafeAcct, Toast.LENGTH_SHORT).show();
+//                            launchMainActivity();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -187,6 +216,8 @@ public class LoginActivity extends BaseActivity
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
                             launchCafeMainActivity();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -228,7 +259,7 @@ public class LoginActivity extends BaseActivity
     }
 
     private void writeNewUser(String userId, String name, String email) {
-        User user = new User(name, email);
+        User user = new User(name, email, false);
         mDatabase.child("users").child(userId).setValue(user);
     }
 
