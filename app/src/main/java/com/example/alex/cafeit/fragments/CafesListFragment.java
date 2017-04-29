@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
@@ -14,9 +15,17 @@ import com.example.alex.cafeit.Cafe;
 import com.example.alex.cafeit.CurrentOrder;
 import com.example.alex.cafeit.MapsActivity;
 import com.example.alex.cafeit.MyCafesRecyclerViewAdapter;
+import com.example.alex.cafeit.NewCafePusher;
 import com.example.alex.cafeit.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,8 +42,11 @@ public class CafesListFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    private List<Cafe> cafeList;
+    private List<Cafe> cafeList = new ArrayList<>();
     private Context context;
+
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -68,7 +80,8 @@ public class CafesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cafes_list, container, false);
-
+        populateCafeList();
+        Log.d("cafelist size", cafeList.size()+"");
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -78,7 +91,7 @@ public class CafesListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            cafeList = makeDummyCafes();
+            //cafeList = makeDummyCafes();
             recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
 
         }
@@ -87,14 +100,17 @@ public class CafesListFragment extends Fragment {
 
     public List makeDummyCafes() {
         cafeList = new ArrayList<>();
-        cafeList.add(new Cafe(1, "Daily grind", "brody b", "9AM",
-                "11pm", "Cafe mocha", 1.6f, 1, 5, 0f, 0f));
-        cafeList.add(new Cafe(2, "Alkemia", "gilman", "9AM",
-                "5pm", "Americano", 3.4f, 1, 4, 0f, 0f));
-        cafeList.add(new Cafe(3, "Bird in hand", "Nine east", "9AM",
-                "6pm", "Drip coffee", 4.1f, 1, 3, 0f, 0f));
-        cafeList.add(new Cafe(4, "Carma's Cafe", "Near campus", "9AM",
-                "10pm", "Frappucino", 4.2f, 1, 3, 0f, 0f));
+
+        cafeList.add(new Cafe(NewCafePusher.cid++, "Daily grind", "brody b", "9AM",
+                "11pm", "Cafe mocha", 1.6f, 1, 5));
+        cafeList.add(new Cafe(NewCafePusher.cid++, "Alkemia", "gilman", "9AM",
+                "5pm", "Americano", 3.4f, 1, 4));
+        cafeList.add(new Cafe(NewCafePusher.cid++, "Bird in hand", "Nine east", "9AM",
+                "6pm", "Drip coffee", 4.1f, 1, 3));
+        cafeList.add(new Cafe(NewCafePusher.cid++, "Carma's Cafe", "Near campus", "9AM",
+                "10pm", "Frappucino", 4.2f, 1, 3));
+        cafeList.add(new Cafe(NewCafePusher.cid++, "my new cafe", "somewhere over the rainbow", "11AM", "11PM", "unicorn poop", 4.5f, 1, 7, "1000 somewhere street", 39.334773f, -76.620726f));
+        cafeList.add(new NewCafePusher().getCafe());
         return cafeList;
     }
 
@@ -155,6 +171,24 @@ public class CafesListFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Cafe item, int pos);
+    }
+
+    public void populateCafeList(){
+        mDatabase.child("cafes").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("Count " ,""+dataSnapshot.getChildrenCount());
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    Cafe post = postSnapshot.getValue(Cafe.class);
+                    cafeList.add(post);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
     }
 
 }

@@ -99,25 +99,26 @@
                 android:textColor="@android:color/white"
                 />
 
-            <Button
-                android:id="@+id/cafe_log_in_button"
-                android:background="@drawable/primary_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Log in as Cafe"
-                android:layout_marginTop="10dp"
-                android:textColor="@android:color/white"
-                />
-
             <TextView
-                android:id="@+id/email_sign_up_button"
+                android:id="@+id/email_sign_up_user_button"
                 android:textAlignment="center"
                 android:textSize="20dp"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/action_sign_in"
+                android:text="Sign up as User"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/email_sign_up_cafe_button"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Sign up as Cafe"
                 android:textStyle="bold" />
 
         </LinearLayout>

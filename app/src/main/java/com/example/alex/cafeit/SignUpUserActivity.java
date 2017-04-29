@@ -12,13 +12,13 @@ import android.text.SpannableString;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
+
+public class SignUpUserActivity extends AppCompatActivity implements View.OnClickListener{
 
     private SpannableString s;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
@@ -31,17 +31,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private SharedPreferences.Editor peditor;
 
     // UI elements
-    private EditText id_view;
+    private EditText email_view;
     private EditText pw_view;
     private EditText conf_pw_view;
+    private EditText name_view;
 
     // private variables
     private boolean paymentSetUp = false;
 
+    //private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_sign_up_user);
 
         // Preference set up
         context = getApplicationContext();
@@ -51,9 +53,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        id_view = (EditText) findViewById(R.id.idField);
+        email_view = (EditText) findViewById(R.id.idField);
         pw_view = (EditText) findViewById(R.id.passwordField);
         conf_pw_view = (EditText) findViewById(R.id.passwordConfirmField);
+        name_view = (EditText) findViewById(R.id.nameField);
 
         findViewById(R.id.createButton).setOnClickListener(this);
         findViewById(R.id.signupPaymentButton).setOnClickListener(this);
@@ -74,7 +77,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public boolean validateID() {
-        String id = id_view.getText().toString();
+        String id = email_view.getText().toString();
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(id);
 
         if (!matcher.find()) {
@@ -119,8 +122,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         int i = v.getId();
         if (i == R.id.createButton) {
             if (validCreation()) {
-                peditor.putString("USER_ID", id_view.getText().toString());
-                peditor.putString("USER_PW", pw_view.getText().toString());
+                String useremail = email_view.getText().toString();
+                String userpw = pw_view.getText().toString();
+                String username = name_view.getText().toString();
+                peditor.putString("USER_ID", useremail);
+                peditor.putString("USER_PW", userpw);
+                peditor.putString("USER_NAME", username);
                 peditor.commit();
                 setResult(RESULT_OK);
                 finish();
@@ -152,4 +159,5 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
     }
+
 }

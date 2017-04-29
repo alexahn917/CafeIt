@@ -45,10 +45,10 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.nameView.setText(mValues.get(position).name);
+        holder.nameView.setText(mValues.get(position).customerName);
         holder.costView.setText("$" + String.format("%.2f", mValues.get(position).price));
         holder.noteView.setText(mValues.get(position).note);
-        holder.orderMenuView.setText(mValues.get(position).orderMenu);
+        holder.orderMenuView.setText((mValues.get(position).itemName + " " + mValues.get(position).size));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +67,8 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Delete from database
-                                Toast.makeText(context, "Beverage Complete: " + holder.mItem.orderMenu, Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Beverage Complete: " + holder.mItem.itemName
+                                        + " " + holder.mItem.size, Toast.LENGTH_LONG).show();
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
