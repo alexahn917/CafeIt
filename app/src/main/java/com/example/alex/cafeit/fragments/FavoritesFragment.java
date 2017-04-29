@@ -118,26 +118,6 @@ public class FavoritesFragment extends Fragment {
         mListener = null;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_favorites, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.add_favorite) {
-            Intent i = new Intent(getActivity(), OrderActivity.class);
-            startActivity(i);
-        }
-        else if (id == R.id.delete_favorite) {
-            Toast.makeText(context, "Select items to delete.", Toast.LENGTH_SHORT).show();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Order item, int pos);
