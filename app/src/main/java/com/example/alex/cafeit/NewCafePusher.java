@@ -21,4 +21,5 @@ public class NewCafePusher {
     public Cafe getCafe() {
         return cafe;
     }
+
 }
