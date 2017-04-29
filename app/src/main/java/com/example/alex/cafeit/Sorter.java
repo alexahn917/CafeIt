@@ -15,6 +15,7 @@ public final class Sorter {
     }
 
     public List<Cafe> byDistance(List<Cafe> cafeList) {
+
         return new ArrayList<>();
     }
 }

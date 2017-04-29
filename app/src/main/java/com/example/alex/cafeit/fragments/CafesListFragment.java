@@ -14,9 +14,14 @@ import com.example.alex.cafeit.Cafe;
 import com.example.alex.cafeit.CurrentOrder;
 import com.example.alex.cafeit.MapsActivity;
 import com.example.alex.cafeit.MyCafesRecyclerViewAdapter;
+import com.example.alex.cafeit.NewCafePusher;
 import com.example.alex.cafeit.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,6 +40,9 @@ public class CafesListFragment extends Fragment {
 
     private List<Cafe> cafeList;
     private Context context;
+
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -87,14 +95,16 @@ public class CafesListFragment extends Fragment {
 
     public List makeDummyCafes() {
         cafeList = new ArrayList<>();
-        cafeList.add(new Cafe(1, "Daily grind", "brody b", "9AM",
-                "11pm", "Cafe mocha", 1.6f, 1, 5, 0f, 0f));
-        cafeList.add(new Cafe(2, "Alkemia", "gilman", "9AM",
-                "5pm", "Americano", 3.4f, 1, 4, 0f, 0f));
-        cafeList.add(new Cafe(3, "Bird in hand", "Nine east", "9AM",
-                "6pm", "Drip coffee", 4.1f, 1, 3, 0f, 0f));
-        cafeList.add(new Cafe(4, "Carma's Cafe", "Near campus", "9AM",
-                "10pm", "Frappucino", 4.2f, 1, 3, 0f, 0f));
+//        cafeList.add(new Cafe(NewCafePusher.cid++, "Daily grind", "brody b", "9AM",
+//                "11pm", "Cafe mocha", 1.6f, 1, 5));
+//        cafeList.add(new Cafe(NewCafePusher.cid++, "Alkemia", "gilman", "9AM",
+//                "5pm", "Americano", 3.4f, 1, 4));
+//        cafeList.add(new Cafe(NewCafePusher.cid++, "Bird in hand", "Nine east", "9AM",
+//                "6pm", "Drip coffee", 4.1f, 1, 3));
+//        cafeList.add(new Cafe(NewCafePusher.cid++, "Carma's Cafe", "Near campus", "9AM",
+//                "10pm", "Frappucino", 4.2f, 1, 3));
+        cafeList.add(new Cafe(NewCafePusher.cid++, "my new cafe", "somewhere over the rainbow", "11AM", "11PM", "unicorn poop", 4.5f, 1, 7, "1000 somewhere street", 39.334773f, -76.620726f));
+        cafeList.add(new NewCafePusher().getCafe());
         return cafeList;
     }
 

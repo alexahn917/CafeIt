@@ -92,11 +92,11 @@ public class FavoritesFragment extends Fragment {
 
     public List makeDummyOrders() {
         ArrayList<Order> orders = new ArrayList<Order>();
-        orders.add(new Order("04/01/11:13:11", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced (L)"));
-        orders.add(new Order("04/01/11:13:11", 3.50f, 5, "Alkimia", "Latte, Hot (M)"));
-        orders.add(new Order("04/01/11:13:11", 3.00f, 4, "Bird in Hard", "Chai Tea Latte (M)"));
-        orders.add(new Order("04/01/11:13:11", 3.25f, 4, "Artifact Coffee", "Dirty Chai (M)"));
-        orders.add(new Order("04/01/11:13:11", 3.75f, 4, "One World Cafe", "Coldbrew (L)"));
+        orders.add(new Order("04/01/11:13:11", 2.50f, 3, "Daily Grind @ Brody", "Americano, Iced", "(L)"));
+        orders.add(new Order("04/01/11:13:11", 3.50f, 5, "Alkimia", "Latte, Hot", "(M)"));
+        orders.add(new Order("04/01/11:13:11", 3.00f, 4, "Bird in Hard", "Chai Tea Latte", "(M)"));
+        orders.add(new Order("04/01/11:13:11", 3.25f, 4, "Artifact Coffee", "Dirty Chai", "(M)"));
+        orders.add(new Order("04/01/11:13:11", 3.75f, 4, "One World Cafe", "Coldbrew", "(L)"));
         return orders;
     }
 
@@ -116,26 +116,6 @@ public class FavoritesFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_favorites, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.add_favorite) {
-            Intent i = new Intent(getActivity(), OrderActivity.class);
-            startActivity(i);
-        }
-        else if (id == R.id.delete_favorite) {
-            Toast.makeText(context, "Select items to delete.", Toast.LENGTH_SHORT).show();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public interface OnListFragmentInteractionListener {

@@ -1,40 +1,16 @@
 package com.example.alex.cafeit;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,13 +22,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A login screen that offers login via email/password.
@@ -75,6 +49,9 @@ public class LoginActivity extends BaseActivity
 
     // Firebase
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    boolean isCafeAcct;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +84,7 @@ public class LoginActivity extends BaseActivity
 
         // Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //setTypeFace(LogInButton);
         //setTypeFace(CafeLoginButton);
@@ -150,8 +128,14 @@ public class LoginActivity extends BaseActivity
     }
 
     private void launchMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Toast.makeText(context, isCafeAcct + " given", Toast.LENGTH_SHORT).show();
+        if(isCafeAcct) {
+            Intent intent = new Intent(this, CafeMainActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void launchCafeMainActivity(){
@@ -179,7 +163,25 @@ public class LoginActivity extends BaseActivity
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            launchMainActivity();
+
+                            mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    User loginUser = dataSnapshot.getValue(User.class);
+                                    isCafeAcct = loginUser.isCafe;
+                                    launchMainActivity();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    System.out.println("The read failed: " + databaseError.getCode());
+                                }
+                            });
+
+
+                            mDatabase.child(user.getUid());
+                            Toast.makeText(context, "isCafeAcct: " + isCafeAcct, Toast.LENGTH_SHORT).show();
+//                            launchMainActivity();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -214,6 +216,8 @@ public class LoginActivity extends BaseActivity
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
                             launchCafeMainActivity();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -221,7 +225,6 @@ public class LoginActivity extends BaseActivity
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-
                         // [START_EXCLUDE]
                         if (!task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show();
@@ -234,9 +237,6 @@ public class LoginActivity extends BaseActivity
     }
 
     private void createAccount(String email, String password) {
-        Log.d(TAG, "createAccount:" + email);
-        Log.d(TAG, "ID: " + email);
-        Log.d(TAG, "PW: " + password);
         //showProgressDialog();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -247,6 +247,7 @@ public class LoginActivity extends BaseActivity
                             Log.d(TAG, "createUserWithEmail:success");
                             Toast.makeText(LoginActivity.this, "Successfully signed up to CafeIt!",
                                     Toast.LENGTH_SHORT).show();
+                            writeNewUser(mAuth.getCurrentUser().getUid(), myPref.getString("USER_NAME", ""), myPref.getString("USER_ID", ""));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -255,6 +256,11 @@ public class LoginActivity extends BaseActivity
                         }
                     }
                 });
+    }
+
+    private void writeNewUser(String userId, String name, String email) {
+        User user = new User(name, email, false);
+        mDatabase.child("users").child(userId).setValue(user);
     }
 
     private boolean validateForm() {
@@ -287,6 +293,7 @@ public class LoginActivity extends BaseActivity
             if (resultCode == RESULT_OK) {
                 String USER_ID = myPref.getString("USER_ID", "");
                 String USER_PW = myPref.getString("USER_PW", "");
+                String USER_NAME = myPref.getString("USER_NAME", "");
                 createAccount(USER_ID, USER_PW);
             }
         }
@@ -302,6 +309,7 @@ public class LoginActivity extends BaseActivity
         } else if (i == R.id.email_sign_up_button) {
             peditor.putString("USER_ID", "");
             peditor.putString("USER_PW", "");
+            peditor.putString("USER_NAME", "");
             peditor.commit();
             Intent intent = new Intent(this, SignUpActivity.class);
             startActivityForResult(intent, SIGNUP_REQUEST);

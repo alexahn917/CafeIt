@@ -49,7 +49,7 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
         holder.cafeNameView.setText(holder.mItem.cafeName);
         holder.timeCostView.setText(Integer.toString(holder.mItem.remainingTime) +  " min"
                 + "  |  $" + String.format("%.2f", holder.mItem.price));
-        holder.menuOrderView.setText(holder.mItem.orderMenu);
+        holder.menuOrderView.setText(holder.mItem.itemName + " " + holder.mItem.size);
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +60,8 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Delete from database
-                                Toast.makeText(context, "Order Made: " + holder.mItem.orderMenu, Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Order Made: " + holder.mItem.itemName + " "
+                                        + holder.mItem.size, Toast.LENGTH_LONG).show();
                                 mListener.onListFragmentInteraction(holder.mItem, 0);
                             }
                         })

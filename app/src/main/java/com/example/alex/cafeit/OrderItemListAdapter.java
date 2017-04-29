@@ -18,7 +18,7 @@ public class OrderItemListAdapter extends ArrayAdapter<OrderItem> {
     private Context context;
     private List<OrderItem> values;
 
-    public OrderItemListAdapter(Context context, List<OrderItem> values, Activity mActivity) {
+    public OrderItemListAdapter(Context context, List<OrderItem> values) {
         super(context, -1, values);
         this.context = context;
         this.values = values;
@@ -37,7 +37,7 @@ public class OrderItemListAdapter extends ArrayAdapter<OrderItem> {
 
         OrderItem item = values.get(position);
 
-        name.setText(item.name + " " + item.size);
+        name.setText(item.itemName + " " + item.size);
         price.setText(String.format(Locale.US, "$%.2f", item.price));
 
         return convertView;

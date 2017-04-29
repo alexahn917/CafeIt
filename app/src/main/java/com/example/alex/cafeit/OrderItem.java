@@ -1,13 +1,19 @@
 package com.example.alex.cafeit;
 
 public class OrderItem {
-    String name;
+    String itemName;
     String size;
     float price;
+    int remainingTime;
 
-    public OrderItem(String name, String size, float price) {
-        this.name = name;
+    public OrderItem() {
+
+    }
+
+    public OrderItem(String name, String size, float price, int remainingTime) {
+        this.itemName = name;
         this.size = size;
         this.price = price;
+        this.remainingTime = remainingTime;
     }
 }

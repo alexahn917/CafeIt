@@ -65,7 +65,7 @@ public class OrderActivity extends AppCompatActivity {
             listDataHeader.add(getString(R.string.menu_header) + i);
             List<MenuItem> childItems = new ArrayList<>();
             for (int j = 0; j < numChildren; j++) {
-                MenuItem item = new MenuItem(true, getString(R.string.menu_item), 1,
+                MenuItem item = new MenuItem(true, getString(R.string.menu_item), 3, 1,
                         getResources().getStringArray(R.array.sizes));
                 childItems.add(item);
             }

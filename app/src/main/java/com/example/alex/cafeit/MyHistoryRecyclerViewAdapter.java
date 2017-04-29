@@ -45,7 +45,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         holder.dateView.setText(mValues.get(position).orderTime);
         holder.costView.setText("$" + String.format("%.2f", mValues.get(position).price));
         holder.cafeNameView.setText(mValues.get(position).cafeName);
-        holder.orderMenuView.setText(mValues.get(position).orderMenu);
+        holder.orderMenuView.setText(mValues.get(position).itemName + " " + mValues.get(position).size);
 
         holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -55,8 +55,9 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Delete from database
-                                Toast.makeText(context, "Added to favorites: " + holder.mItem.orderMenu
-                                        + " from " + holder.mItem.cafeName, Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Added to favorites: " + holder.mItem.itemName
+                                        + " " + holder.mItem.size + " from " + holder.mItem.cafeName,
+                                        Toast.LENGTH_LONG).show();
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
