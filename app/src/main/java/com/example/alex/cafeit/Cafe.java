@@ -27,6 +27,10 @@ public class Cafe {
     protected float latitude;
     protected float longitude;
 
+    public Cafe(){
+
+    }
+
 //    protected Queue orderQueue;
     //protected float distance;
 //LEGACY CONSTRUCTOR - COMMENT BY ANTHONY

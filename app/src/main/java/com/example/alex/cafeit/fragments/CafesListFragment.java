@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
@@ -13,8 +14,11 @@ import com.example.alex.cafeit.Cafe;
 import com.example.alex.cafeit.MyCafesRecyclerViewAdapter;
 import com.example.alex.cafeit.NewCafePusher;
 import com.example.alex.cafeit.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,7 +39,7 @@ public class CafesListFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    private List<Cafe> cafeList;
+    private List<Cafe> cafeList = new ArrayList<>();
     private Context context;
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -73,7 +77,8 @@ public class CafesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cafes_list, container, false);
-
+        populateCafeList();
+        Log.d("cafelist size", cafeList.size()+"");
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -83,7 +88,7 @@ public class CafesListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            cafeList = makeDummyCafes();
+            //cafeList = makeDummyCafes();
             recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
 
         }
@@ -158,6 +163,24 @@ public class CafesListFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Cafe item, int pos);
+    }
+
+    public void populateCafeList(){
+        mDatabase.child("cafes").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("Count " ,""+dataSnapshot.getChildrenCount());
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    Cafe post = postSnapshot.getValue(Cafe.class);
+                    cafeList.add(post);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
     }
 
 }
