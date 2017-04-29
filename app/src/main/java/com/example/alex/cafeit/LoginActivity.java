@@ -49,7 +49,7 @@ public class LoginActivity extends BaseActivity
 
     // Firebase
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     boolean isCafeAcct;
 
 
@@ -84,7 +84,7 @@ public class LoginActivity extends BaseActivity
 
         // Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //setTypeFace(LogInButton);
         //setTypeFace(CafeLoginButton);
