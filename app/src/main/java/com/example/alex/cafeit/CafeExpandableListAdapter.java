@@ -22,10 +22,10 @@ public class CafeExpandableListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<MenuItem>> _listDataChild;
+    private HashMap<String, List<CafeMenuItem>> _listDataChild;
 
     public CafeExpandableListAdapter(Context context, List<String> listDataHeader,
-                                     HashMap<String, List<MenuItem>> listChildData) {
+                                     HashMap<String, List<CafeMenuItem>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -54,7 +54,7 @@ public class CafeExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.menu_cafe_item, parent, false);
         }
 
-        MenuItem cur = (MenuItem) getChild(groupPosition, childPosition);
+        CafeMenuItem cur = (CafeMenuItem) getChild(groupPosition, childPosition);
 
         TextView item = (TextView) convertView.findViewById(R.id.cafe_menu_item_name);
         item.setText(cur.name);

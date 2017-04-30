@@ -5,16 +5,22 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 //import android.app.Fragment;
 import android.widget.ExpandableListView;
 
+import com.example.alex.cafeit.AuthHandler;
 import com.example.alex.cafeit.CafeExpandableListAdapter;
+import com.example.alex.cafeit.CafeMenuItem;
 import com.example.alex.cafeit.CafeMenuItemActivity;
 import com.example.alex.cafeit.MenuItem;
 import com.example.alex.cafeit.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,9 +48,12 @@ public class CafeMenuFragment extends Fragment {
     CafeExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
-    HashMap<String, List<MenuItem>> listDataChild;
+    HashMap<String, List<CafeMenuItem>> listDataChild;
+        static final int ORDER_SUCCESS = 1;
 
-    static final int ORDER_SUCCESS = 1;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
 
 
     private OnFragmentInteractionListener mListener;
@@ -111,6 +120,9 @@ public class CafeMenuFragment extends Fragment {
                 return true;
             }
         });
+
+        newMenuItemPush(new CafeMenuItem("CafeItem1", 1, true, 2, 1.5f, 0f, 0f, 0));
+
         return v;
     }
 
@@ -156,19 +168,30 @@ public class CafeMenuFragment extends Fragment {
 
     private void setup() {
 
+
+
+
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
         final int numHeaders = 3;
         final int numChildren = 4;
         for (int i = 0; i < numHeaders; i++) {
             listDataHeader.add(getString(R.string.menu_header) + i);
-            List<MenuItem> childItems = new ArrayList<>();
+            List<CafeMenuItem> childItems = new ArrayList<>();
             for (int j = 0; j < numChildren; j++) {
-                MenuItem item = new MenuItem(true, getString(R.string.menu_item), 3, 1,
-                        getResources().getStringArray(R.array.sizes));
+                CafeMenuItem item = new CafeMenuItem("itemname", 1, true, 1, 2.0f, 0f, 0f, 1);
                 childItems.add(item);
             }
             listDataChild.put(listDataHeader.get(i), childItems);
         }
+    }
+
+    private void newMenuItemPush(CafeMenuItem item){
+        Log.d("uid now ******", AuthHandler.getUid());
+
+
+
+
+        //mDatabase.child("cafeMenu").child(AuthHandler.getUid()).push().setValue(item);
     }
 }

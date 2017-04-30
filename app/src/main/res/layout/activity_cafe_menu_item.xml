@@ -23,7 +23,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             >
@@ -31,11 +31,13 @@
             <TextView
                 android:id="@+id/menuItemCategoryLabel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Category: "
+                android:textSize="18sp"
+                android:gravity="center_vertical|left"
+                android:text="Category "
                 />
 
             <Spinner
@@ -43,6 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textSize="18sp"
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center|center_horizontal"
                 />
@@ -62,8 +65,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_weight="0.5"
-                android:text="Item Name: " />
+                android:textSize="18sp"
+                android:layout_weight="0.3"
+                android:text="Item Name " />
 
             <EditText
                 android:id="@+id/menuItemName"
@@ -81,6 +85,35 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/menuItemTimeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textSize="16sp"
+                android:layout_weight="0.9"
+                android:layout_gravity="center_vertical|left"
+                android:text="Estimated time (minutes)" />
+
+            <EditText
+                android:id="@+id/menuItemTime"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="10dp"
+                android:ems="10"
+                android:inputType="number"
+                android:hint="2"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -90,7 +123,10 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Price &amp; Size: " />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="18sp"
+                android:text="Price &amp; Size" />
 
             <RadioGroup
                 android:layout_width="match_parent"
@@ -140,21 +176,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <EditText
+                <TextView
                     android:id="@+id/size1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="text"
-                    android:hint="Small"
+                    android:text="Small"
+                    android:textSize="18dp"
                     android:textAlignment="center"/>
 
                 <EditText
                     android:id="@+id/price1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
@@ -171,21 +206,20 @@
                 android:orientation="horizontal"
                 android:id="@+id/secondSize">
 
-                <EditText
+                <TextView
                     android:id="@+id/size2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="text"
-                    android:hint="Medium"
+                    android:text="Medium"
+                    android:textSize="18dp"
                     android:textAlignment="center"/>
 
                 <EditText
                     android:id="@+id/price2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
@@ -202,21 +236,20 @@
                 android:orientation="horizontal"
                 android:id="@+id/thirdSize">
 
-                <EditText
+                <TextView
                     android:id="@+id/size3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="text"
-                    android:hint="Large"
+                    android:text="Large"
+                    android:textSize="18dp"
                     android:textAlignment="center"/>
 
                 <EditText
                     android:id="@+id/price3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
@@ -248,6 +281,7 @@
                 android:layout_weight="1"
                 android:text="Delete"
                 android:layout_marginRight="5dp"
+                android:background="@drawable/primary_button"
                 android:backgroundTint="@color/colorPrimary"
                 android:layout_gravity="center|bottom"/>
 
@@ -256,9 +290,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/primary_button"
                 android:text="Save"
-                android:backgroundTint="@color/open"
                 android:layout_marginLeft="5dp"
+                android:textColor="@color/white"
                 android:layout_gravity="center|bottom"/>
 
 
