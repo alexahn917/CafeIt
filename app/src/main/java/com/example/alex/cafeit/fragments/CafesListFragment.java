@@ -2,21 +2,31 @@ package com.example.alex.cafeit.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
 import android.view.*;
 import android.widget.Toast;
 
 import com.example.alex.cafeit.Cafe;
 import com.example.alex.cafeit.CurrentOrder;
+import com.example.alex.cafeit.DistanceCalculator;
+import com.example.alex.cafeit.DistanceCalculatorListener;
 import com.example.alex.cafeit.MapsActivity;
 import com.example.alex.cafeit.MyCafesRecyclerViewAdapter;
 import com.example.alex.cafeit.NewCafePusher;
 import com.example.alex.cafeit.R;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +35,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +58,7 @@ public class CafesListFragment extends Fragment {
     private Context context;
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
+    private RecyclerView recyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -85,7 +97,7 @@ public class CafesListFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -95,6 +107,7 @@ public class CafesListFragment extends Fragment {
             recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
 
         }
+
         return view;
     }
 
@@ -143,7 +156,8 @@ public class CafesListFragment extends Fragment {
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.sort_distance) {
-            Toast.makeText(context, "Sorted by distance", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Sorting by distance...", Toast.LENGTH_SHORT).show();
+            sortByDistance();
         }
         else if (id == R.id.sort_wait) {
             Toast.makeText(context, "Sorted by waiting time", Toast.LENGTH_SHORT).show();
@@ -189,6 +203,47 @@ public class CafesListFragment extends Fragment {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
+    }
+
+
+    public void sortByDistance() {
+        // Get current location
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        // current lat & long
+        LatLng currLoc = new LatLng(location.getLatitude(), location.getLongitude());
+        Log.d("DEBUG: ", "current location - (" + currLoc.latitude + "," + currLoc.longitude + ")");
+
+        List<Pair<Cafe, Integer>> distances = new ArrayList<>();
+        for (Cafe cafe : cafeList) {
+            DistanceCalculator dc = new DistanceCalculator(currLoc, new LatLng(cafe.latitude, cafe.longitude));
+            int time = dc.parseJSON();
+            Log.d("DEBUG: ", "sortByDistance: " + cafe.toString() + ", timeTo: " + time);
+            distances.add(new Pair<Cafe, Integer>(cafe, time));
+        }
+
+        Collections.sort(distances, new Comparator<Pair<Cafe, Integer>>() {
+            @Override
+            public int compare(Pair<Cafe, Integer> lhs, Pair<Cafe, Integer> rhs) {
+                return lhs.second - rhs.second;
+            }
+        });
+
+        List<Cafe> ret = new ArrayList<>();
+        for (Pair<Cafe, Integer> c : distances) {
+            Log.d("DEBUG: ", "SORTED : " + c.first.toString() + ", timeTo: " + c.second);
+            ret.add(c.first);
+        }
+        cafeList = ret;
+
+        Toast.makeText(context, "Sorted by distance", Toast.LENGTH_SHORT).show();
+        // After Sorting - update cafeList
+        recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
     }
 
 }

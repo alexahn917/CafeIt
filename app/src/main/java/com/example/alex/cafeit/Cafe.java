@@ -16,8 +16,8 @@ public class Cafe {
     protected String startHour;
     protected String endHour;
     protected String address;
-    protected float latitude;
-    protected float longitude;
+    public float latitude;
+    public float longitude;
 
     protected String bestMenu;
     protected float rating;
