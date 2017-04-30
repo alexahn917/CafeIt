@@ -10,14 +10,14 @@ import java.util.Queue;
  */
 
 public class Cafe {
-    protected String name;
-    protected String startHour;
-    protected String endHour;
-    protected String bestMenu;
-    protected float rating;
-    protected String address;
-    protected int hasWifi;
-    protected float waitTime;
+    public String name;
+    public String startHour;
+    public String endHour;
+    public String bestMenu;
+    public float rating;
+    public String address;
+    public int hasWifi;
+    public float waitTime;
     public float latitude;
     public float longitude;
 

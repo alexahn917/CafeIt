@@ -13,10 +13,20 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.alex.cafeit.Cafe;
+import com.example.alex.cafeit.LoginActivity;
 import com.example.alex.cafeit.R;
+import com.example.alex.cafeit.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 /**
@@ -39,8 +49,24 @@ public class CafeProfileFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private static FirebaseAuth mAuth;
+    private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
     private Button saveButton;
     private Button linkButton;
+
+    // UI elements
+    private EditText cafe_email_view;
+    private EditText cafe_pw_view;
+    private EditText cafe_conf_pw_view;
+    private EditText cafe_name_view;
+    private EditText cafe_address1_view;
+    private EditText cafe_address2_view;
+    private EditText cafe_state_view;
+    private EditText cafe_zipcode_view;
+    private EditText cafe_bestmenu_view;
+    private Switch cafe_haswifi_switch;
+    private EditText cafe_address_view;
 
     private EditText monStart, monEnd, tueStart, tueEnd, wedStart, wedEnd,
             thuStart, thuEnd, friStart, friEnd, satStart, satEnd, sunStart, sunEnd;
@@ -81,6 +107,7 @@ public class CafeProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mAuth = FirebaseAuth.getInstance();
         View v = inflater.inflate(R.layout.fragment_cafe_profile, container, false);
 
         saveButton = (Button) v.findViewById(R.id.cafeProfileSaveButton);
@@ -97,6 +124,8 @@ public class CafeProfileFragment extends Fragment {
                 linkPayment();
             }
         });
+
+
         monStart = (EditText) v.findViewById(R.id.mondayStartTime);
         tueStart = (EditText) v.findViewById(R.id.tuesdayStartTime);
         wedStart = (EditText) v.findViewById(R.id.wednesdayStartTime);
@@ -113,17 +142,65 @@ public class CafeProfileFragment extends Fragment {
         satEnd = (EditText) v.findViewById(R.id.saturdayEndTime);
         sunEnd = (EditText) v.findViewById(R.id.sundayEndTime);
 
+        cafe_email_view = (EditText) v.findViewById(R.id.idField);
+        cafe_pw_view = (EditText) v.findViewById(R.id.passwordField);
+        cafe_conf_pw_view = (EditText) v.findViewById(R.id.passwordConfirmField);
+        cafe_name_view = (EditText) v.findViewById(R.id.nameField);
+        cafe_bestmenu_view = (EditText) v.findViewById(R.id.bestMenuField);
+        cafe_haswifi_switch = (Switch) v.findViewById(R.id.hasWifiSwitch);
+        cafe_address1_view = (EditText) v.findViewById(R.id.addressInput1);
+        cafe_address2_view = (EditText) v.findViewById(R.id.addressInput2);
+        cafe_state_view = (EditText) v.findViewById(R.id.state);
+        cafe_zipcode_view = (EditText) v.findViewById(R.id.zipcode);
+        populateFB();
         bulkSetOnclick();
 
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void populateFB() {
+        String id = LoginActivity.userId;
+
+        mDatabase.child("users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User current_user = dataSnapshot.getValue(User.class);
+                populateData(current_user);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+        mDatabase.child("cafes").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Cafe current_cafe = dataSnapshot.getValue(Cafe.class);
+                populateData(current_cafe);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
     }
+
+    public void populateData(User user) {
+        cafe_email_view.setText(user.email);
+        cafe_name_view.setText(user.username);
+    }
+
+    public void populateData(Cafe cafe) {
+        cafe_bestmenu_view.setText(cafe.bestMenu);
+        if (cafe.hasWifi == 0) {
+            cafe_haswifi_switch.setChecked(true);
+        } else {
+            cafe_haswifi_switch.setChecked(false);
+        }
+        cafe_address1_view.setText(cafe.address);
+    }
+
 
     @Override
     public void onAttach(Context context) {

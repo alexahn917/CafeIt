@@ -193,15 +193,16 @@
                 android:id="@+id/addressInput2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPostalAddress"
-                android:hint="Address Line 2" />
+                android:hint="Address Line 2"
+                android:inputType="textPostalAddress" />
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="match_parent"gi
                 android:orientation="horizontal">
                 <EditText
                     android:id="@+id/state"
