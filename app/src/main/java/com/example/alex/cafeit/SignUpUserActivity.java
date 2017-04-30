@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -122,13 +121,7 @@ public class SignUpUserActivity extends AppCompatActivity implements View.OnClic
         int i = v.getId();
         if (i == R.id.createButton) {
             if (validCreation()) {
-                String useremail = email_view.getText().toString();
-                String userpw = pw_view.getText().toString();
-                String username = name_view.getText().toString();
-                peditor.putString("USER_ID", useremail);
-                peditor.putString("USER_PW", userpw);
-                peditor.putString("USER_NAME", username);
-                peditor.commit();
+                commitUserInfo();
                 setResult(RESULT_OK);
                 finish();
             }
@@ -158,6 +151,16 @@ public class SignUpUserActivity extends AppCompatActivity implements View.OnClic
                 paymentSetUp = true;
             }
         }
+    }
+
+    public void commitUserInfo() {
+        String useremail = email_view.getText().toString();
+        String userpw = pw_view.getText().toString();
+        String username = name_view.getText().toString();
+        peditor.putString("USER_ID", useremail);
+        peditor.putString("USER_PW", userpw);
+        peditor.putString("USER_NAME", username);
+        peditor.commit();
     }
 
 }

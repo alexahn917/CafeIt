@@ -51,8 +51,8 @@ public class LoginActivity extends BaseActivity
     // Firebase
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private boolean isCafeAcct;
-    private boolean signUpAsCafe = false;
+    private boolean signInAsCafe;
+    private boolean signUpAsCafe;
 
 
     @Override
@@ -102,8 +102,8 @@ public class LoginActivity extends BaseActivity
     }
 
     private void launchMainActivity() {
-//        Toast.makeText(context, isCafeAcct + " given", Toast.LENGTH_SHORT).show();
-        if(isCafeAcct) {
+//        Toast.makeText(context, signInAsCafe + " given", Toast.LENGTH_SHORT).show();
+        if(signInAsCafe) {
             Intent intent = new Intent(this, CafeMainActivity.class);
             startActivity(intent);
         } else {
@@ -137,7 +137,7 @@ public class LoginActivity extends BaseActivity
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     User loginUser = dataSnapshot.getValue(User.class);
-                                    isCafeAcct = loginUser.isCafe;
+                                    signInAsCafe = loginUser.isCafe;
                                     launchMainActivity();
                                 }
                                 @Override
@@ -147,7 +147,7 @@ public class LoginActivity extends BaseActivity
                             });
 
                             mDatabase.child(user.getUid());
-//                            Toast.makeText(context, "isCafeAcct: " + isCafeAcct, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(context, "signInAsCafe: " + signInAsCafe, Toast.LENGTH_SHORT).show();
 //                            launchMainActivity();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -214,16 +214,28 @@ public class LoginActivity extends BaseActivity
         String name = myPref.getString("USER_NAME", "");
         String email = myPref.getString("USER_ID", "");
         User user = new User(name, email, signUpAsCafe);
-        mDatabase.child("users").child(userId).setValue(user);
+        mDatabase.child("users").push().setValue(user);
     }
-
 
     private void writeNewCafe() {
         String cafeId = mAuth.getCurrentUser().getUid();
-        String name = myPref.getString("USER_NAME", "");
-        String email = myPref.getString("USER_ID", "");
+        String name = myPref.getString("CAFE_NAME", "");
+        String email = myPref.getString("CAFE_ID", "");
         User user = new User(name, email, signUpAsCafe);
         mDatabase.child("users").child(cafeId).setValue(user);
+
+        Cafe new_cafe = new Cafe(
+                myPref.getString("CAFE_NAME", ""),
+                myPref.getString("CAFE_STARTHOUR", ""),
+                myPref.getString("CAFE_ENDHOUR", ""),
+                myPref.getString("CAFE_BESTMENU", ""),
+                myPref.getFloat("CAFE_RATING", 0.0f),
+                myPref.getString("CAFE_ADDRESS", ""),
+                myPref.getInt("CAFE_HASWIFI", 0),
+                myPref.getFloat("CAFE_WAITTIME", 0.0f),
+                myPref.getFloat("CAFE_LATITUDE", 0.0f),
+                myPref.getFloat("CAFE_LONGITUDE", 0.0f));
+        mDatabase.child("cafes").child(cafeId).setValue(new_cafe);
     }
 
 
@@ -251,20 +263,22 @@ public class LoginActivity extends BaseActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String USER_ID = myPref.getString("USER_ID", "");
-        String USER_PW = myPref.getString("USER_PW", "");
 
         // Check which request we're responding to
         if (requestCode == SIGNUP_USER_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+                String USER_ID = myPref.getString("USER_ID", "");
+                String USER_PW = myPref.getString("USER_PW", "");
                 createUserAccount(USER_ID, USER_PW);
                 signUpAsCafe = false;
             }
         }
         else if (requestCode == SIGNUP_CAFE_REQUEST) {
             if (resultCode == RESULT_OK) {
-                createCafeAccount(USER_ID, USER_PW);
+                String CAFE_ID = myPref.getString("CAFE_ID", "");
+                String CAFE_PW = myPref.getString("CAFE_PW", "");
+                createCafeAccount(CAFE_ID, CAFE_PW);
                 signUpAsCafe = true;
             }
         }
@@ -283,9 +297,19 @@ public class LoginActivity extends BaseActivity
             Intent intent = new Intent(this, SignUpUserActivity.class);
             startActivityForResult(intent, SIGNUP_USER_REQUEST);
         } else if (i == R.id.email_sign_up_cafe_button) {
-            peditor.putString("USER_ID", "");
-            peditor.putString("USER_PW", "");
-            peditor.putString("USER_NAME", "");
+            peditor.putString("CAFE_ID", "");
+            peditor.putString("CAFE_PW", "");
+            peditor.putString("CAFE_NAME", "");
+            peditor.putString("CAFE_LOCATION", "");
+            peditor.putString("CAFE_STARTHOUR", "");
+            peditor.putString("CAFE_ENDHOUR", "");
+            peditor.putString("CAFE_BESTMENU", "");
+            peditor.putString("CAFE_RATING", "");
+            peditor.putString("CAFE_HASWIFI", "");
+            peditor.putString("CAFE_WAITTIME", "");
+            peditor.putString("CAFE_ADDRESS", "");
+            peditor.putString("CAFE_LATITUDE", "");
+            peditor.putString("CAFE_LONGITUDE", "");
             peditor.commit();
             Intent intent = new Intent(this, SignUpCafeActivity.class);
             startActivityForResult(intent, SIGNUP_CAFE_REQUEST);
