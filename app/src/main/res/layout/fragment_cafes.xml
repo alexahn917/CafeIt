@@ -7,7 +7,9 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     card_view:cardCornerRadius="3dp"
-    android:layout_margin="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     android:elevation="4dp"
     >
 
@@ -42,6 +44,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/cafeit_logo"
                 />
+
             <TextView
                 android:id="@+id/cafe_name"
                 android:layout_width="wrap_content"
@@ -50,6 +53,7 @@
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textAlignment="center"
                 android:text="(cafe_name)"
+                android:textStyle="bold"
                 android:layout_gravity="center"
                 />
             <TextView
@@ -95,7 +99,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="1dp"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    android:text="(Best Menu)"
+                    android:hint="(Best Menu)"
                     android:layout_weight="1"
                     android:gravity="center|center_vertical"
                     />
@@ -161,7 +165,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="1dp"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    android:text="(wifi)"
+                    android:hint="(wifi)"
                     android:layout_weight="1"
                     android:gravity="center|center_vertical"
                     />
@@ -190,7 +194,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="1dp"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    android:text="(wait time)"
+                    android:hint="(wait time)"
                     android:layout_weight="1"
                     android:gravity="center|center_vertical"
                     />

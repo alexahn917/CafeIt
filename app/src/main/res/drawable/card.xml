@@ -17,8 +17,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <gradient
-        android:startColor="@color/orange"
-        android:endColor="@color/colorPrimary"
+        android:startColor="@color/colorPrimary"
+        android:endColor="@color/colorPrimaryMediumLight"
         android:angle="270" />
     <padding
         android:left="10dp"
