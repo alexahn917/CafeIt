@@ -214,7 +214,7 @@ public class LoginActivity extends BaseActivity
         String name = myPref.getString("USER_NAME", "");
         String email = myPref.getString("USER_ID", "");
         User user = new User(name, email, signUpAsCafe);
-        mDatabase.child("users").push().setValue(user);
+        mDatabase.child("users").child(userId).setValue(user);
     }
 
     private void writeNewCafe() {

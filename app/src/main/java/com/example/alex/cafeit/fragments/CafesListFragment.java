@@ -227,6 +227,7 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("Count " ,""+dataSnapshot.getChildrenCount());
+                cafeList.clear();
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     Cafe post = postSnapshot.getValue(Cafe.class);
                     cafeList.add(post);
