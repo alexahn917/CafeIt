@@ -1,13 +1,18 @@
 package com.example.alex.cafeit.fragments;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,6 +31,9 @@ import com.example.alex.cafeit.MapsActivity;
 import com.example.alex.cafeit.MyCafesRecyclerViewAdapter;
 import com.example.alex.cafeit.NewCafePusher;
 import com.example.alex.cafeit.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,7 +54,8 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class CafesListFragment extends Fragment {
+public class CafesListFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -59,6 +68,9 @@ public class CafesListFragment extends Fragment {
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private RecyclerView recyclerView;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -67,6 +79,16 @@ public class CafesListFragment extends Fragment {
 
     public CafesListFragment() {
         setHasOptionsMenu(true);
+    }
+
+    public void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    public void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
     // TODO: Customize parameter initialization
@@ -86,6 +108,14 @@ public class CafesListFragment extends Fragment {
         }
         setHasOptionsMenu(true);
         context = getContext();
+
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 
     @Override
@@ -167,9 +197,29 @@ public class CafesListFragment extends Fragment {
         } else if (id == R.id.google_maps) {
             Toast.makeText(context, "Opening Maps View...", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(context, MapsActivity.class);
+            i.putExtra("latitude", mLastLocation.getLatitude());
+            i.putExtra("longitude", mLastLocation.getLongitude());
             startActivity(i);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
     }
 
 
@@ -208,12 +258,14 @@ public class CafesListFragment extends Fragment {
 
     public void sortByDistance() {
         // Get current location
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
+//        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//        Criteria criteria = new Criteria();
+//        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+//        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
+//
+        Location location = mLastLocation;
 
         // current lat & long
         LatLng currLoc = new LatLng(location.getLatitude(), location.getLongitude());

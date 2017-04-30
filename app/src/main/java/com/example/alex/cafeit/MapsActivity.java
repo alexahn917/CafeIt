@@ -5,13 +5,14 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
+import android.location.LocationListener;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,18 +31,25 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import com.example.alex.cafeit.Cafe;
 import com.google.firebase.database.ValueEventListener;
+import android.location.LocationManager;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
     private GoogleMap mMap;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mCafesDatabaseReference;
     private ChildEventListener mChildEventListener;
-    private List<Cafe> cafeList;
+    private float lastLatitude;
+    private float lastLongitude;
+    private LocationManager locationManager;
+
+    private static final long MIN_TIME = 400;
+    private static final float MIN_DISTANCE = 1000;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,22 +63,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mCafesDatabaseReference = mFirebaseDatabase.getReference().child("cafes");
-//        cafeList = new ArrayList<>();
 
-//        Log.d("DEBUG: ", "HEREHEHRHEHREHRHEHRHERHEHRHEHR111");
-//        Cafe c = new Cafe (1, "Bird in hand", "11 E 33rd St, Baltimore, MD 21218", "8:00 am", "12:00 am", "Ice coffee", 5.0f, 1, 2, 39.327941f, -76.61661f);
-//        mCafesDatabaseReference.push().setValue(c);
-//        Log.d("DEBUG: ", "PUSH SUCCESS");
+        lastLatitude = getIntent().getFloatExtra("latitude", 39.328464f);
+        lastLongitude = getIntent().getFloatExtra("longitude", -76.617793f);
+//        lastLatitude = 39.328464f;
+//        lastLongitude = -76.617793f;
 
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
 
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Cafe cafe = dataSnapshot.getValue(Cafe.class);
-//                Log.d("DEBUG: ", "LOADING CAFE DATA... - " + cafe.toString());
-//                cafeList.add(cafe);
-
-
                 LatLng cafeLatLng = new LatLng(cafe.latitude, cafe.longitude);
                 String cafeName = cafe.name;
                 Log.d("DEBUG: ", "ADD MARKER for - " + cafeName + " at: (" + cafe.latitude + "," + cafe.longitude + ")");
@@ -101,14 +109,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
-    public List<Pair<LatLng, String>> getCafeList() {
-        List<Pair<LatLng, String>> ret = new ArrayList<>();
-        Pair<LatLng, String> cafe = new Pair<>(new LatLng(39.327946, -76.616616), "Bird in Hand");
-        ret.add(cafe);
-        return ret;
-    }
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -120,7 +120,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("DEBUG: ", "cafeList: " + cafeList);
 
         mMap = googleMap;
 
@@ -130,29 +129,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Set initial map view to be centered around current location
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        if (location != null) {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 7));
 
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-                    .zoom(17)                   // Sets the zoom
-                    .bearing(0)                // Sets the orientation of the camera to east
-                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
-                    .build();                   // Creates a CameraPosition from the builder
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        }
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(lastLatitude, lastLongitude), 17);
+        mMap.animateCamera(cameraUpdate);
+
+//        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+//        if (location != null) {
+//            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLatitude, lastLongitude), 7));
+//
+//            CameraPosition cameraPosition = new CameraPosition.Builder()
+//                    .target(new LatLng(lastLatitude, lastLongitude))      // Sets the center of the map to location user
+//                    .zoom(17)                   // Sets the zoom
+//                    .bearing(0)                // Sets the orientation of the camera to east
+//                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+//                    .build();                   // Creates a CameraPosition from the builder
+//            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//        }
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         mMap.setMyLocationEnabled(true);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+        mMap.animateCamera(cameraUpdate);
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
     }
 }
