@@ -54,6 +54,8 @@ public class LoginActivity extends BaseActivity
     private boolean signInAsCafe;
     private boolean signUpAsCafe;
 
+    // users
+    public static String userId;
     public static String username;
     public static String useremail;
 
@@ -135,14 +137,17 @@ public class LoginActivity extends BaseActivity
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            LoginActivity.userId = user.getUid();
 
                             mDatabase.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     User loginUser = dataSnapshot.getValue(User.class);
                                     signInAsCafe = loginUser.isCafe;
-                                    LoginActivity.username = loginUser.username;
-                                    LoginActivity.useremail = loginUser.email;
+                                    if (!signInAsCafe) {
+                                        LoginActivity.username = loginUser.username;
+                                        LoginActivity.useremail = loginUser.email;
+                                    }
                                     launchMainActivity();
                                 }
                                 @Override
