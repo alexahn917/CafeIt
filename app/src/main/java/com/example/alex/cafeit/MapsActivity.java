@@ -1,5 +1,7 @@
 package com.example.alex.cafeit;
 
+import android.*;
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -9,6 +11,7 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.Pair;
 
@@ -127,6 +130,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // GREAT TUTORIAL: https://www.youtube.com/watch?v=CCZPUeY94MU  (language tho...)
         // TRACK CURRENT LOCATION: https://www.youtube.com/watch?v=HCwU4E43tfw
 
+
+
         // Set initial map view to be centered around current location
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -142,6 +147,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .build();                   // Creates a CameraPosition from the builder
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
+
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
