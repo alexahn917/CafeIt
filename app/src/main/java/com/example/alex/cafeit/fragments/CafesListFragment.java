@@ -72,7 +72,6 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
 
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
