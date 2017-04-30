@@ -49,10 +49,13 @@ public class LoginActivity extends BaseActivity
     private EditText mPasswordView;
 
     // Firebase
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private static FirebaseAuth mAuth;
+    private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private boolean signInAsCafe;
     private boolean signUpAsCafe;
+
+    public static String username;
+    public static String useremail;
 
 
     @Override
@@ -133,11 +136,13 @@ public class LoginActivity extends BaseActivity
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                            mDatabase.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     User loginUser = dataSnapshot.getValue(User.class);
                                     signInAsCafe = loginUser.isCafe;
+                                    LoginActivity.username = loginUser.username;
+                                    LoginActivity.useremail = loginUser.email;
                                     launchMainActivity();
                                 }
                                 @Override

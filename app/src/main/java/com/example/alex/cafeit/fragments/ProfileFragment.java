@@ -12,23 +12,20 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.alex.cafeit.LoginActivity;
 import com.example.alex.cafeit.R;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ProfileFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ProfileFragment extends Fragment {
     private Button saveButton;
     private Button linkButton;
     private Context context;
+
+    private EditText nameView;
+    private EditText emailView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,6 +61,9 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        nameView = (EditText) v.findViewById(R.id.nameField);
+        emailView = (EditText) v.findViewById(R.id.emailField);
+        updateView();
         return v;
     }
 
@@ -125,5 +125,10 @@ public class ProfileFragment extends Fragment {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void updateView() {
+        nameView.setText(LoginActivity.username);
+        emailView.setText(LoginActivity.useremail);
     }
 }
