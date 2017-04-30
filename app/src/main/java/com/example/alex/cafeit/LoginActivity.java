@@ -102,7 +102,7 @@ public class LoginActivity extends BaseActivity
     }
 
     private void launchMainActivity() {
-        Toast.makeText(context, isCafeAcct + " given", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, isCafeAcct + " given", Toast.LENGTH_SHORT).show();
         if(isCafeAcct) {
             Intent intent = new Intent(this, CafeMainActivity.class);
             startActivity(intent);
@@ -147,7 +147,7 @@ public class LoginActivity extends BaseActivity
                             });
 
                             mDatabase.child(user.getUid());
-                            Toast.makeText(context, "isCafeAcct: " + isCafeAcct, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(context, "isCafeAcct: " + isCafeAcct, Toast.LENGTH_SHORT).show();
 //                            launchMainActivity();
                         } else {
                             // If sign in fails, display a message to the user.
