@@ -8,18 +8,25 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alex.cafeit.fragments.HistoryFragment;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class CheckoutActivity extends AppCompatActivity {
 
     ListView orderlist;
     OrderItemListAdapter orderAdapter;
-    List<OrderItem> orders;
-    final int orderCount = 2;
+    static List<Order> orders;
+//    final int orderCount = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +42,10 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
         orderlist = (ListView) findViewById(R.id.order_list);
-        setup();
+        ((TextView) findViewById(R.id.total))
+                .setText(String.format(Locale.US, "$%.2f", calc_price()));
+        ((TextView) findViewById(R.id.CafeName_checkout))
+                .setText(getIntent().getStringExtra("cafe"));
         orderAdapter = new OrderItemListAdapter(this, orders);
         orderlist.setAdapter(orderAdapter);
 
@@ -49,15 +59,13 @@ public class CheckoutActivity extends AppCompatActivity {
 
     }
 
-    public void setup() {
-        orders = new ArrayList<>();
-        for (int i = 0; i < orderCount; i++) {
-            String name = getString(R.string.order_item);
-            String size = getString(R.string.order_size);
-            float price = Float.parseFloat(getString(R.string.sample_price_sz));
-            OrderItem item = new OrderItem(name, size, price, 3);
-            orders.add(item);
+    public float calc_price() {
+        float result = 0f;
+        for (int i = 0; i < orders.size(); i++) {
+            Order o = orders.get(i);
+            result += o.price * o.quantity;
         }
+        return result;
     }
 
     public void createAndShowAlertDialog() {
@@ -68,6 +76,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 Toast.makeText(CheckoutActivity.this, "Your order is on the way!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 setResult(OrderActivity.ORDER_SUCCESS);
+                updateAppData();
                 finish();
             }
         });
@@ -81,5 +90,23 @@ public class CheckoutActivity extends AppCompatActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void updateAppData() {
+        final Calendar myCalendar = Calendar.getInstance();
+        String myFormat = "MM/dd/yyyy"; //Format for date choice
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        String time = sdf.format(myCalendar.getTime());
+
+        String cafe = getIntent().getStringExtra("cafe");
+        String note = ((EditText) findViewById(R.id.notes)).getText().toString();
+
+        for (Order order : orders) {
+            order.orderTime = time;
+            order.cafeName = cafe;
+            order.note = note;
+
+            MainActivity.dbAdapter.insertItem(order);
+        }
     }
 }

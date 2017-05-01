@@ -24,9 +24,14 @@ import com.example.alex.cafeit.fragments.FavoritesFragment;
 import com.example.alex.cafeit.fragments.HistoryFragment;
 import com.example.alex.cafeit.fragments.ProfileFragment;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements
         com.example.alex.cafeit.fragments.CafesListFragment.OnListFragmentInteractionListener,
         com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInteractionListener {
+
+    static final int ORDER_SUCCESS = 1;
+    static final int ORDER_CANCEL = 0;
 
     private Fragment CafesListFragment = new CafesListFragment();
     private Fragment FavoritesFragment = new FavoritesFragment();
@@ -34,6 +39,10 @@ public class MainActivity extends AppCompatActivity implements
     private Fragment ProfileFragment = new ProfileFragment();
     private Context context;
     private SpannableString s;
+
+    public static LocalDBAdapter dbAdapter;
+    public static ArrayList<Order> history = new ArrayList<>();
+    public static ArrayList<Order> favorites = new ArrayList<>();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -67,6 +76,10 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         context = getApplicationContext();
+        dbAdapter = new LocalDBAdapter(this);
+        dbAdapter.open();
+        history.clear();
+        favorites.clear();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -138,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onListFragmentInteraction(Cafe cafe, int pos) {
         Intent i = new Intent(this, OrderActivity.class);
-        startActivity(i);
+        startActivityForResult(i, ORDER_SUCCESS);
     }
 
     @Override
@@ -146,6 +159,22 @@ public class MainActivity extends AppCompatActivity implements
         // Make the order!
         // Add to customer DB
         // Call SqureApp API
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == ORDER_SUCCESS) {
+            if (resultCode == RESULT_OK) {
+                ((com.example.alex.cafeit.fragments.HistoryFragment) HistoryFragment).updateArray();
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        dbAdapter.close();
+        super.onDestroy();
     }
 
 }

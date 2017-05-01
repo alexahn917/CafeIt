@@ -5,6 +5,7 @@ public class OrderItem {
     String size;
     float price;
     int remainingTime;
+    int quantity;
 
     public OrderItem() {
 
