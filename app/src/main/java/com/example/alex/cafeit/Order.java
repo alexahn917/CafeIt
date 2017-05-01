@@ -1,11 +1,15 @@
 package com.example.alex.cafeit;
 
 
+import android.support.annotation.NonNull;
+
 import java.net.URL;
+import java.util.Date;
 
-public class Order extends OrderItem {
-
-    public String orderTime;
+public class Order extends OrderItem implements Comparable {
+    public Date orderDate;
+    public String purchasedDate;
+    public String purchasedTime;
     public int remainingTime;
     public String cafeName;
     public String note;
@@ -22,7 +26,7 @@ public class Order extends OrderItem {
         super.price = price;
         super.size = size;
         super.remainingTime = remainingTime;
-        this.orderTime = orderTime;
+        this.purchasedDate = orderTime;
         this.cafeName = cafeName;
         this.is_favorite = false;
     }
@@ -33,7 +37,7 @@ public class Order extends OrderItem {
         super.itemName = itemName;
         super.size = size;
         super.quantity = quantity;
-        this.orderTime = orderTime;
+        this.purchasedDate = orderTime;
         this.remainingTime = remainingTime;
         this.cafeName = cafeName;
         super.price = price;
@@ -51,6 +55,18 @@ public class Order extends OrderItem {
         super.remainingTime = item.remainingTime;
         this.is_favorite = false;
     }
+
+    @Override
+    public int compareTo(@NonNull Object other) {
+        if (other instanceof Order) {
+            Order obj = (Order) other;
+            return obj.orderDate.compareTo(this.orderDate);
+        }
+        else {
+            return -1;
+        }
+    }
+
 
     public String getItemName() {
         return super.itemName;

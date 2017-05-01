@@ -25,9 +25,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -115,18 +117,21 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void updateAppData() {
-        final Calendar myCalendar = Calendar.getInstance();
-        String myFormat = "MM/dd/yyyy"; //Format for date choice
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        String time = sdf.format(myCalendar.getTime());
-        String cafe = getIntent().getStringExtra("cafe_name");
+        Date orderDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        String purchasedDate = dateFormat.format(orderDate);
+        String purchasedTime = timeFormat.format(orderDate);
+        String cafeName = getIntent().getStringExtra("cafe_name");
         String note = ((EditText) findViewById(R.id.notes)).getText().toString();
         Order first_item = orders.get(0);
         float total_price = 0.0f;
         for (Order order : orders) {
+            order.orderDate = orderDate;
             order.customerName = LoginActivity.username;
-            order.orderTime = time;
-            order.cafeName = cafe;
+            order.cafeName = cafeName;
+            order.purchasedDate = purchasedDate;
+            order.purchasedTime = purchasedTime;
             order.note = note;
             MainActivity.dbAdapter.insertItem(order);
             populateOrderList(order);
@@ -135,15 +140,19 @@ public class CheckoutActivity extends AppCompatActivity {
         }
         if (orders.size() > 1) {
             peditor.putString("OrderItem", first_item.itemName + "(+ " + (orders.size()-1) + ")");
-            peditor.putString("OrderCafe", cafe);
+            peditor.putString("OrderCafe", cafeName);
             peditor.putString("OrderPrice", total_price + "$");
-            peditor.putString("OrderTime", orders.size()+"");
+            peditor.putString("OrderPurchasedDate", purchasedDate);
+            peditor.putString("OrderPurchasedTime", purchasedTime);
+            peditor.putString("OrderWaitTime", orders.size()+"");
         }
         else {
             peditor.putString("OrderItem", first_item.itemName);
-            peditor.putString("OrderCafe", cafe);
+            peditor.putString("OrderCafe", cafeName);
             peditor.putString("OrderPrice", "$ " + total_price);
-            peditor.putString("OrderTime", orders.size()+" Minutes Remaining");
+            peditor.putString("OrderPurchasedDate", purchasedDate);
+            peditor.putString("OrderPurchasedTime", purchasedTime);
+            peditor.putString("OrderWaitTime", orders.size()+" Minutes Remaining");
         }
         peditor.commit();
     }

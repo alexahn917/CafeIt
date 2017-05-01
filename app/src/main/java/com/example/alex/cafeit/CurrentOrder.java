@@ -40,6 +40,7 @@ public class CurrentOrder extends AppCompatActivity {
         order_item_view.setText(myPref.getString("OrderItem",""));
         order_cafe_view.setText(myPref.getString("OrderCafe",""));
         order_price_view.setText(myPref.getString("OrderPrice",""));
-        order_time_view.setText(myPref.getString("OrderTime",""));
+        String line = "Purchased on " + myPref.getString("OrderPurchasedDate","") + " (" + myPref.getString("OrderPurchasedTime","") + ")";
+        order_time_view.setText(line);
     }
 }

@@ -45,7 +45,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.dateView.setText(mValues.get(position).orderTime);
+        holder.dateView.setText(mValues.get(position).purchasedDate);
         holder.costView.setText("$" + String.format("%.2f", mValues.get(position).price));
         holder.cafeNameView.setText(TypefaceSpan.getSpannableString(holder.mItem.cafeName, HistoryFragment.getFragContext()));
         holder.orderMenuView.setText(mValues.get(position).itemName + " " + mValues.get(position).size);
