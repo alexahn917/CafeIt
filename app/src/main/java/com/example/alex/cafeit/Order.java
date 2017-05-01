@@ -4,10 +4,11 @@ package com.example.alex.cafeit;
 import android.support.annotation.NonNull;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Order extends OrderItem implements Comparable {
-    public Date orderDate;
+    public String orderDate;
     public String purchasedDate;
     public String purchasedTime;
     public int remainingTime;
@@ -59,8 +60,15 @@ public class Order extends OrderItem implements Comparable {
     @Override
     public int compareTo(@NonNull Object other) {
         if (other instanceof Order) {
-            Order obj = (Order) other;
-            return obj.orderDate.compareTo(this.orderDate);
+            try {
+                Date thisDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(this.orderDate);
+                Date otherDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(((Order) other).orderDate);
+                return thisDate.compareTo(otherDate);
+            }
+            catch(Exception E) {
+                System.out.println("Error on date conversion");
+                return -1;
+            }
         }
         else {
             return -1;

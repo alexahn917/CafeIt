@@ -18,7 +18,7 @@ import android.view.View;
 
 import com.example.alex.cafeit.fragments.CafeMenuFragment;
 import com.example.alex.cafeit.fragments.CafeProfileFragment;
-import com.example.alex.cafeit.fragments.OrdersFragment;
+import com.example.alex.cafeit.fragments.CafeOrdersFragment;
 
 public class CafeMainActivity extends AppCompatActivity {
 
@@ -27,7 +27,7 @@ public class CafeMainActivity extends AppCompatActivity {
     private SpannableString s;
 
     private Fragment profileFragment = new CafeProfileFragment();
-    private Fragment ordersFragment = new OrdersFragment();
+    private Fragment ordersFragment = new CafeOrdersFragment();
     public Fragment menuFragment = new CafeMenuFragment();
 
     private FloatingActionButton addFab;

@@ -127,7 +127,7 @@ public class CheckoutActivity extends AppCompatActivity {
         Order first_item = orders.get(0);
         float total_price = 0.0f;
         for (Order order : orders) {
-            order.orderDate = orderDate;
+            order.orderDate = orderDate.toString();
             order.customerName = LoginActivity.username;
             order.cafeName = cafeName;
             order.purchasedDate = purchasedDate;

@@ -88,7 +88,7 @@ public class HistoryFragment extends Fragment {
             } else {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-//            orders = makeDummyOrders();
+//            ordersList = makeDummyOrders();
             mRecyclerView.setAdapter(new MyHistoryRecyclerViewAdapter(MainActivity.history, mListener));
             updateArray();
         }
