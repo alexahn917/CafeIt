@@ -33,7 +33,7 @@ import org.json.JSONObject;
 
 public final class GoogleMapsGeoencoding {
 
-    private static final String DIRECTION_URL_API = "https://maps.googleapis.com/maps/api/directions/json?";
+    private static final String DIRECTION_URL_API = "http://maps.google.com/maps/api/geocode/json?address=";
     private static final String GOOGLE_API_KEY = "AIzaSyABgEV6B6lNgGSLXpogNzWnICK9NiN_CT0";
     private static final String GOOGLE_GEOENCODING_KEY = "AIzaSyB5Y6evumo9MAo-7UkiFTQjHmDcLpkbWGU";
 
@@ -48,10 +48,7 @@ public final class GoogleMapsGeoencoding {
     }
 
     private String createUrl() {
-        String urlOrigin = address;
-        String urlDestination = address;
-        String mode = "walking";
-        return DIRECTION_URL_API + "origin=" + urlOrigin + "&destination=" + urlDestination + "&mode=" + mode + "&alternatives=false" + "&key=" + GOOGLE_API_KEY;
+        return DIRECTION_URL_API + this.address + "&sensor=false";
     }
 
     public LatLng parseJSON() {
@@ -68,44 +65,29 @@ public final class GoogleMapsGeoencoding {
 
             try {
 
-                Log.d("DEBUG: ", "parseJSON: try1");
                 URL url = new URL(this.myURL);
                 StringBuilder sb = new StringBuilder();
                 HttpURLConnection httpconn = (HttpURLConnection) url.openConnection();
-                Log.d("DEBUG: ", "parseJSON: try2");
 
                 if (httpconn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     BufferedReader input = new BufferedReader(new InputStreamReader(httpconn.getInputStream()), 8192);
                     String strLine = null;
-                    Log.d("DEBUG: ", "parseJSON: try3");
                     while ((strLine = input.readLine()) != null) {
-                        Log.d("DEBUG: ", "parseJSON: try4");
                         sb.append(strLine);
                     }
                     input.close();
                 }
                 jsonString = sb.toString();
                 Log.d("DEBUG: ", "parseJSON: jsonString - " + jsonString);
-                Log.d("DEBUG: ", "parseJSON: try5");
 
                 JSONObject json = new JSONObject(jsonString);
-                JSONArray routes = json.getJSONArray("routes");
-                if (routes.length() == 0) {
-                    throw new JSONException("No routes exist");
-                }
-                Log.d("DEBUG: ", "parseJSON: try6");
 
-                JSONObject route = routes.getJSONObject(0);
-                JSONObject bounds = route.getJSONObject("bounds");
-                Log.d("DEBUG: ", "parseJSON: try7");
-
-                JSONObject northeast = route.getJSONObject("northeast");
-                Log.d("DEBUG: ", "parseJSON: try8");
-
-                lat = northeast.getDouble("lat");
-                lng = northeast.getDouble("lng");
-                Log.d("DEBUG: ", "parseJSON: try9");
-
+                JSONArray results = json.getJSONArray("results");
+                JSONObject result = results.getJSONObject(0);
+                JSONObject geometry = result.getJSONObject("geometry");
+                JSONObject location = geometry.getJSONObject("location");
+                lat = location.getDouble("lat");
+                lng = location.getDouble("lng");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {

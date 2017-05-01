@@ -3,6 +3,8 @@ package com.example.alex.cafeit;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -201,8 +204,21 @@ public class SignUpCafeActivity extends AppCompatActivity implements View.OnClic
         sb.append(cafe_address2_view.getText().toString() + ",");
         sb.append(cafe_state_view.getText().toString() + " ");
         sb.append(cafe_zipcode_view.getText().toString());
-        return sb.toString();
+        String address = sb.toString();
+
+        try {
+            Geocoder geo = new Geocoder(this);
+            Address adr = geo.getFromLocationName(address, 1).get(0);
+            cafe_latitude = (float) adr.getLatitude();
+            cafe_longitude = (float) adr.getLongitude();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return address;
     }
+
+
 
     public int hasWifi() {
         if (cafe_haswifi_switch.isChecked()) {
