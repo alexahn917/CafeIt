@@ -56,6 +56,7 @@
         <item>$2.00 (M)</item>
         <item>$2.25 (L)</item>
     </string-array>
+    <string name="no_orders">No items selected!</string>
 
     <string name="action_settings">Settings</string>
 

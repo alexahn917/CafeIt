@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.example.alex.cafeit.fragments.HistoryFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Order} and makes a call to the
@@ -42,11 +44,13 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
+        if (holder.mItem.image_url != null) {
+            new ImageLoader(holder.cafeLogoView).execute(holder.mItem.image_url);
+        }
         holder.dateView.setText(mValues.get(position).orderTime);
-        holder.costView.setText("$" + String.format("%.2f", mValues.get(position).price));
+        holder.costView.setText(String.format(Locale.US, "$%.2f", mValues.get(position).price));
         holder.cafeNameView.setText(mValues.get(position).cafeName);
         holder.orderMenuView.setText(mValues.get(position).itemName + " " + mValues.get(position).size);
-
         holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -80,7 +84,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-//        public final ImageView cafeLogoView;
+        public final ImageView cafeLogoView;
         public final TextView dateView;
         public final TextView costView;
         public final TextView cafeNameView;
@@ -91,7 +95,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         public ViewHolder(View view) {
             super(view);
             mView = view;
-//            cafeLogoView = (ImageView) view.findViewById(R.id.cafe_logo);
+            cafeLogoView = (ImageView) view.findViewById(R.id.cafe_logo);
             dateView = (TextView) view.findViewById(R.id.date);
             costView = (TextView) view.findViewById(R.id.cost);
             cafeNameView = (TextView) view.findViewById(R.id.cafeName);

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
@@ -67,6 +68,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         final Button plus = (Button) convertView.findViewById(R.id.plus);
 
         CheckBox choice = (CheckBox) convertView.findViewById(R.id.checkBox);
+        choice.setChecked(cur.selected);
         choice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -74,10 +76,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     amt.setVisibility(View.VISIBLE);
                     minus.setVisibility(View.VISIBLE);
                     plus.setVisibility(View.VISIBLE);
+                    cur.selected = true;
                 } else {
                     amt.setVisibility(View.INVISIBLE);
                     minus.setVisibility(View.INVISIBLE);
                     plus.setVisibility(View.INVISIBLE);
+                    cur.selected = false;
+                    cur.quantity = 1;
+                    amt.setText(String.format(Locale.US, "%d", cur.quantity));
                 }
             }
         });
@@ -160,6 +166,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ad.setDropDownViewResource(R.layout.menu_item_size_spinner);
         // Apply the adapter to the spinner
         sizes.setAdapter(ad);
+        sizes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                cur.choice_pos = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         // TODO: Add listeners for button clicks here
 
         return convertView;

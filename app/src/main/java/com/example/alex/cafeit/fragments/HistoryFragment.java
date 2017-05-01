@@ -1,6 +1,7 @@
 package com.example.alex.cafeit.fragments;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,12 +13,18 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.alex.cafeit.MainActivity;
 import com.example.alex.cafeit.MyHistoryRecyclerViewAdapter;
 import com.example.alex.cafeit.Order;
 import com.example.alex.cafeit.R;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A fragment representing a list of Items.
@@ -31,8 +38,9 @@ public class HistoryFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
-    List<Order> orders;
+    private static OnListFragmentInteractionListener mListener;
+    protected static Cursor cursor;
+    private  RecyclerView mRecyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -70,16 +78,46 @@ public class HistoryFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            mRecyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            orders = makeDummyOrders();
-            recyclerView.setAdapter(new MyHistoryRecyclerViewAdapter(orders, mListener));
+//            orders = makeDummyOrders();
+            mRecyclerView.setAdapter(new MyHistoryRecyclerViewAdapter(MainActivity.history, mListener));
         }
         return view;
+    }
+
+    public void updateArray() {
+        SimpleDateFormat from = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat to = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        cursor = MainActivity.dbAdapter.getAllItems();
+
+        MainActivity.history.clear();
+        if (cursor.moveToFirst())
+            do {
+                String date = "01/01/2017";
+                try {
+                    date = to.format(from.parse(cursor.getString(4)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                URL im_url;
+                try {
+                    im_url = new URL(cursor.getString(10));
+                } catch (MalformedURLException e) {
+                    im_url = null;
+                }
+                Order o =  new Order(cursor.getString(1), cursor.getString(2), cursor.getInt(3),
+                        date, cursor.getInt(5), cursor.getString(6), cursor.getFloat(7),
+                        cursor.getString(8), cursor.getString(9), im_url, cursor.getInt(11) != 0);
+                MainActivity.history.add(0, o);  // puts in reverse order
+            } while (cursor.moveToNext());
+
+        mRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     public List makeDummyOrders() {

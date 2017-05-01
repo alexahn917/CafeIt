@@ -14,11 +14,11 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Locale;
 
-public class OrderItemListAdapter extends ArrayAdapter<OrderItem> {
+public class OrderItemListAdapter extends ArrayAdapter<Order> {
     private Context context;
-    private List<OrderItem> values;
+    private List<Order> values;
 
-    public OrderItemListAdapter(Context context, List<OrderItem> values) {
+    public OrderItemListAdapter(Context context, List<Order> values) {
         super(context, -1, values);
         this.context = context;
         this.values = values;
