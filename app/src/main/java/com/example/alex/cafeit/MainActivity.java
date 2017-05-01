@@ -159,12 +159,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onListFragmentInteraction(Cafe cafe, int pos) {
         Intent i = new Intent(this, OrderActivity.class);
-<<<<<<< HEAD
         i.putExtra("CafeId", cafe.ID);
-        System.out.println("SOIDHOAUSGDOAS:  " + cafe.ID);
-=======
         i.putExtra("cafe", cafe.name);
->>>>>>> 48e35a56d1eec254960a520b25672aa678d2b725
         startActivityForResult(i, ORDER_SUCCESS);
     }
 
