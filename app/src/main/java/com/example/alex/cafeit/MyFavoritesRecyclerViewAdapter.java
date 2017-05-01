@@ -55,7 +55,7 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog orderDialogue = new AlertDialog.Builder(context)
+                AlertDialog orderDialogue = new AlertDialog.Builder(context, R.style.historyToFavoriteDialog)
                         .setTitle("One Click Order")
                         .setMessage("are you sure to order?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
