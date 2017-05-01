@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 //import android.app.Fragment;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.example.alex.cafeit.AuthHandler;
 import com.example.alex.cafeit.Cafe;
 import com.example.alex.cafeit.CafeExpandableListAdapter;
+import com.example.alex.cafeit.CafeMenuEditPasser;
 import com.example.alex.cafeit.CafeMenuItem;
 import com.example.alex.cafeit.CafeMenuItemActivity;
 import com.example.alex.cafeit.MenuItem;
@@ -112,7 +114,7 @@ public class CafeMenuFragment extends Fragment {
                 Log.e("Count " ,""+dataSnapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     CafeMenuItem item = postSnapshot.getValue(CafeMenuItem.class);
-                    Log.d("item ****************", item.getName() + " / " + item.isOneSize());
+//                    Log.d("item ****************", item.getName() + " / " + item.isOneSize());
                     menuList.add(item);
                 }
                 Log.d("making", "yes");
@@ -159,26 +161,28 @@ public class CafeMenuFragment extends Fragment {
 
     public void refreshList(){
         Log.d("entered refresh" , "good");
-        if(count < 1) {
-            Log.d("refreshing", " good");
+        Log.d("refreshing", " good");
 
-            makeList();
+        makeList();
 
-            listAdapter = new CafeExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
-            listAdapter.notifyDataSetChanged();
+        listAdapter = new CafeExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+        listAdapter.notifyDataSetChanged();
 
-            // setting list adapter
-            expListView.setAdapter(listAdapter);
-            expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-                @Override
-                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                    Intent i = new Intent(getActivity(), CafeMenuItemActivity.class);
-                    startActivity(i);
-                    return true;
-                }
-            });
-            count++;
-        }
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+//                    Toast.makeText(getActivity(), ((CafeMenuItem)(listAdapter.getChild(groupPosition, childPosition))).getName(), Toast.LENGTH_SHORT).show();
+
+                CafeMenuEditPasser.item = (CafeMenuItem)(listAdapter.getChild(groupPosition, childPosition));
+
+                Intent i = new Intent(getActivity(), CafeMenuItemActivity.class);
+                startActivity(i);
+                return true;
+            }
+        });
+        count++;
     }
 
 }

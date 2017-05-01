@@ -5,7 +5,6 @@ import java.net.URL;
 
 public class Order extends OrderItem {
 
-    public int quantity;
     public String orderTime;
     public int remainingTime;
     public String cafeName;

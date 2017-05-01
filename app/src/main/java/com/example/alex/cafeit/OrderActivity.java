@@ -33,7 +33,8 @@ public class OrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        String cafe_name = getIntent().getStringExtra("cafe");
+        ((TextView) findViewById(R.id.CafeName)).setText(cafe_name);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         ActionBar abar = getSupportActionBar();

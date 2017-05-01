@@ -11,10 +11,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.alex.cafeit.fragments.CafeMenuFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +36,9 @@ public class CafeMenuItemActivity extends AppCompatActivity {
     private Button deleteButton;
     private RadioButton oneSize, threeSize;
     private LinearLayout secondSize, thirdSize;
+    private EditText nameField, timeField, smallField, mediumField, largeField;
+
+    private CafeMenuItem myItem;
 
 
     @Override
@@ -41,6 +49,26 @@ public class CafeMenuItemActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Edit Menu");
+
+        myItem = CafeMenuEditPasser.item;
+
+        nameField = (EditText) findViewById(R.id.menuItemName);
+        nameField.setText(myItem.getName());
+
+        timeField = (EditText) findViewById(R.id.menuItemTime);
+        timeField.setText(myItem.getTakesTime() + "");
+
+        smallField = (EditText) findViewById(R.id.price1);
+        mediumField = (EditText) findViewById(R.id.price2);
+        largeField = (EditText) findViewById(R.id.price3);
+
+        smallField.setText(myItem.getSmallPrice() + "");
+        if(myItem.getMediumPrice() != 0) {
+            mediumField.setText(myItem.getMediumPrice() + "");
+            largeField.setText(myItem.getLargePrice() + "");
+        }
+
+
 
         spinnerArray.add("Espresso Drinks");
         spinnerArray.add("Non-Espresso Drinks");
@@ -66,6 +94,8 @@ public class CafeMenuItemActivity extends AppCompatActivity {
             }
         });
 
+        categorySpinner.setSelection(myItem.getCategory(), true);
+
         saveButton = (Button) findViewById(R.id.itemSaveButton);
         deleteButton= (Button) findViewById(R.id.itemDeleteButton);
 
@@ -73,6 +103,8 @@ public class CafeMenuItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Successfully saved!", Toast.LENGTH_SHORT).show();
+                updateItem();
+                CafeMenuFragment.count = 0;
                 finish();
             }
         });
@@ -80,6 +112,8 @@ public class CafeMenuItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Successfully deleted!", Toast.LENGTH_SHORT).show();
+                deleteItem();
+                CafeMenuFragment.count = 0;
                 finish();
             }
         });
@@ -102,6 +136,12 @@ public class CafeMenuItemActivity extends AppCompatActivity {
             }
         });
 
+        if(myItem.isOneSize()){
+            oneSize.setChecked(true);
+        } else {
+            oneSize.setChecked(false);
+        }
+
 
 
 
@@ -113,4 +153,43 @@ public class CafeMenuItemActivity extends AppCompatActivity {
         s.setSpan(new TypefaceSpan(getApplicationContext(), "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         super.setTitle(s);
     }
+
+    public CafeMenuItem transformItem(){
+        String name = nameField.getText() + "";
+        int category = categorySpinner.getSelectedItemPosition();
+        boolean isOneSize = oneSize.isChecked();
+        int time = Integer.parseInt(timeField.getText() + "");
+        float small, medium, large;
+        if(!(smallField.getText() + "").equals("")) {
+            small = Float.parseFloat(smallField.getText() + "");
+        } else {
+            small = 0f;
+        }
+        if(!(mediumField.getText() + "").equals("")) {
+            medium = Float.parseFloat(mediumField.getText() + "");
+        } else {
+            medium = 0f;
+        }
+        if(!(largeField.getText() + "").equals("")){
+            large = Float.parseFloat(largeField.getText() + "");
+        } else {
+            large = 0f;
+        }
+
+
+        return new CafeMenuItem(name, category, isOneSize, time, small, medium, large, 0);
+    }
+
+    public void updateItem(){
+        CafeMenuItem cmi = transformItem();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("cafeMenu").child(AuthHandler.getUid()).child(myItem.getName()).removeValue();
+        mDatabase.child("cafeMenu").child(AuthHandler.getUid()).child(cmi.getName()).setValue(cmi);
+    }
+
+    public void deleteItem(){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("cafeMenu").child(AuthHandler.getUid()).child(myItem.getName()).removeValue();
+    }
+
 }
