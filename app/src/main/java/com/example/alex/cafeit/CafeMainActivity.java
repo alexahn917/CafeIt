@@ -28,7 +28,7 @@ public class CafeMainActivity extends AppCompatActivity {
 
     private Fragment profileFragment = new CafeProfileFragment();
     private Fragment ordersFragment = new OrdersFragment();
-    private Fragment menuFragment = new CafeMenuFragment();
+    public Fragment menuFragment = new CafeMenuFragment();
 
     private FloatingActionButton addFab;
     private int fragStatus = 0;

@@ -2,6 +2,7 @@ package com.example.alex.cafeit.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 //import android.app.Fragment;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.alex.cafeit.AuthHandler;
@@ -46,7 +48,7 @@ public class CafeMenuFragment extends Fragment {
     private List<CafeMenuItem> menuList = new ArrayList<>();
     public static int count = 0;
 
-
+    private ImageView prof_pic;
     private OnFragmentInteractionListener mListener;
 
     public CafeMenuFragment() {
@@ -63,7 +65,12 @@ public class CafeMenuFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_cafe_menu, container, false);
         expListView = (ExpandableListView) v.findViewById(R.id.cafeMenu);
         populateMenuList();
+        prof_pic = (ImageView) v.findViewById(R.id.CafeProfPic_menu);
         return v;
+    }
+
+    public void setPicture(Bitmap bm) {
+        prof_pic.setImageBitmap(bm);
     }
 
     @Override

@@ -1,9 +1,15 @@
 package com.example.alex.cafeit.fragments;
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +19,13 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.alex.cafeit.Cafe;
+import com.example.alex.cafeit.CafeMainActivity;
 import com.example.alex.cafeit.LoginActivity;
 import com.example.alex.cafeit.R;
 import com.example.alex.cafeit.User;
@@ -27,6 +35,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 /**
@@ -43,9 +55,15 @@ public class CafeProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private final int PICK_PIC = 1;
+
+    private static final String TAG = "CafeProfileFragment";
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    CafeMainActivity parent;
 
     private OnFragmentInteractionListener mListener;
 
@@ -54,6 +72,8 @@ public class CafeProfileFragment extends Fragment {
 
     private Button saveButton;
     private Button linkButton;
+
+    private ImageView prof_pic;
 
     // UI elements
     private EditText cafe_email_view;
@@ -109,6 +129,16 @@ public class CafeProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         mAuth = FirebaseAuth.getInstance();
         View v = inflater.inflate(R.layout.fragment_cafe_profile, container, false);
+
+        parent = (CafeMainActivity) getActivity();
+
+        prof_pic = (ImageView) v.findViewById(R.id.CafeProfilePic);
+        prof_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickImage();
+            }
+        });
 
         saveButton = (Button) v.findViewById(R.id.cafeProfileSaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -199,6 +229,39 @@ public class CafeProfileFragment extends Fragment {
             cafe_haswifi_switch.setChecked(false);
         }
         cafe_address1_view.setText(cafe.address);
+    }
+
+    public void pickImage() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_PIC);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_PIC && resultCode == Activity.RESULT_OK) {
+            if (data == null) {
+                //Display an error
+                Log.e(TAG, "Error: Unable to find image gallery.");
+                return;
+            }
+            InputStream inputStream;
+            try {
+                inputStream = parent.getContentResolver().openInputStream(data.getData());
+                final Bitmap bm = BitmapFactory.decodeStream(inputStream);
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (bm != null) {
+                    prof_pic.setImageBitmap(bm);
+                    ((CafeMenuFragment) parent.menuFragment).setPicture(bm);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
+        }
     }
 
 
