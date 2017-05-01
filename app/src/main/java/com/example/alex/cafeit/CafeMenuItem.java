@@ -7,12 +7,12 @@ import java.util.ArrayList;
  */
 
 public class CafeMenuItem {
-    private String name;
-    private int category;
-    private boolean oneSize;
-    private int takesTime;
-    private float smallPrice, mediumPrice, largePrice;
-    private int quantity;
+    String name;
+    int category;
+    boolean oneSize;
+    int takesTime;
+    float smallPrice, mediumPrice, largePrice;
+    int quantity;
 
     public CafeMenuItem(){
 

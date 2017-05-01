@@ -162,14 +162,22 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         // TODO: Populate with real menu prices
         ArrayAdapter<CharSequence> ad = ArrayAdapter.createFromResource(this._context,
                 R.array.sizes, R.layout.menu_item_size_spinner);
+        ArrayAdapter<String> realAdapter = new ArrayAdapter<String>(_context, android.R.layout.simple_spinner_dropdown_item, cur.choices);
 
         ad.setDropDownViewResource(R.layout.menu_item_size_spinner);
         // Apply the adapter to the spinner
-        sizes.setAdapter(ad);
+        sizes.setAdapter(realAdapter);
         sizes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 cur.choice_pos = i;
+                if(!cur.oneSize){
+                    switch(i){
+                        case 0: cur.selectedSize = "(S)"; break;
+                        case 1: cur.selectedSize = "(M)"; break;
+                        case 2: cur.selectedSize = "(L)"; break;
+                    }
+                }
             }
 
             @Override
