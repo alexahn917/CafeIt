@@ -9,11 +9,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,8 +52,8 @@ public class SignUpCafeActivity extends AppCompatActivity implements View.OnClic
     private String cafe_endhour = "8:00PM";
     private float cafe_rating = 2.5f;
     private float cafe_waittime = 0.0f;
-    private float cafe_latitude;
-    private float cafe_longitude;
+    private float cafe_latitude = 0f;
+    private float cafe_longitude = 0f;
 
     // private variables
     private boolean paymentSetUp = false;
