@@ -1,11 +1,13 @@
 package com.example.alex.cafeit;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.cafeit.fragments.HistoryFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,11 +33,15 @@ public class CheckoutActivity extends AppCompatActivity {
     ListView orderlist;
     OrderItemListAdapter orderAdapter;
     static List<Order> orders;
+    private Intent intent;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
 //    final int orderCount = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        intent = getIntent();
         setContentView(R.layout.activity_checkout);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -105,9 +116,15 @@ public class CheckoutActivity extends AppCompatActivity {
             order.orderTime = time;
             order.cafeName = cafe;
             order.note = note;
-
             MainActivity.dbAdapter.insertItem(order);
+            populateOrderList(order);
             ((HistoryFragment) MainActivity.HistoryFragment).updateArray();
         }
+    }
+
+    public void populateOrderList(Order order){
+        String CafeId = intent.getStringExtra("CafeId");
+        System.out.println("IHIHIHIHIHI:  " + CafeId);
+        //mDatabase.child("cafes").child(CafeId).child("orders").push().setValue(order);
     }
 }

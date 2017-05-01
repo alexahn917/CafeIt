@@ -1,21 +1,13 @@
 package com.example.alex.cafeit.fragments;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,12 +17,9 @@ import android.view.*;
 import android.widget.Toast;
 
 import com.example.alex.cafeit.Cafe;
-import com.example.alex.cafeit.CurrentOrder;
 import com.example.alex.cafeit.DistanceCalculator;
-import com.example.alex.cafeit.DistanceCalculatorListener;
 import com.example.alex.cafeit.MapsActivity;
 import com.example.alex.cafeit.MyCafesRecyclerViewAdapter;
-import com.example.alex.cafeit.NewCafePusher;
 import com.example.alex.cafeit.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,11 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -145,7 +132,6 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
-            //mListener.onListFragmentInteraction(Cafe item);
         } else {
             throw new RuntimeException(context.toString()
             + " must implement OnListFragmentInteractionListener");

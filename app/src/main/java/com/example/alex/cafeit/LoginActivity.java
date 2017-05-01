@@ -241,6 +241,7 @@ public class LoginActivity extends BaseActivity
         mDatabase.child("users").child(cafeId).setValue(user);
 
         Cafe new_cafe = new Cafe(
+                cafeId,
                 myPref.getString("CAFE_NAME", ""),
                 myPref.getString("CAFE_STARTHOUR", ""),
                 myPref.getString("CAFE_ENDHOUR", ""),

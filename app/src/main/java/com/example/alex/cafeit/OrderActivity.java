@@ -22,12 +22,14 @@ public class OrderActivity extends AppCompatActivity {
     List<String> listDataHeader;
     HashMap<String, List<MenuItem>> listDataChild;
 
+    private Intent intent;
     static final int ORDER_SUCCESS = 1;
     static final int ORDER_CANCEL = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        intent = getIntent();
         setContentView(R.layout.activity_order_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,9 +69,9 @@ public class OrderActivity extends AppCompatActivity {
                     }
                 }
                 if (CheckoutActivity.orders.size() > 0) {
-                    Intent intent = new Intent(view.getContext(), CheckoutActivity.class);
-                    intent.putExtra("cafe", ((TextView) findViewById(R.id.CafeName)).getText().toString());
-                    startActivityForResult(intent, ORDER_SUCCESS);
+                    Intent new_intent = new Intent(view.getContext(), CheckoutActivity.class);
+                    new_intent.putExtra("CafeId", intent.getStringExtra("CafeId"));
+                    startActivityForResult(new_intent, ORDER_SUCCESS);
                     finish();
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(), R.string.no_orders, Toast.LENGTH_SHORT);
@@ -91,7 +93,6 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     private void setup() {
-
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
         final int numHeaders = 3;

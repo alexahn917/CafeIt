@@ -1,6 +1,7 @@
 package com.example.alex.cafeit;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Queue;
@@ -10,6 +11,7 @@ import java.util.Queue;
  */
 
 public class Cafe {
+    public String ID;
     public String name;
     public String startHour;
     public String endHour;
@@ -20,6 +22,7 @@ public class Cafe {
     public float waitTime;
     public float latitude;
     public float longitude;
+    public ArrayList<Order> orderQueue;
 
 //    protected Date registerDate;
 //    protected URL imURL;
@@ -28,26 +31,10 @@ public class Cafe {
 
     }
 
-//    protected Queue orderQueue;
-    //protected float distance;
-//LEGACY CONSTRUCTOR - COMMENT BY ANTHONY
-
-//    public Cafe (int id, String name, String location, String startHour, String endHour, String bestMenu, float rating, int hasWifi, int waitTime) {
-//        this.id = id;
-//        this.name = name;
-//        this.location = location;
-//        this.startHour = startHour;
-//        this.endHour = endHour;
-//        this.bestMenu = bestMenu;
-//        this.rating = rating;
-//        this.hasWifi = hasWifi;
-//        this.waitTime = waitTime;
-////        registerDate = new Date();
-//    }
-
-    public Cafe(String cafe_name, String cafe_startHour, String cafe_endHour, String cafe_bestMenu,
+    public Cafe(String cafe_id, String cafe_name, String cafe_startHour, String cafe_endHour, String cafe_bestMenu,
                 float cafe_rating, String cafe_address, int cafe_hasWifi, float cafe_waitTime,
                 float cafe_latitude, float cafe_longitude) {
+        ID = cafe_id;
         name = cafe_name;
         startHour = cafe_startHour;
         endHour = cafe_endHour;
@@ -58,6 +45,7 @@ public class Cafe {
         waitTime = cafe_waitTime;
         latitude = cafe_latitude;
         longitude = cafe_longitude;
+        orderQueue = new ArrayList<>();
     }
 
     @Override

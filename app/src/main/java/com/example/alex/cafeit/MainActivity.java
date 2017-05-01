@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -23,8 +24,14 @@ import com.example.alex.cafeit.fragments.CafesListFragment;
 import com.example.alex.cafeit.fragments.FavoritesFragment;
 import com.example.alex.cafeit.fragments.HistoryFragment;
 import com.example.alex.cafeit.fragments.ProfileFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements
         com.example.alex.cafeit.fragments.CafesListFragment.OnListFragmentInteractionListener,
@@ -38,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements
     private Fragment ProfileFragment = new ProfileFragment();
     private Context context;
     private SpannableString s;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+    public static HashMap<String, String> CafeIdHash = new HashMap();
 
     public static LocalDBAdapter dbAdapter;
     public static ArrayList<Order> history = new ArrayList<>();
@@ -73,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         context = getApplicationContext();
         dbAdapter = new LocalDBAdapter(this);
         dbAdapter.open();
@@ -150,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onListFragmentInteraction(Cafe cafe, int pos) {
         Intent i = new Intent(this, OrderActivity.class);
+        i.putExtra("CafeId", cafe.ID);
+        System.out.println("SOIDHOAUSGDOAS:  " + cafe.ID);
         startActivityForResult(i, ORDER_SUCCESS);
     }
 
