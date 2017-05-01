@@ -102,4 +102,52 @@ public final class DistanceCalculator {
     }
 
 
+    public String parseJSONDistance() {
+        String jsonString = "";
+        int seconds = -1;
+        String duration = "";
+
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            try {
+                URL url = new URL(this.myURL);
+                StringBuilder sb = new StringBuilder();
+                HttpURLConnection httpconn = (HttpURLConnection) url.openConnection();
+                if (httpconn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    BufferedReader input = new BufferedReader(new InputStreamReader(httpconn.getInputStream()), 8192);
+                    String strLine = null;
+                    while ((strLine = input.readLine()) != null) {
+                        sb.append(strLine);
+                    }
+                    input.close();
+                }
+                jsonString = sb.toString();
+
+                JSONObject json = new JSONObject(jsonString);
+                JSONArray routes = json.getJSONArray("routes");
+                if (routes.length() == 0) {
+                    throw new JSONException("No routes exist");
+                }
+                JSONObject route = routes.getJSONObject(0);
+                JSONArray legs = route.getJSONArray("legs");
+                JSONObject leg = legs.getJSONObject(0);
+                JSONObject durationObject = leg.getJSONObject("distance");
+                duration = durationObject.getString("text");
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return duration;
+    }
+
+
 }

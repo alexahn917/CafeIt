@@ -240,6 +240,10 @@ public class LoginActivity extends BaseActivity
         User user = new User(name, email, signUpAsCafe);
         mDatabase.child("users").child(cafeId).setValue(user);
 
+        Log.d("DEBUG: ", "retrieveCafeInfo: latitude - " + myPref.getFloat("CAFE_LATITUDE", 0.0f));
+        Log.d("DEBUG: ", "retrieveCafeInfo: latitude - " + myPref.getFloat("CAFE_LONGITUDE", 0.0f));
+
+
         Cafe new_cafe = new Cafe(
                 cafeId,
                 myPref.getString("CAFE_NAME", ""),

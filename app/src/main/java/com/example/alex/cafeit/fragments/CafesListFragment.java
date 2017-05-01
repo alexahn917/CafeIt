@@ -267,6 +267,7 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
         // After Sorting - update cafeList
         recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
     }
+
     public static Context getFragConext() {
         return context;
     }
