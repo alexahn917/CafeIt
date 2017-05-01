@@ -107,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Sign up as User"
+                android:text="@string/sign_in_user"
                 android:textStyle="bold"/>
 
             <TextView
@@ -118,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Sign up as Cafe"
+                android:text="@string/sign_in_cafe"
                 android:textStyle="bold" />
 
         </LinearLayout>

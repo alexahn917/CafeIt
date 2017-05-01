@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -88,6 +90,10 @@ public class LoginActivity extends BaseActivity
         findViewById(R.id.email_log_in_button).setOnClickListener(this);
         findViewById(R.id.email_sign_up_user_button).setOnClickListener(this);
         findViewById(R.id.email_sign_up_cafe_button).setOnClickListener(this);
+
+        TypefaceSpan.setButtonViewStyle((Button)findViewById(R.id.email_log_in_button), context);
+        TypefaceSpan.setTextViewStyle((TextView)findViewById(R.id.email_sign_up_user_button), context);
+        TypefaceSpan.setTextViewStyle((TextView)findViewById(R.id.email_sign_up_cafe_button), context);
 
         // Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -325,4 +331,5 @@ public class LoginActivity extends BaseActivity
             startActivityForResult(intent, SIGNUP_CAFE_REQUEST);
         }
     }
+
 }

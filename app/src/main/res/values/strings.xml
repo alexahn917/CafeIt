@@ -4,7 +4,8 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in"><u>Sign up for CafeIt</u></string>
+    <string name="sign_in_user"><u>Sign up as User</u></string>
+    <string name="sign_in_cafe"><u>Sign up as Cafe</u></string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="action_log_in">Log in</string>
     <string name="error_invalid_email">This email address is invalid</string>
