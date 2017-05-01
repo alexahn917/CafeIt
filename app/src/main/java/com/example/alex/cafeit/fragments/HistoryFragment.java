@@ -119,7 +119,7 @@ public class HistoryFragment extends Fragment {
                 MainActivity.history.add(0, o);  // puts in reverse order
             } while (cursor.moveToNext());
 
-        mRecyclerView.getAdapter().notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
     public List makeDummyOrders() {

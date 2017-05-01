@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private Fragment CafesListFragment = new CafesListFragment();
     private Fragment FavoritesFragment = new FavoritesFragment();
-    static Fragment HistoryFragment = new HistoryFragment();
+    static Fragment HistoryFragment = com.example.alex.cafeit.fragments.HistoryFragment.newInstance(1);
     private Fragment ProfileFragment = new ProfileFragment();
     private Context context;
     private SpannableString s;
@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onListFragmentInteraction(Cafe cafe, int pos) {
         Intent i = new Intent(this, OrderActivity.class);
+        i.putExtra("cafe", cafe.name);
         startActivityForResult(i, ORDER_SUCCESS);
     }
 
