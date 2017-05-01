@@ -34,6 +34,8 @@ public class HistoryFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     List<Order> orders;
 
+    private static Context context;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -66,7 +68,7 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
-
+        context = getContext();
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -130,5 +132,9 @@ public class HistoryFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Order item);
+    }
+
+    public static Context getFragContext(){
+        return context;
     }
 }

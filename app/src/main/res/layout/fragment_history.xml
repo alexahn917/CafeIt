@@ -82,7 +82,6 @@
                 android:text="TextView"
                 android:padding="5dp"
                 android:textSize="20sp"
-                android:textStyle="bold"
                 android:textAppearance="?attr/textAppearanceListItem"/>
 
             <TextView
@@ -93,7 +92,6 @@
                 android:text="TextView"
                 android:padding="5dp"
                 android:textSize="17sp"
-                android:textStyle="bold"
                 android:layout_gravity="left"
                 android:textAppearance="?attr/textAppearanceListItem"/>
 

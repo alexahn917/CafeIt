@@ -33,7 +33,7 @@ public class FavoritesFragment extends Fragment {
 
     private List<Order> orderList;
     private View view;
-    private Context context;
+    private static Context context;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -121,5 +121,9 @@ public class FavoritesFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Order item, int pos);
+    }
+
+    public static Context getFragContext(){
+        return context;
     }
 }

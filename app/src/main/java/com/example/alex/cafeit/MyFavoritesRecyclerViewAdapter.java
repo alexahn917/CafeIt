@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alex.cafeit.fragments.CafesListFragment;
+import com.example.alex.cafeit.fragments.FavoritesFragment;
 import com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
@@ -45,8 +47,7 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
         System.out.println(holder.mItem);
 
 
-
-        holder.cafeNameView.setText(holder.mItem.cafeName);
+        holder.cafeNameView.setText(TypefaceSpan.getSpannableString(holder.mItem.cafeName, FavoritesFragment.getFragContext()));
         holder.timeCostView.setText(Integer.toString(holder.mItem.remainingTime) +  " min"
                 + "  |  $" + String.format("%.2f", holder.mItem.price));
         holder.menuOrderView.setText(holder.mItem.itemName + " " + holder.mItem.size);

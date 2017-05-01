@@ -65,4 +65,10 @@ public class TypefaceSpan extends MetricAffectingSpan {
         s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         v.setText(s);
     }
+
+    public static SpannableString getSpannableString(String text, Context context) {
+        SpannableString s = new SpannableString(text);
+        s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return s;
+    }
 }

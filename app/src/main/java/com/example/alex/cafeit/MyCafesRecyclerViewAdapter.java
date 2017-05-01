@@ -1,5 +1,7 @@
 package com.example.alex.cafeit;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.alex.cafeit.fragments.CafesListFragment;
 import com.example.alex.cafeit.fragments.CafesListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
@@ -38,7 +41,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
         holder.mItem = mValues.get(position);
         //System.out.println(holder.mItem);
 
-        holder.cafeNameView.setText(holder.mItem.name);
+        holder.cafeNameView.setText(TypefaceSpan.getSpannableString(holder.mItem.name, CafesListFragment.getFragConext()));
         holder.bestMenuView.setText(holder.mItem.bestMenu);
         holder.ratingView.setRating(holder.mItem.rating);
         String hasWifi;

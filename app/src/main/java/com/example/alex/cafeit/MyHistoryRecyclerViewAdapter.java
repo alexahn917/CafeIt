@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alex.cafeit.fragments.FavoritesFragment;
+import com.example.alex.cafeit.fragments.HistoryFragment;
 import com.example.alex.cafeit.fragments.HistoryFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
@@ -24,7 +26,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
 
     private final List<Order> mValues;
     private final OnListFragmentInteractionListener mListener;
-    private Context context;
+    private static Context context;
 
     public MyHistoryRecyclerViewAdapter(List<Order> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -44,7 +46,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         holder.mItem = mValues.get(position);
         holder.dateView.setText(mValues.get(position).orderTime);
         holder.costView.setText("$" + String.format("%.2f", mValues.get(position).price));
-        holder.cafeNameView.setText(mValues.get(position).cafeName);
+        holder.cafeNameView.setText(TypefaceSpan.getSpannableString(holder.mItem.cafeName, HistoryFragment.getFragContext()));
         holder.orderMenuView.setText(mValues.get(position).itemName + " " + mValues.get(position).size);
 
         holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
@@ -103,5 +105,9 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         public String toString() {
             return super.toString() + " '" + cafeNameView.getText() + "'";
         }
+    }
+
+    public static Context getFragContext(){
+        return context;
     }
 }

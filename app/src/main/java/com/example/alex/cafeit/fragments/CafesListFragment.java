@@ -65,7 +65,7 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
     private OnListFragmentInteractionListener mListener;
 
     private List<Cafe> cafeList = new ArrayList<>();
-    private Context context;
+    private static Context context;
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private RecyclerView recyclerView;
@@ -135,7 +135,6 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
             }
             //cafeList = makeDummyCafes();
             recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
-
         }
 
         return view;
@@ -282,5 +281,7 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
         // After Sorting - update cafeList
         recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
     }
-
+    public static Context getFragConext() {
+        return context;
+    }
 }
