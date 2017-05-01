@@ -40,6 +40,7 @@ public class HistoryFragment extends Fragment {
     private int mColumnCount = 1;
     private static OnListFragmentInteractionListener mListener;
     protected static Cursor cursor;
+    protected static MyHistoryRecyclerViewAdapter mAdapter;
     private  RecyclerView mRecyclerView;
 
     /**
@@ -56,6 +57,7 @@ public class HistoryFragment extends Fragment {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
+        mAdapter = new MyHistoryRecyclerViewAdapter(MainActivity.history, mListener);
         fragment.setArguments(args);
         return fragment;
     }

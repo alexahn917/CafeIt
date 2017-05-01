@@ -35,7 +35,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context = parent.getContext();
+        context = parent.getContext().getApplicationContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_history, parent, false);
         return new ViewHolder(view);
@@ -53,8 +53,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         holder.orderMenuView.setText(mValues.get(position).itemName + " " + mValues.get(position).size);
         holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                AlertDialog deleteDialogue = new AlertDialog.Builder(context)
+            public boolean onLongClick(View v) {new AlertDialog.Builder(context)
                         .setMessage("Add to favorites?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

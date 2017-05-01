@@ -31,11 +31,10 @@ public class MainActivity extends AppCompatActivity implements
         com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInteractionListener {
 
     static final int ORDER_SUCCESS = 1;
-    static final int ORDER_CANCEL = 0;
 
     private Fragment CafesListFragment = new CafesListFragment();
     private Fragment FavoritesFragment = new FavoritesFragment();
-    private Fragment HistoryFragment = new HistoryFragment();
+    static Fragment HistoryFragment = new HistoryFragment();
     private Fragment ProfileFragment = new ProfileFragment();
     private Context context;
     private SpannableString s;
@@ -159,16 +158,6 @@ public class MainActivity extends AppCompatActivity implements
         // Make the order!
         // Add to customer DB
         // Call SqureApp API
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == ORDER_SUCCESS) {
-            if (resultCode == RESULT_OK) {
-                ((com.example.alex.cafeit.fragments.HistoryFragment) HistoryFragment).updateArray();
-            }
-        }
     }
 
     @Override

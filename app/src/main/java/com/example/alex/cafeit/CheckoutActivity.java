@@ -107,6 +107,7 @@ public class CheckoutActivity extends AppCompatActivity {
             order.note = note;
 
             MainActivity.dbAdapter.insertItem(order);
+            ((HistoryFragment) MainActivity.HistoryFragment).updateArray();
         }
     }
 }
