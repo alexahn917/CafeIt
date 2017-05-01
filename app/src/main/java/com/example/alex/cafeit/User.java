@@ -23,4 +23,8 @@ public class User {
         this.isCafe = iscafe;
     }
 
+    @Override
+    public String toString() {
+        return username + " is cafe? : " + isCafe;
+    }
 }

@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -54,6 +56,8 @@ public class LoginActivity extends BaseActivity
     private boolean signInAsCafe;
     private boolean signUpAsCafe;
 
+    // users
+    public static String userId;
     public static String username;
     public static String useremail;
 
@@ -86,6 +90,10 @@ public class LoginActivity extends BaseActivity
         findViewById(R.id.email_log_in_button).setOnClickListener(this);
         findViewById(R.id.email_sign_up_user_button).setOnClickListener(this);
         findViewById(R.id.email_sign_up_cafe_button).setOnClickListener(this);
+
+        TypefaceSpan.setButtonViewStyle((Button)findViewById(R.id.email_log_in_button), context);
+        TypefaceSpan.setTextViewStyle((TextView)findViewById(R.id.email_sign_up_user_button), context);
+        TypefaceSpan.setTextViewStyle((TextView)findViewById(R.id.email_sign_up_cafe_button), context);
 
         // Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -135,14 +143,17 @@ public class LoginActivity extends BaseActivity
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            LoginActivity.userId = user.getUid();
 
                             mDatabase.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     User loginUser = dataSnapshot.getValue(User.class);
                                     signInAsCafe = loginUser.isCafe;
-                                    LoginActivity.username = loginUser.username;
-                                    LoginActivity.useremail = loginUser.email;
+                                    if (!signInAsCafe) {
+                                        LoginActivity.username = loginUser.username;
+                                        LoginActivity.useremail = loginUser.email;
+                                    }
                                     launchMainActivity();
                                 }
                                 @Override
@@ -320,4 +331,5 @@ public class LoginActivity extends BaseActivity
             startActivityForResult(intent, SIGNUP_CAFE_REQUEST);
         }
     }
+
 }

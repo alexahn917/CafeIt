@@ -12,10 +12,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.alex.cafeit.fragments.CafeMenuFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +74,13 @@ public class CafeNewItemActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //TODO: transform entry into cafeMenuItem, use NewMenuItemPusher to push to FB
+                CafeMenuItem item = menuItemMaker();
+                NewMenuItemPusher.pushItem(item);
+
                 Toast.makeText(getApplicationContext(), "Successfully added!", Toast.LENGTH_SHORT).show();
+                CafeMenuFragment.count = 0;
                 finish();
             }
         });
@@ -103,6 +113,32 @@ public class CafeNewItemActivity extends AppCompatActivity {
         s = new SpannableString(title);
         s.setSpan(new TypefaceSpan(getApplicationContext(), "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         super.setTitle(s);
+    }
+
+    public CafeMenuItem menuItemMaker(){
+        TextView estTimeText = (TextView) findViewById(R.id.menuItemTime);
+        int time = Integer.parseInt(estTimeText.getText() + "");
+
+        String name = ((TextView) findViewById(R.id.menuItemName)).getText() + "";
+        int category = ((Spinner) findViewById(R.id.menuItemCategorySpinner)).getSelectedItemPosition();
+
+        boolean isOneSize;
+        RadioButton oneSizeRb = (RadioButton) findViewById(R.id.oneSizeRadio);
+        if(oneSizeRb.isChecked()) isOneSize = true;
+        else isOneSize = false;
+
+        float smallPrice, mediumPrice, largePrice;
+        smallPrice = Float.parseFloat(((EditText) findViewById(R.id.price1)).getText() + "");
+
+        if(isOneSize){
+            mediumPrice = 0f;
+            largePrice = 0f;
+        } else {
+            mediumPrice = Float.parseFloat(((EditText) findViewById(R.id.price2)).getText() + "");
+            largePrice = Float.parseFloat(((EditText) findViewById(R.id.price3)).getText() + "");
+        }
+
+        return new CafeMenuItem(name, category, isOneSize, time, smallPrice, mediumPrice, largePrice, 0);
     }
 
 }

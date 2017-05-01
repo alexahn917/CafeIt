@@ -4,9 +4,12 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.style.MetricAffectingSpan;
 import android.util.LruCache;
+import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * Style a {@link Spannable} with a custom {@link Typeface}.
@@ -49,5 +52,17 @@ public class TypefaceSpan extends MetricAffectingSpan {
         // Note: This flag is required for proper typeface rendering
         tp.setFlags(tp.getFlags() | Paint.SUBPIXEL_TEXT_FLAG);
         tp.setTextSize(80);
+    }
+
+    public static void setTextViewStyle(TextView v, Context context) {
+        SpannableString s = new SpannableString(v.getText().toString());
+        s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        v.setText(s);
+    }
+
+    public static void setButtonViewStyle(Button v, Context context) {
+        SpannableString s = new SpannableString(v.getText().toString());
+        s.setSpan(new TypefaceSpan(context, "Bodoni 72.ttc"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        v.setText(s);
     }
 }

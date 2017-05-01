@@ -31,6 +31,8 @@ public class CafeMainActivity extends AppCompatActivity {
     private Fragment menuFragment = new CafeMenuFragment();
 
     private FloatingActionButton addFab;
+    private int fragStatus = 0;
+    private static boolean nowShowing;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -42,16 +44,25 @@ public class CafeMainActivity extends AppCompatActivity {
                     setTitle("Orders");
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_cafe, ordersFragment).commit();
                     addFab.setVisibility(View.INVISIBLE);
+                    fragStatus = 1;
+                    CafeMenuFragment.count = 0;
+                    nowShowing = true;
                     return true;
                 case R.id.navigation_menu:
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_cafe, menuFragment).commit();
                     setTitle("Menu Listing");
                     addFab.setVisibility(View.VISIBLE);
+                    fragStatus = 2;
+                    nowShowing = true;
+                    CafeMenuFragment.count = 0;
                     return true;
                 case R.id.navigation_cafe_profile:
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_cafe, profileFragment).commit();
                     setTitle("Profile");
                     addFab.setVisibility(View.INVISIBLE);
+                    fragStatus = 3;
+                    nowShowing = true;
+                    CafeMenuFragment.count = 0;
                     return true;
             }
             return false;
@@ -66,6 +77,7 @@ public class CafeMainActivity extends AppCompatActivity {
         context = getApplicationContext();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        nowShowing = true;
 
         addFab = (FloatingActionButton) findViewById(R.id.addFAB);
         addFab.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +93,22 @@ public class CafeMainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_cafe, ordersFragment).commit();
         setTitle("Orders");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(fragStatus == 2 && !nowShowing){
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_cafe, menuFragment).commit();
+            setTitle("Menu Listing");
+            addFab.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        nowShowing = false;
     }
 
     @Override
