@@ -7,21 +7,57 @@ import java.util.ArrayList;
  */
 
 public class CafeMenuItem {
-    String name;
-    int category;
-    boolean isOneSize;
-    int takesTime;
-    float smallPrice, mediumPrice, largePrice;
-    int quantity;
+    private String name;
+    private int category;
+    private boolean oneSize;
+    private int takesTime;
+    private float smallPrice, mediumPrice, largePrice;
+    private int quantity;
+
+    public CafeMenuItem(){
+
+    }
 
     public CafeMenuItem(String name, int category, boolean isOneSize, int takesTime, float smallPrice, float mediumPrice, float largePrice, int quantity) {
         this.name = name;
         this.category = category;
-        this.isOneSize = isOneSize;
+        this.oneSize = isOneSize;
         this.takesTime = takesTime;
         this.smallPrice = smallPrice;
         this.mediumPrice = mediumPrice;
         this.largePrice = largePrice;
         this.quantity = quantity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public boolean isOneSize() {
+        return oneSize;
+    }
+
+    public int getTakesTime() {
+        return takesTime;
+    }
+
+    public float getSmallPrice() {
+        return smallPrice;
+    }
+
+    public float getMediumPrice() {
+        return mediumPrice;
+    }
+
+    public float getLargePrice() {
+        return largePrice;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 }
