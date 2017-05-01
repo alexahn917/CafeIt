@@ -88,6 +88,7 @@ public class HistoryFragment extends Fragment {
             }
 //            orders = makeDummyOrders();
             mRecyclerView.setAdapter(new MyHistoryRecyclerViewAdapter(MainActivity.history, mListener));
+            updateArray();
         }
         return view;
     }
