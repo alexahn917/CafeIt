@@ -1,7 +1,10 @@
 package com.example.alex.cafeit;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,11 +39,19 @@ public class CheckoutActivity extends AppCompatActivity {
     private Intent intent;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-//    final int orderCount = 2;
+    // preferences
+    private Context context;
+    private SharedPreferences myPref;
+    private SharedPreferences.Editor peditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Preference set up
+        context = getApplicationContext();
+        myPref = PreferenceManager.getDefaultSharedPreferences(context);
+        peditor = myPref.edit();
+
         intent = getIntent();
         setContentView(R.layout.activity_checkout);
 
@@ -108,23 +119,37 @@ public class CheckoutActivity extends AppCompatActivity {
         String myFormat = "MM/dd/yyyy"; //Format for date choice
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         String time = sdf.format(myCalendar.getTime());
-
-        String cafe = getIntent().getStringExtra("cafe");
+        String cafe = getIntent().getStringExtra("cafe_name");
         String note = ((EditText) findViewById(R.id.notes)).getText().toString();
-
+        Order first_item = orders.get(0);
+        float total_price = 0.0f;
         for (Order order : orders) {
+            order.customerName = LoginActivity.username;
             order.orderTime = time;
             order.cafeName = cafe;
             order.note = note;
             MainActivity.dbAdapter.insertItem(order);
             populateOrderList(order);
             ((HistoryFragment) MainActivity.HistoryFragment).updateArray();
+            total_price += order.price;
         }
+        if (orders.size() > 1) {
+            peditor.putString("OrderItem", first_item.itemName + "(+ " + (orders.size()-1) + ")");
+            peditor.putString("OrderCafe", cafe);
+            peditor.putString("OrderPrice", total_price + "$");
+            peditor.putString("OrderTime", orders.size()+"");
+        }
+        else {
+            peditor.putString("OrderItem", first_item.itemName);
+            peditor.putString("OrderCafe", cafe);
+            peditor.putString("OrderPrice", "$ " + total_price);
+            peditor.putString("OrderTime", orders.size()+" Minutes Remaining");
+        }
+        peditor.commit();
     }
 
     public void populateOrderList(Order order){
-        String CafeId = intent.getStringExtra("CafeId");
-        System.out.println("IHIHIHIHIHI:  " + CafeId);
-        //mDatabase.child("cafes").child(CafeId).child("orders").push().setValue(order);
+        String CafeId = intent.getStringExtra("cafe_id");
+        mDatabase.child("cafes").child(CafeId).child("orders").push().setValue(order);
     }
 }

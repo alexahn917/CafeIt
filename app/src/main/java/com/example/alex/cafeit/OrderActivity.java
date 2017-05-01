@@ -71,7 +71,8 @@ public class OrderActivity extends AppCompatActivity {
                 }
                 if (CheckoutActivity.orders.size() > 0) {
                     Intent new_intent = new Intent(view.getContext(), CheckoutActivity.class);
-                    new_intent.putExtra("CafeId", intent.getStringExtra("CafeId"));
+                    new_intent.putExtra("cafe_id", intent.getStringExtra("cafe_id"));
+                    new_intent.putExtra("cafe_name", intent.getStringExtra("cafe_name"));
                     startActivityForResult(new_intent, ORDER_SUCCESS);
                     finish();
                 } else {
