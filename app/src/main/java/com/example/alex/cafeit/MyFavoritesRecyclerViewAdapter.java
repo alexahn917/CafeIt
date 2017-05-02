@@ -15,6 +15,8 @@ import com.example.alex.cafeit.fragments.CafesListFragment;
 import com.example.alex.cafeit.fragments.FavoritesFragment;
 import com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInteractionListener;
 import com.example.alex.cafeit.fragments.HistoryFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -27,6 +29,9 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
 
     private final List<com.example.alex.cafeit.Order> mValues;
     private final OnListFragmentInteractionListener mListener;
+
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
     private Context context;
 
     public MyFavoritesRecyclerViewAdapter(List<com.example.alex.cafeit.Order> items, OnListFragmentInteractionListener listener) {
@@ -85,6 +90,13 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
                                 // Delete from database
                                 Toast.makeText(context, "Order Made: " + holder.mItem.itemName + " "
                                         + holder.mItem.size, Toast.LENGTH_LONG).show();
+
+//                                // MAKE THE ONE-CLICK ORDER
+//                                // TODO: Order Object will have a Order.cafeID
+//                                Order order = holder.mItem;
+//                                mDatabase.child("cafes").child(order.cafeID).child("orders").push().setValue(order);
+
+
                                 mListener.onListFragmentInteraction(holder.mItem, 0);
                             }
                         })
