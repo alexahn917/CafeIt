@@ -3,6 +3,7 @@ package com.example.alex.cafeit;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
 
     private final List<Cafe> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private String TAG = "DEBUG: MyCafesRecyclerViewAdapter";
 
     public MyCafesRecyclerViewAdapter(List<Cafe> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -31,6 +33,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: ");
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_cafes, parent, false);
         return new ViewHolder(view);
@@ -38,6 +41,8 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder: ");
+
         holder.mItem = mValues.get(position);
         //System.out.println(holder.mItem);
 
@@ -56,7 +61,8 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
 
         //calculate distance from the user to the cafe
         String distance = "0.5 mi";
-        holder.cafeDistanceView.setText(distance);
+//        holder.cafeDistanceView.setText(distance);
+        holder.cafeDistanceView.setText(holder.mItem.distance);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

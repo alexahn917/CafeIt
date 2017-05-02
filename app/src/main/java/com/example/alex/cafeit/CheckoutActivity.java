@@ -131,6 +131,8 @@ public class CheckoutActivity extends AppCompatActivity {
         Order first_item = orders.get(0);
         float total_price = 0.0f;
         for (Order order : orders) {
+            String CafeId = intent.getStringExtra("cafe_id");
+            order.cafeID = CafeId;
             order.orderTime = time;
             order.orderDate = orderDate.toString();
             order.customerName = LoginActivity.username;
@@ -139,7 +141,7 @@ public class CheckoutActivity extends AppCompatActivity {
             order.purchasedTime = purchasedTime;
             order.note = note;
             MainActivity.dbAdapter.insertItem(order);
-            populateOrderList(order);
+            populateOrderList(order, CafeId);
             ((HistoryFragment) MainActivity.HistoryFragment).updateArray();
             total_price += order.price;
         }
@@ -162,8 +164,7 @@ public class CheckoutActivity extends AppCompatActivity {
         peditor.commit();
     }
 
-    public void populateOrderList(Order order){
-        String CafeId = intent.getStringExtra("cafe_id");
+    public void populateOrderList(Order order, String CafeId){
         mDatabase.child("cafes").child(CafeId).child("orders").push().setValue(order);
     }
 }

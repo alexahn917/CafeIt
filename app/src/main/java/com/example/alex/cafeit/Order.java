@@ -8,6 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Order extends OrderItem implements Comparable {
+
+    // TODO:
+    public String cafeID; // equivalent to Cafe.ID string
     public String orderTime;
     public String orderDate;
     public String purchasedDate;
