@@ -22,6 +22,7 @@ public class Cafe {
     public float waitTime;
     public float latitude;
     public float longitude;
+    public String distance = "0.5 mi";
     public ArrayList<Order> orderQueue;
 
 //    protected Date registerDate;

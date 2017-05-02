@@ -59,6 +59,8 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
 
+    private String TAG = "DEBUG: CafesListFragment";
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -69,11 +71,13 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
     }
 
     public void onStart() {
+        Log.d(TAG, "onStart: ");
         mGoogleApiClient.connect();
         super.onStart();
     }
 
     public void onStop() {
+        Log.d(TAG, "onStop: ");
         mGoogleApiClient.disconnect();
         super.onStop();
     }
@@ -89,6 +93,7 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -108,6 +113,7 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.fragment_cafes_list, container, false);
         populateCafeList();
         Log.d("cafelist size", cafeList.size()+"");
@@ -129,6 +135,7 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
 
     @Override
     public void onAttach(Context context) {
+        Log.d(TAG, "onAttach: ");
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
@@ -140,18 +147,21 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
 
     @Override
     public void onDetach() {
+        Log.d(TAG, "onDetach: ");
         super.onDetach();
         mListener = null;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Log.d(TAG, "onCreateOptionsMenu: ");
         inflater.inflate(R.menu.menu_cafes, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected: ");
         int id = item.getItemId();
         if (id == R.id.sort_distance) {
             Toast.makeText(context, "Sorting by distance...", Toast.LENGTH_SHORT).show();
@@ -175,19 +185,33 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
 
     @Override
     public void onConnected(Bundle connectionHint) {
+        Log.d(TAG, "onConnected: ");
         if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        // GET DISTANCES AND PUT THEM IN CAFE CLASS TO DISPLAY AGAIN
+        Location location = mLastLocation;
+        LatLng currLoc = new LatLng(location.getLatitude(), location.getLongitude());
+        for (Cafe c : cafeList) {
+            DistanceCalculator dc = new DistanceCalculator(currLoc, new LatLng(c.latitude, c.longitude));
+            String distance = dc.parseJSONDistance();
+            c.distance = distance;
+        }
+
+        recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed: ");
 
     }
 
     @Override
     public void onConnectionSuspended(int i) {
+        Log.d(TAG, "onConnectionSuspended: ");
 
     }
 
@@ -207,11 +231,13 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
     }
 
     public void populateCafeList(){
+        Log.d(TAG, "populateCafeList: ");
         mDatabase.child("cafes").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("Count " ,""+dataSnapshot.getChildrenCount());
                 cafeList.clear();
+
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     Cafe post = postSnapshot.getValue(Cafe.class);
                     cafeList.add(post);
@@ -227,6 +253,7 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
 
 
     public void sortByDistance() {
+        Log.d(TAG, "sortByDistance: ");
         // Get current location
 //        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 //        Criteria criteria = new Criteria();
