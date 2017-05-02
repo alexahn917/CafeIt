@@ -10,8 +10,7 @@ import java.util.Date;
 public class Order extends OrderItem implements Comparable {
 
     // TODO:
-//    public String cafeID; // equivalent to Cafe.ID string
-
+    public String cafeID; // equivalent to Cafe.ID string
     public String orderDate;
     public String purchasedDate;
     public String purchasedTime;

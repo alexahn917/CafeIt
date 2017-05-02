@@ -89,7 +89,7 @@ public class SignUpCafeActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.createButton).setOnClickListener(this);
         findViewById(R.id.signupPaymentButton).setOnClickListener(this);
 
-        setTitle("Sign up");
+        setTitle("Sign up (Cafe)");
     }
 
     private void linkPayment(){

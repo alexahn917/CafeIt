@@ -59,7 +59,7 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
 
-    private String TAG = "DEBUG: CafesListFragment";
+    private String TAG = "DEBUG:CafesListFragment";
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the

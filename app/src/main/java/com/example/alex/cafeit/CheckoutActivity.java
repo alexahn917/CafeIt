@@ -127,6 +127,8 @@ public class CheckoutActivity extends AppCompatActivity {
         Order first_item = orders.get(0);
         float total_price = 0.0f;
         for (Order order : orders) {
+            String CafeId = intent.getStringExtra("cafe_id");
+            order.cafeID = CafeId;
             order.orderDate = orderDate.toString();
             order.customerName = LoginActivity.username;
             order.cafeName = cafeName;
