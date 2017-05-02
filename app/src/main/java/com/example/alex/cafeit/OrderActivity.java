@@ -45,7 +45,7 @@ public class OrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        String cafe_name = getIntent().getStringExtra("cafe");
+        String cafe_name = intent.getStringExtra("cafe_name");
         ((TextView) findViewById(R.id.CafeName)).setText(cafe_name);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 

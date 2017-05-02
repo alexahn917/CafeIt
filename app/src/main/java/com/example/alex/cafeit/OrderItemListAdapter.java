@@ -36,8 +36,11 @@ public class OrderItemListAdapter extends ArrayAdapter<Order> {
         TextView price = (TextView) convertView.findViewById(R.id.order_price);
 
         OrderItem item = values.get(position);
-
-        name.setText(item.itemName + " " + item.size);
+        String order_name = item.itemName + " " + item.size;
+        if (item.quantity > 1) {
+            order_name += " x " + item.quantity;
+        }
+        name.setText(order_name);
         price.setText(String.format(Locale.US, "$%.2f", item.price));
 
         return convertView;
