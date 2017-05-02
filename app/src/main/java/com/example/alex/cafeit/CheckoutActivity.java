@@ -69,7 +69,7 @@ public class CheckoutActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.total))
                 .setText(String.format(Locale.US, "$%.2f", calc_price()));
         ((TextView) findViewById(R.id.CafeName_checkout))
-                .setText(getIntent().getStringExtra("cafe"));
+                .setText(intent.getStringExtra("cafe_name"));
         orderAdapter = new OrderItemListAdapter(this, orders);
         orderlist.setAdapter(orderAdapter);
 

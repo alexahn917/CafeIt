@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements
     private SpannableString s;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-    public static HashMap<String, String> CafeIdHash = new HashMap();
+    public static HashMap<String, String> CafeIdHash = new HashMap<>();
 
     public static LocalDBAdapter dbAdapter;
     public static ArrayList<Order> history = new ArrayList<>();
