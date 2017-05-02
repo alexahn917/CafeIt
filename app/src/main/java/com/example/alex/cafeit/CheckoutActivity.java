@@ -117,9 +117,13 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void updateAppData() {
+        final Calendar myCalendar = Calendar.getInstance();
+        String myFormat = "MM/dd/yyyy"; //Format for date choice
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        String time = sdf.format(myCalendar.getTime());
         Date orderDate = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
         String purchasedDate = dateFormat.format(orderDate);
         String purchasedTime = timeFormat.format(orderDate);
         String cafeName = getIntent().getStringExtra("cafe_name");
@@ -127,6 +131,7 @@ public class CheckoutActivity extends AppCompatActivity {
         Order first_item = orders.get(0);
         float total_price = 0.0f;
         for (Order order : orders) {
+            order.orderTime = time;
             order.orderDate = orderDate.toString();
             order.customerName = LoginActivity.username;
             order.cafeName = cafeName;

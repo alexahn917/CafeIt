@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Order extends OrderItem implements Comparable {
+    public String orderTime;
     public String orderDate;
     public String purchasedDate;
     public String purchasedTime;
@@ -23,6 +24,7 @@ public class Order extends OrderItem implements Comparable {
 
     public Order(String orderTime, float price, int remainingTime, String cafeName, String itemName,
                  String size) {
+        this.orderTime = orderTime;
         super.itemName = itemName;
         super.price = price;
         super.size = size;
@@ -38,6 +40,7 @@ public class Order extends OrderItem implements Comparable {
         super.itemName = itemName;
         super.size = size;
         super.quantity = quantity;
+        this.orderTime = orderTime;
         this.purchasedDate = orderTime;
         this.remainingTime = remainingTime;
         this.cafeName = cafeName;

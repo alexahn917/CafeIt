@@ -70,14 +70,14 @@ public class LocalDBAdapter {
         SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         SimpleDateFormat from = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         try {
-            cvalues.put(ORDER_DATE, to.format(from.parse(order.purchasedDate)));
+            cvalues.put(ORDER_DATE, to.format(from.parse(order.orderTime)));
         } catch (ParseException e) {
             e.printStackTrace();
         }
         cvalues.put(ORDER_ITEM_NAME, order.itemName);
         cvalues.put(ORDER_SIZE, order.size);
         cvalues.put(ORDER_QUANTITY, order.quantity);
-        cvalues.put(ORDER_TIME, order.purchasedDate);
+        cvalues.put(ORDER_TIME, order.orderTime);
         cvalues.put(ORDER_CAFE, order.cafeName);
         cvalues.put(ORDER_PRICE, order.price);
         cvalues.put(ORDER_NOTE, order.note);
