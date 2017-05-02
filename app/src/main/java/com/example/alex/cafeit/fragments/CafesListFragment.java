@@ -192,6 +192,13 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         // GET DISTANCES AND PUT THEM IN CAFE CLASS TO DISPLAY AGAIN
+        if (mLastLocation == null) { // If no location (emulator) -> set default to JHU
+            Location defaultLocation = new Location("");
+            defaultLocation.setLatitude(39.329148d);
+            defaultLocation.setLongitude(-76.618461d);
+            mLastLocation = defaultLocation;
+        }
+
         Location location = mLastLocation;
         LatLng currLoc = new LatLng(location.getLatitude(), location.getLongitude());
         for (Cafe c : cafeList) {
