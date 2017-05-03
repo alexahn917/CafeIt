@@ -58,6 +58,20 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
                             public void onClick(DialogInterface dialog, int which) {
                                 Cursor curse = MainActivity.dbAdapter.getAllItems();
                                 curse.move(curse.getCount() - holder.getAdapterPosition());
+                                Cursor curse2 = MainActivity.dbAdapter.getFavorites();
+                                // Detect if already favorited
+                                for (int i = 0; i < curse2.getCount(); i++) {
+                                    curse2.move(1);
+                                    if (curse.getString(1).equals(curse2.getString(1)) &&
+                                            curse.getString(2).equals(curse2.getString(2)) &&
+                                            curse.getInt(3) == curse2.getInt(3) &&
+                                            curse.getString(12).equals(curse2.getString(12))) {
+                                        Toast.makeText(context, "Item already in favorites!",
+                                                Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
+                                }
+
                                 MainActivity.dbAdapter.updateIsFavorite(curse.getLong(0), true);
                                 Toast.makeText(context, "Added to favorites: " + holder.mItem.itemName
                                         + " " + holder.mItem.size + " from " + holder.mItem.cafeName,

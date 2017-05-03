@@ -2,6 +2,7 @@ package com.example.alex.cafeit;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,6 +66,11 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Delete from database
+                            Cursor curse = MainActivity.dbAdapter.getFavorites();
+                            curse.move(curse.getCount() - holder.getAdapterPosition());
+                            MainActivity.dbAdapter.updateIsFavorite(curse.getLong(0), false);
+                            mValues.remove(holder.getAdapterPosition());
+                            notifyDataSetChanged();
                             Toast.makeText(context, "Deleted favorite", Toast.LENGTH_LONG).show();
                         }
                     })
