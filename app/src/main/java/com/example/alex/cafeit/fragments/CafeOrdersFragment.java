@@ -103,7 +103,7 @@ public class CafeOrdersFragment extends Fragment {
     }
 
     public void populateOrders(){
-        mDatabase.child("cafes").child(AuthHandler.getUid()).child("orders").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("orders").child(AuthHandler.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("Count " ,""+dataSnapshot.getChildrenCount());

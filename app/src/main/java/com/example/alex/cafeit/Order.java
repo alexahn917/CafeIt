@@ -84,4 +84,12 @@ public class Order extends OrderItem implements Comparable {
     public String getItemName() {
         return super.itemName;
     }
+
+    public String toString() {
+        return  " cafeID " + cafeID + " orderTime " + orderTime + " orderDate " + orderDate +
+                " purchasedDate " + purchasedDate + " purchasedTime " + purchasedTime +
+                " remainingTime " + remainingTime + " cafeName " + cafeName +
+                " note " + note + " customerName " + customerName + " image_url " + image_url +
+                " is_favorite " + is_favorite + "";
+    }
 }

@@ -48,6 +48,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private String CafeId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("CHECKOUTACTIVITY", "CHECKOUTACTIVITY");
         super.onCreate(savedInstanceState);
         // Preference set up
         context = getApplicationContext();
@@ -131,6 +132,7 @@ public class CheckoutActivity extends AppCompatActivity {
         Order first_item = orders.get(0);
         float total_price = 0.0f;
         CafeId = intent.getStringExtra("cafe_id");
+
         for (Order order : orders) {
             order.cafeID = CafeId;
             order.orderTime = time;
@@ -145,6 +147,7 @@ public class CheckoutActivity extends AppCompatActivity {
             ((HistoryFragment) MainActivity.HistoryFragment).updateArray();
             total_price += order.price;
         }
+
         if (orders.size() > 1) {
             peditor.putString("CafeId", CafeId);
             peditor.putString("OrderItem", first_item.itemName + "(+ " + (orders.size()-1) + ")");
@@ -169,7 +172,8 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     public void populateOrderList(Order order){
-        mDatabase.child("cafes").child(CafeId).child("orders").push().setValue(order);
+        mDatabase.child("orders").child(CafeId).push().setValue(order);
+        System.out.println(order);
     }
 
     public void update_waittime(final int numOrders) {
@@ -188,3 +192,4 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
 }
+
