@@ -45,7 +45,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private Context context;
     private SharedPreferences myPref;
     private SharedPreferences.Editor peditor;
-
+    private String CafeId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,7 +130,7 @@ public class CheckoutActivity extends AppCompatActivity {
         String note = ((EditText) findViewById(R.id.notes)).getText().toString();
         Order first_item = orders.get(0);
         float total_price = 0.0f;
-        String CafeId = intent.getStringExtra("cafe_id");
+        CafeId = intent.getStringExtra("cafe_id");
         for (Order order : orders) {
             order.cafeID = CafeId;
             order.orderTime = time;
@@ -141,7 +141,7 @@ public class CheckoutActivity extends AppCompatActivity {
             order.purchasedTime = purchasedTime;
             order.note = note;
             MainActivity.dbAdapter.insertItem(order);
-            populateOrderList(order, CafeId);
+            populateOrderList(order);
             ((HistoryFragment) MainActivity.HistoryFragment).updateArray();
             total_price += order.price;
         }
@@ -164,10 +164,27 @@ public class CheckoutActivity extends AppCompatActivity {
             peditor.putString("OrderWaitTime", orders.size()+" Minutes Remaining");
         }
         MainActivity.SetOrderInProgress();
+        update_waittime(orders.size());
         peditor.commit();
     }
 
-    public void populateOrderList(Order order, String CafeId){
+    public void populateOrderList(Order order){
         mDatabase.child("cafes").child(CafeId).child("orders").push().setValue(order);
     }
+
+    public void update_waittime(final int numOrders) {
+        mDatabase.child("cafes").child(CafeId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Cafe ordered_cafe = dataSnapshot.getValue(Cafe.class);
+                ordered_cafe.waitTime += numOrders;
+                mDatabase.child("cafes").child(CafeId).setValue(ordered_cafe);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+    }
+
 }
