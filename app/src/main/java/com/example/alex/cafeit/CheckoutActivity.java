@@ -130,8 +130,8 @@ public class CheckoutActivity extends AppCompatActivity {
         String note = ((EditText) findViewById(R.id.notes)).getText().toString();
         Order first_item = orders.get(0);
         float total_price = 0.0f;
+        String CafeId = intent.getStringExtra("cafe_id");
         for (Order order : orders) {
-            String CafeId = intent.getStringExtra("cafe_id");
             order.cafeID = CafeId;
             order.orderTime = time;
             order.orderDate = orderDate.toString();
@@ -146,6 +146,7 @@ public class CheckoutActivity extends AppCompatActivity {
             total_price += order.price;
         }
         if (orders.size() > 1) {
+            peditor.putString("CafeId", CafeId);
             peditor.putString("OrderItem", first_item.itemName + "(+ " + (orders.size()-1) + ")");
             peditor.putString("OrderCafe", cafeName);
             peditor.putString("OrderPrice", String.format("%.2f",total_price) + "$");
@@ -154,6 +155,7 @@ public class CheckoutActivity extends AppCompatActivity {
             peditor.putString("OrderWaitTime", orders.size()+"");
         }
         else {
+            peditor.putString("CafeId", CafeId);
             peditor.putString("OrderItem", first_item.itemName);
             peditor.putString("OrderCafe", cafeName);
             peditor.putString("OrderPrice", String.format("%.2f",total_price) + "$");

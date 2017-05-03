@@ -3,7 +3,6 @@ package com.example.alex.cafeit;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.alex.cafeit.fragments.FavoritesFragment;
 import com.example.alex.cafeit.fragments.HistoryFragment;
 import com.example.alex.cafeit.fragments.HistoryFragment.OnListFragmentInteractionListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -55,7 +51,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
 
         holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {new AlertDialog.Builder(HistoryFragment.getFragContext(), R.style.historyToFavoriteDialog)
+            public boolean onLongClick(View v) {new AlertDialog.Builder(HistoryFragment.getFragContext(), R.style.CafeItDialogue)
                         .setMessage("Add to favorites?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

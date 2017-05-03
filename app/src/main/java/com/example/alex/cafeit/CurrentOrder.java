@@ -12,6 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class CurrentOrder extends AppCompatActivity {
 
     private TextView order_item_view;
@@ -23,6 +29,9 @@ public class CurrentOrder extends AppCompatActivity {
     private Context context;
     private SharedPreferences myPref;
     private SharedPreferences.Editor peditor;
+    private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private Cafe ordered_cafe;
+    private String CafeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +50,16 @@ public class CurrentOrder extends AppCompatActivity {
         order_time_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(CurrentOrder.this, R.style.historyToFavoriteDialog)
+                new AlertDialog.Builder(CurrentOrder.this, R.style.CafeItDialogue)
                         .setMessage("Received your order?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(context, "Enjoy!", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(context, "Enjoy!", Toast.LENGTH_LONG).show();
                                 MainActivity.SetResetOrder();
+                                ask_for_rating();
                             }
                         })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // do nothing
                             }
@@ -59,6 +69,38 @@ public class CurrentOrder extends AppCompatActivity {
             }
         });
         update();
+
+        CafeId = myPref.getString("CafeId", "");
+        mDatabase.child("cafes").child(CafeId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ordered_cafe = dataSnapshot.getValue(Cafe.class);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+    }
+
+    public void ask_for_rating() {
+        new AlertDialog.Builder(CurrentOrder.this, R.style.CafeItDialogue)
+                .setMessage("How was the service?")
+                .setPositiveButton("Good", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(context, "Thank you.", Toast.LENGTH_LONG).show();
+                        update_rating(true);
+                        finish();
+                    }
+                })
+                .setNegativeButton("Bad", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(context, "Thank you.", Toast.LENGTH_LONG).show();
+                        update_rating(false);
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     public void update() {
@@ -77,7 +119,13 @@ public class CurrentOrder extends AppCompatActivity {
         }
     }
 
-    public void ask_for_rating() {
-
+    public void update_rating(Boolean good) {
+        if (good) {
+            ordered_cafe.rating += 1.0;
+            mDatabase.child("cafes").child(CafeId).setValue(ordered_cafe);
+        } else {
+            ordered_cafe.rating -= 1.0;
+            mDatabase.child("cafes").child(CafeId).setValue(ordered_cafe);
+        }
     }
 }

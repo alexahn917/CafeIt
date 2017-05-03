@@ -11,10 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.alex.cafeit.fragments.CafesListFragment;
 import com.example.alex.cafeit.fragments.FavoritesFragment;
 import com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInteractionListener;
-import com.example.alex.cafeit.fragments.HistoryFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -61,7 +59,7 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
 
         holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {new AlertDialog.Builder(context, R.style.historyToFavoriteDialog)
+            public boolean onLongClick(View v) {new AlertDialog.Builder(context, R.style.CafeItDialogue)
                     .setMessage("Delete favorite?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -83,7 +81,7 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog orderDialogue = new AlertDialog.Builder(context, R.style.historyToFavoriteDialog)
+                AlertDialog orderDialogue = new AlertDialog.Builder(context, R.style.CafeItDialogue)
                         .setMessage("Make one-click order?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

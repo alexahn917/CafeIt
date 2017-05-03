@@ -23,7 +23,6 @@ public class Cafe {
     public float latitude;
     public float longitude;
     public String distance = "0.5 mi";
-    public ArrayList<Order> orderQueue;
 
 //    protected Date registerDate;
 //    protected URL imURL;
@@ -46,7 +45,6 @@ public class Cafe {
         waitTime = cafe_waitTime;
         latitude = cafe_latitude;
         longitude = cafe_longitude;
-        orderQueue = new ArrayList<>();
     }
 
     @Override
