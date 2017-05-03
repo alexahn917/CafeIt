@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Order} and makes a call to the
@@ -51,9 +52,9 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
         System.out.println(holder.mItem);
 
 
-        holder.cafeNameView.setText(TypefaceSpan.getSpannableString(holder.mItem.cafeName, FavoritesFragment.getFragContext()));
+        holder.cafeNameView.setText(TypefaceSpan.getSpannableString(holder.mItem.cafeName, MainActivity.FavoritesFragment.getContext()));
         holder.timeCostView.setText(Integer.toString(holder.mItem.remainingTime) +  " min"
-                + "  |  $" + String.format("%.2f", holder.mItem.price));
+                + "  |  $" + String.format(Locale.US, "%.2f", holder.mItem.price));
         holder.menuOrderView.setText(holder.mItem.itemName + " " + holder.mItem.size);
 
 
@@ -81,7 +82,7 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog orderDialogue = new AlertDialog.Builder(context, R.style.CafeItDialogue)
+                new AlertDialog.Builder(context, R.style.CafeItDialogue)
                         .setMessage("Make one-click order?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -91,8 +92,8 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
 
 //                                // MAKE THE ONE-CLICK ORDER
 //                                // TODO: Order Object will have a Order.cafeID
-//                                Order order = holder.mItem;
-//                                mDatabase.child("cafes").child(order.cafeID).child("orders").push().setValue(order);
+                                Order order = holder.mItem;
+                                mDatabase.child("cafes").child(order.cafeID).child("orders").push().setValue(order);
 
 
                                 mListener.onListFragmentInteraction(holder.mItem, 0);

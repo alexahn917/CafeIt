@@ -24,7 +24,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
 
     private final List<Cafe> mValues;
     private final OnListFragmentInteractionListener mListener;
-    private String TAG = "DEBUG: MyCafesRecyclerViewAdapter";
+    private String TAG = "MyCafesRecyclerViewAdap";
 
     public MyCafesRecyclerViewAdapter(List<Cafe> items, OnListFragmentInteractionListener listener) {
         mValues = items;

@@ -36,9 +36,10 @@ public class LocalDBAdapter {
     private static final String ORDER_CUSTOMER_NAME = "order_customer_name";
     private static final String ORDER_IMAGE_URL = "order_image_url";
     private static final String ORDER_IS_FAVORITE = "order_is_favorite";
+    private static final String ORDER_CAFE_ID = "order_cafe_id";
     private static final String[] ORDER_COLS = {ORDER_ID, ORDER_ITEM_NAME, ORDER_SIZE, ORDER_QUANTITY,
             ORDER_DATE, ORDER_TIME, ORDER_CAFE, ORDER_PRICE, ORDER_NOTE, ORDER_CUSTOMER_NAME,
-            ORDER_IMAGE_URL, ORDER_IS_FAVORITE};
+            ORDER_IMAGE_URL, ORDER_IS_FAVORITE, ORDER_CAFE_ID};
 
     public LocalDBAdapter(Context ctx) {
         dbHelper = new LocalDBhelper(ctx, DB_NAME, null, dbVersion);
@@ -86,6 +87,7 @@ public class LocalDBAdapter {
             cvalues.put(ORDER_IMAGE_URL, order.image_url.toString());
         }
         cvalues.put(ORDER_IS_FAVORITE, order.is_favorite);
+        cvalues.put(ORDER_CAFE_ID, order.cafeID);
         // add to course table in database
         return db.insert(ORDER_TABLE, null, cvalues);
     }
@@ -172,6 +174,7 @@ public class LocalDBAdapter {
         Order o =  new Order(cursor.getString(1), cursor.getString(2), cursor.getInt(3),
                 date, cursor.getInt(5), cursor.getString(6), cursor.getFloat(7),
                 cursor.getString(8), cursor.getString(9), im_url, cursor.getInt(11) != 0);
+        o.cafeID = cursor.getString(12);
         cursor.close();
         return o;
     }
@@ -185,7 +188,7 @@ public class LocalDBAdapter {
                 + ORDER_SIZE + " TEXT, " + ORDER_QUANTITY + " INTEGER, " + ORDER_DATE + " TEXT, " +
                 ORDER_TIME + " INTEGER, " + ORDER_CAFE + " TEXT, " + ORDER_PRICE + " REAL, " +
                 ORDER_NOTE + " TEXT, " + ORDER_CUSTOMER_NAME + " TEXT, " + ORDER_IMAGE_URL + " TEXT, "
-                + ORDER_IS_FAVORITE + " INTEGER);";
+                + ORDER_IS_FAVORITE + " INTEGER, " + ORDER_CAFE_ID + " TEXT);";
 
         public LocalDBhelper(Context context, String name, SQLiteDatabase.CursorFactory fct,
                                int version) {

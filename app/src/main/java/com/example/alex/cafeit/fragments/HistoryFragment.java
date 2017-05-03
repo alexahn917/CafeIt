@@ -38,12 +38,12 @@ public class HistoryFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private static OnListFragmentInteractionListener mListener;
-    protected static Cursor cursor;
-    protected static MyHistoryRecyclerViewAdapter mAdapter;
-    private  RecyclerView mRecyclerView;
+    private OnListFragmentInteractionListener mListener;
+    protected Cursor cursor;
+    protected MyHistoryRecyclerViewAdapter mAdapter;
+    public  RecyclerView mRecyclerView;
 
-    private static Context context;
+    private Context context;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -59,7 +59,7 @@ public class HistoryFragment extends Fragment {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
-        mAdapter = new MyHistoryRecyclerViewAdapter(MainActivity.history, mListener);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,13 +90,14 @@ public class HistoryFragment extends Fragment {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 //            ordersList = makeDummyOrders();
-            mRecyclerView.setAdapter(new MyHistoryRecyclerViewAdapter(MainActivity.history, mListener));
-            updateArray();
+            mAdapter = new MyHistoryRecyclerViewAdapter(MainActivity.history, mListener);
+            mRecyclerView.setAdapter(mAdapter);
+            updateArray(mAdapter);
         }
         return view;
     }
 
-    public void updateArray() {
+    public void updateArray(MyHistoryRecyclerViewAdapter mAdapter) {
         SimpleDateFormat from = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         SimpleDateFormat to = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         cursor = MainActivity.dbAdapter.getAllItems();
@@ -120,6 +121,7 @@ public class HistoryFragment extends Fragment {
                 Order o =  new Order(cursor.getString(1), cursor.getString(2), cursor.getInt(3),
                         date, cursor.getInt(5), cursor.getString(6), cursor.getFloat(7),
                         cursor.getString(8), cursor.getString(9), im_url, cursor.getInt(11) != 0);
+                o.cafeID = cursor.getString(12);
                 MainActivity.history.add(0, o);  // puts in reverse order
             } while (cursor.moveToNext());
 
@@ -169,7 +171,7 @@ public class HistoryFragment extends Fragment {
         void onListFragmentInteraction(Order item);
     }
 
-    public static Context getFragContext(){
+    public Context getFragContext(){
         return context;
     }
 }

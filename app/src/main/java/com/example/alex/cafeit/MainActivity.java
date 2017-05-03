@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity implements
     static final int ORDER_SUCCESS = 1;
 
     private Fragment CafesListFragment = new CafesListFragment();
-    private Fragment FavoritesFragment = new FavoritesFragment();
-    static Fragment HistoryFragment = com.example.alex.cafeit.fragments.HistoryFragment.newInstance(1);
+    static Fragment FavoritesFragment = new FavoritesFragment();
+    static Fragment HistoryFragment = new HistoryFragment();
     private Fragment ProfileFragment = new ProfileFragment();
     private Context context;
     private SpannableString s;

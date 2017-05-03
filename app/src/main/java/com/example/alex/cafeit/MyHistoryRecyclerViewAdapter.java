@@ -2,6 +2,7 @@ package com.example.alex.cafeit;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,7 +27,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
 
     private final List<Order> mValues;
     private final OnListFragmentInteractionListener mListener;
-    private static Context context;
+    private Context context;
 
     public MyHistoryRecyclerViewAdapter(List<Order> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -42,20 +43,22 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.dateView.setText(mValues.get(position).orderTime);
         holder.costView.setText(String.format(Locale.US, "$%.2f", mValues.get(position).price));
-        holder.cafeNameView.setText(TypefaceSpan.getSpannableString(holder.mItem.cafeName, HistoryFragment.getFragContext()));
+        holder.cafeNameView.setText(TypefaceSpan.getSpannableString(holder.mItem.cafeName, MainActivity.HistoryFragment.getContext()));
         holder.orderMenuView.setText(mValues.get(position).itemName + " " + mValues.get(position).size);
 
         holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {new AlertDialog.Builder(HistoryFragment.getFragContext(), R.style.CafeItDialogue)
+            public boolean onLongClick(View v) {new AlertDialog.Builder(MainActivity.HistoryFragment.getContext(), R.style.CafeItDialogue)
                         .setMessage("Add to favorites?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // Delete from database
+                                Cursor curse = MainActivity.dbAdapter.getAllItems();
+                                curse.move(curse.getCount() - holder.getAdapterPosition());
+                                MainActivity.dbAdapter.updateIsFavorite(curse.getLong(0), true);
                                 Toast.makeText(context, "Added to favorites: " + holder.mItem.itemName
                                         + " " + holder.mItem.size + " from " + holder.mItem.cafeName,
                                         Toast.LENGTH_LONG).show();
@@ -106,7 +109,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         }
     }
 
-    public static Context getFragContext(){
+    public Context getFragContext(){
         return context;
     }
 }
