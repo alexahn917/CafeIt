@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.alex.cafeit.LoginActivity;
+import com.example.alex.cafeit.MainActivity;
 import com.example.alex.cafeit.R;
 
 
@@ -45,6 +46,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        //MainActivity.updateCup();
 
         saveButton = (Button) v.findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -84,14 +86,6 @@ public class ProfileFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_profile, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

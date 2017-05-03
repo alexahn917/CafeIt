@@ -148,7 +148,7 @@ public class CheckoutActivity extends AppCompatActivity {
         if (orders.size() > 1) {
             peditor.putString("OrderItem", first_item.itemName + "(+ " + (orders.size()-1) + ")");
             peditor.putString("OrderCafe", cafeName);
-            peditor.putString("OrderPrice", total_price + "$");
+            peditor.putString("OrderPrice", String.format("%.2f",total_price) + "$");
             peditor.putString("OrderPurchasedDate", purchasedDate);
             peditor.putString("OrderPurchasedTime", purchasedTime);
             peditor.putString("OrderWaitTime", orders.size()+"");
@@ -156,11 +156,12 @@ public class CheckoutActivity extends AppCompatActivity {
         else {
             peditor.putString("OrderItem", first_item.itemName);
             peditor.putString("OrderCafe", cafeName);
-            peditor.putString("OrderPrice", "$ " + total_price);
+            peditor.putString("OrderPrice", String.format("%.2f",total_price) + "$");
             peditor.putString("OrderPurchasedDate", purchasedDate);
             peditor.putString("OrderPurchasedTime", purchasedTime);
             peditor.putString("OrderWaitTime", orders.size()+" Minutes Remaining");
         }
+        MainActivity.SetOrderInProgress();
         peditor.commit();
     }
 

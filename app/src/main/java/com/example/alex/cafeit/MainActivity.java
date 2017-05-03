@@ -2,9 +2,11 @@ package com.example.alex.cafeit;
 
 import android.*;
 import android.Manifest;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,6 +19,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -47,11 +50,13 @@ public class MainActivity extends AppCompatActivity implements
     private SpannableString s;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-    public static HashMap<String, String> CafeIdHash = new HashMap<>();
-
+    private static Toolbar toolbar;
     public static LocalDBAdapter dbAdapter;
     public static ArrayList<Order> history = new ArrayList<>();
     public static ArrayList<Order> favorites = new ArrayList<>();
+    private static MenuItem cup_logo;
+    public static boolean OrderInProgress = false;
+    public static boolean OrderCompleted = false;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -89,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements
         history.clear();
         favorites.clear();
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -134,9 +139,24 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        cup_logo = menu.findItem(R.id.current_order);
+        updateCup();
         return true;
     }
+
+    public static void updateCup() {
+        if (OrderInProgress) {
+            cup_logo.setIcon(R.drawable.cafeit_logo_cup_half);
+        } else if (OrderCompleted) {
+            cup_logo.setIcon(R.drawable.cafeit_logo_cup_full);
+        }
+        else {
+            cup_logo.setIcon(R.drawable.cafeit_logo_cup);
+        }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -177,4 +197,21 @@ public class MainActivity extends AppCompatActivity implements
         super.onDestroy();
     }
 
+    public static void SetOrderInProgress() {
+        OrderInProgress = true;
+        updateCup();
+    }
+
+    public static void SetOrderCompleted() {
+        OrderCompleted = true;
+        updateCup();
+    }
+
+    public static void SetResetOrder() {
+        OrderInProgress = false;
+        OrderCompleted = false;
+        updateCup();
+    }
+
 }
+

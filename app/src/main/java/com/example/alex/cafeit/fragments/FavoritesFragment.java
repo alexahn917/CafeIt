@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
+import com.example.alex.cafeit.MainActivity;
 import com.example.alex.cafeit.MyFavoritesRecyclerViewAdapter;
 import com.example.alex.cafeit.Order;
 import com.example.alex.cafeit.OrderActivity;
@@ -71,7 +72,7 @@ public class FavoritesFragment extends Fragment {
         Log.d("DEBUG: ", "onCreate Favorites Fragment");
 
         view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
-
+        //MainActivity.updateCup();
 
         // Set the adapter
         if (view instanceof RecyclerView) {

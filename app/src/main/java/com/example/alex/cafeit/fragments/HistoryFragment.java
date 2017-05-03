@@ -78,6 +78,7 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
+        //MainActivity.updateCup();
         context = getContext();
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -151,13 +152,6 @@ public class HistoryFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_history, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     /**
