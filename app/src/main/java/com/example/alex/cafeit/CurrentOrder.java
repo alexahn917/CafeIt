@@ -68,6 +68,13 @@ public class CurrentOrder extends AppCompatActivity {
                         .show();
             }
         });
+
+        if (MainActivity.OrderInProgress) {
+            order_time_view.setEnabled(true);
+        } else {
+            order_time_view.setEnabled(false);
+        }
+
         update();
 
         CafeId = myPref.getString("CafeId", "");
