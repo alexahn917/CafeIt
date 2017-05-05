@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements
 
     static final int ORDER_SUCCESS = 1;
 
+    public static ArrayList<Order> history = new ArrayList<>();
+    public static ArrayList<Order> favorites = new ArrayList<>();
+
     private Fragment CafesListFragment = new CafesListFragment();
     static Fragment FavoritesFragment = new FavoritesFragment();
     static Fragment HistoryFragment = new HistoryFragment();
@@ -47,8 +50,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private Toolbar toolbar;
     public static LocalDBAdapter dbAdapter;
-    public static ArrayList<Order> history = new ArrayList<>();
-    public static ArrayList<Order> favorites = new ArrayList<>();
+
     private static MenuItem cup_logo;
     public static boolean OrderInProgress = false;
     public static boolean OrderCompleted = false;
