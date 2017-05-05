@@ -200,9 +200,9 @@ public class SignUpCafeActivity extends AppCompatActivity implements View.OnClic
 
     public String getAddress() {
         StringBuilder sb = new StringBuilder();
-        sb.append(cafe_address1_view.getText().toString() + " ");
-        sb.append(cafe_address2_view.getText().toString() + ",");
-        sb.append(cafe_state_view.getText().toString() + " ");
+        sb.append(cafe_address1_view.getText().toString() + ", ");
+        sb.append(cafe_address2_view.getText().toString() + ", ");
+        sb.append(cafe_state_view.getText().toString().toUpperCase() + " ");
         sb.append(cafe_zipcode_view.getText().toString());
         String address = sb.toString();
 
@@ -217,7 +217,6 @@ public class SignUpCafeActivity extends AppCompatActivity implements View.OnClic
 
         return address;
     }
-
 
 
     public int hasWifi() {

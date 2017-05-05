@@ -54,6 +54,7 @@ public class CheckoutActivity extends AppCompatActivity {
         // Preference set up
         context = getApplicationContext();
         myPref = PreferenceManager.getDefaultSharedPreferences(context);
+        peditor = myPref.edit();
 
         intent = getIntent();
         setContentView(R.layout.activity_checkout);
@@ -150,9 +151,8 @@ public class CheckoutActivity extends AppCompatActivity {
             total_price += order.price;
         }
 
-        peditor = myPref.edit();
         MainActivity.SetOrderInProgress();
-        update_waittime(orders.size());
+        update_waittime();
 
         if (orders.size() > 1) {
             peditor.putString("CafeId", CafeId);
@@ -179,7 +179,7 @@ public class CheckoutActivity extends AppCompatActivity {
         System.out.println(order);
     }
 
-    public void update_waittime(final long order_size) {
+    public void update_waittime() {
         mDatabase.child("orders").child(CafeId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
