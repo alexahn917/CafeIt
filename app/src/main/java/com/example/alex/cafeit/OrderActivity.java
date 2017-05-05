@@ -61,6 +61,7 @@ public class OrderActivity extends AppCompatActivity {
         String cafe_address = intent.getStringExtra("cafe_address");
         String[] adr_lines = cafe_address.split(",", 2);
         String cafe_distance = intent.getStringExtra("cafe_distance");
+
         String cafe_start_hour = intent.getStringExtra("cafe_start_hour").replace("0A", "0 A").replace("0P", "0 P");
         String cafe_end_hour = intent.getStringExtra("cafe_end_hour").replace("0A", "0 A").replace("0P", "0 P");
         float cafe_rating = intent.getFloatExtra("cafe_rating", 0f);
