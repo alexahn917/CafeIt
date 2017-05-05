@@ -130,7 +130,9 @@ public class FavoritesFragment extends Fragment {
             } while (cursor.moveToNext());
 
         mAdapter.notifyDataSetChanged();
+
     }
+
 
 //    public List makeDummyOrders() {
 //        ArrayList<Order> orders = new ArrayList<Order>();

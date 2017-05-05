@@ -158,7 +158,7 @@ public class CheckoutActivity extends AppCompatActivity {
             peditor.putString("CafeId", CafeId);
             peditor.putString("OrderItem", first_item.itemName + "( + " + (orders.size()-1) + ")");
             peditor.putString("OrderCafe", cafeName);
-            peditor.putString("OrderPrice", String.format("%.2f",total_price) + "$");
+            peditor.putString("OrderPrice", "$" + String.format("%.2f",total_price));
             peditor.putString("OrderPurchasedDate", purchasedDate);
             peditor.putString("OrderPurchasedTime", purchasedTime);
         }

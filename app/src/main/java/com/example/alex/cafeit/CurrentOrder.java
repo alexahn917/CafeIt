@@ -148,6 +148,7 @@ public class CurrentOrder extends AppCompatActivity {
             }
             Log.d("!@!@!@!@!@@!@!@!@!", elapsed_time_sec + "");
             Log.d("!@!@!@!@!@@!@!@!@!", currentTime + "");
+
             Log.d("!@!@!@!@!@@!@!@!@!", remain_time_sec + "");
             long mins = 0;
             long secs = 0;

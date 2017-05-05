@@ -8,17 +8,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.cafeit.fragments.FavoritesFragment;
 import com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInteractionListener;
+import com.example.alex.cafeit.fragments.HistoryFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -101,18 +104,7 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
 
 //                                // MAKE THE ONE-CLICK ORDER
                                 Order order = holder.mItem;
-
-                                Date orderDate = new Date();
-                                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
-                                DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
-                                String purchasedDate = dateFormat.format(orderDate);
-                                String purchasedTime = timeFormat.format(orderDate);
-
-                                order.orderDate = orderDate.toString();
-
-//                                mDatabase.child("cafes").child(order.cafeID).child("orders").push().setValue(order);
-                                mDatabase.child("orders").child(order.cafeID).push().setValue(order);
-
+                                makePurchase(order);
                                 mListener.onListFragmentInteraction(holder.mItem, 0);
                             }
                         })
@@ -127,7 +119,27 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
             }
         });
     }
-
+    public void makePurchase(Order order) {
+        final Calendar myCalendar = Calendar.getInstance();
+        String myFormat = "MM/dd/yyyy"; //Format for date choice
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        String time = sdf.format(myCalendar.getTime());
+        Date orderDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+        String purchasedDate = dateFormat.format(orderDate);
+        String purchasedTime = timeFormat.format(orderDate);
+        order.orderTime = time;
+        order.orderDate = orderDate.toString();
+        order.customerName = LoginActivity.username;
+        order.purchasedDate = purchasedDate;
+        order.purchasedTime = purchasedTime;
+        MainActivity.dbAdapter.insertItem(order);
+        mDatabase.child("orders").child(order.cafeID).push().setValue(order);
+        MyHistoryRecyclerViewAdapter adapter = (MyHistoryRecyclerViewAdapter)
+                ((HistoryFragment) MainActivity.HistoryFragment).mAdapter;
+        ((HistoryFragment) MainActivity.HistoryFragment).updateArray(adapter);
+    }
     @Override
     public int getItemCount() {
         return mValues.size();
