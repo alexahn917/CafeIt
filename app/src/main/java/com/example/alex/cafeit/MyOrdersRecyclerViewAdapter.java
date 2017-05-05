@@ -92,17 +92,31 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
     }
 
     public void completeOrder(final Order order) {
-        mDatabase.child("orders").child(AuthHandler.getUid()).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("orders").child(AuthHandler.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot orderSnapshot: dataSnapshot.getChildren()) {
                     Order curr_order = orderSnapshot.getValue(Order.class);
                     if (order.equals(curr_order)) {
                         orderSnapshot.getRef().removeValue();
+                        update_waittime();
                     }
                 }
             }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+    }
+
+    public void update_waittime() {
+        mDatabase.child("orders").child(AuthHandler.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mDatabase.child("cafes").child(AuthHandler.getUid()).child("waitTime").setValue(dataSnapshot.getChildrenCount());
+            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());

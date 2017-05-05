@@ -15,9 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.alex.cafeit.AuthHandler;
 import com.example.alex.cafeit.LoginActivity;
 import com.example.alex.cafeit.MainActivity;
 import com.example.alex.cafeit.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class ProfileFragment extends Fragment {
@@ -27,6 +30,8 @@ public class ProfileFragment extends Fragment {
 
     private EditText nameView;
     private EditText emailView;
+
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
     private OnFragmentInteractionListener mListener;
 
@@ -103,6 +108,7 @@ public class ProfileFragment extends Fragment {
         builder.setTitle("Save changes?");
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                updateChanges();
                 Toast.makeText(context, "Changes saved successfully.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 //setResult(OrderActivity.ORDER_SUCCESS);
@@ -124,5 +130,11 @@ public class ProfileFragment extends Fragment {
     public void updateView() {
         nameView.setText(LoginActivity.username);
         emailView.setText(LoginActivity.useremail);
+    }
+
+    public void updateChanges() {
+        String userID = AuthHandler.getUid();
+        mDatabase.child("users").child(userID).child("email").setValue(emailView.getText().toString());
+        mDatabase.child("users").child(userID).child("username").setValue(nameView.getText().toString());
     }
 }

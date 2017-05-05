@@ -18,6 +18,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 public class CurrentOrder extends AppCompatActivity {
 
     private TextView order_item_view;
@@ -115,8 +122,24 @@ public class CurrentOrder extends AppCompatActivity {
             order_item_view.setText(myPref.getString("OrderItem", ""));
             order_cafe_view.setText(myPref.getString("OrderCafe", ""));
             order_price_view.setText(myPref.getString("OrderPrice", ""));
-            String line = myPref.getString("OrderWaitTime", "");
-            order_time_view.setText(line);
+            long wait_time_sec;
+
+            final Calendar myCalendar = Calendar.getInstance();
+            Date orderDate = new Date();
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+            String purchasedTime = myPref.getString("OrderPurchasedTime", "");
+            String currentTime= timeFormat.format(orderDate);
+            try {
+                Date current = timeFormat.parse(purchasedTime);
+                Date purchased = timeFormat.parse(currentTime);
+                wait_time_sec = getDateDiff(purchased, current,TimeUnit.MINUTES);
+            }
+            catch (Exception E) {
+                wait_time_sec = 0;
+            }
+            long mins = wait_time_sec / 60;
+            long secs = wait_time_sec % 60;
+            order_time_view.setText(mins + ":" + secs + " remaining!");
         } else {
             order_item_view.setText("");
             order_cafe_view.setText("");
@@ -134,5 +157,10 @@ public class CurrentOrder extends AppCompatActivity {
             ordered_cafe.rating -= 1.0;
             mDatabase.child("cafes").child(CafeId).setValue(ordered_cafe);
         }
+    }
+
+    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
 }
