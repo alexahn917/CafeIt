@@ -637,7 +637,6 @@
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:background="@drawable/primary_button"
-                    android:enabled="false"
                     android:layout_marginBottom="50dp"
                     />
             </LinearLayout>

@@ -42,7 +42,7 @@ public class MenuItem extends CafeMenuItem{
         this.smallPrice = cmi.getSmallPrice();
         this.mediumPrice = cmi.getMediumPrice();
         this.largePrice = cmi.getLargePrice();
-        this.name = cmi.getName();
+        this.name = cmi.getNameDecoded();
         this.quantity = 1;
 
         //this class' fields

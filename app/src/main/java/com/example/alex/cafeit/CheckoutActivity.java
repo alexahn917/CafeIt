@@ -144,7 +144,7 @@ public class CheckoutActivity extends AppCompatActivity {
             MainActivity.dbAdapter.insertItem(order);
             populateOrderList(order);
             MyHistoryRecyclerViewAdapter adapter = (MyHistoryRecyclerViewAdapter)
-                    ((HistoryFragment) MainActivity.HistoryFragment).mRecyclerView.getAdapter();
+                    ((HistoryFragment) MainActivity.HistoryFragment).mAdapter;
             ((HistoryFragment) MainActivity.HistoryFragment).updateArray(adapter);
             total_price += order.price;
         }

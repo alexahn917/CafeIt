@@ -40,7 +40,7 @@ public class HistoryFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     protected Cursor cursor;
-    protected MyHistoryRecyclerViewAdapter mAdapter;
+    public MyHistoryRecyclerViewAdapter mAdapter = new MyHistoryRecyclerViewAdapter(MainActivity.history, mListener);
     public  RecyclerView mRecyclerView;
 
     private Context context;
@@ -90,7 +90,6 @@ public class HistoryFragment extends Fragment {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 //            ordersList = makeDummyOrders();
-            mAdapter = new MyHistoryRecyclerViewAdapter(MainActivity.history, mListener);
             mRecyclerView.setAdapter(mAdapter);
             updateArray(mAdapter);
         }

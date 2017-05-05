@@ -57,7 +57,7 @@ public class CafeExpandableListAdapter extends BaseExpandableListAdapter {
         CafeMenuItem cur = (CafeMenuItem) getChild(groupPosition, childPosition);
 
         TextView item = (TextView) convertView.findViewById(R.id.cafe_menu_item_name);
-        item.setText(cur.getName());
+        item.setText(cur.getNameDecoded());
         return convertView;
     }
 
