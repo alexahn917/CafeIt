@@ -169,6 +169,10 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
         }
         else if (id == R.id.sort_wait) {
             Toast.makeText(context, "Sorted by waiting time", Toast.LENGTH_SHORT).show();
+
+            Collections.sort(cafeList);
+
+            recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
         }
         else if (id == R.id.sort_rating) {
             Toast.makeText(context, "Sorted by ratings", Toast.LENGTH_SHORT).show();
