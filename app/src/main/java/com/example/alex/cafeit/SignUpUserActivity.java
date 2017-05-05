@@ -61,6 +61,7 @@ public class SignUpUserActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.signupPaymentButton).setOnClickListener(this);
 
         setTitle("Sign up (User)");
+
     }
 
     private void linkPayment(){
