@@ -1,6 +1,9 @@
 package com.example.alex.cafeit;
 
+import android.support.annotation.NonNull;
+
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +13,7 @@ import java.util.Queue;
  * Created by alex on 4/15/17.
  */
 
-public class Cafe {
+public class Cafe implements Comparable {
     public String ID;
     public String name;
     public String startHour;
@@ -30,6 +33,22 @@ public class Cafe {
     public Cafe(){
 
     }
+
+    @Override
+    public int compareTo(@NonNull Object other) {
+        if (other instanceof Order) {
+            float ret = this.waitTime - ((Cafe) other).waitTime;
+            if (ret > 0) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+        else {
+            return -1;
+        }
+    }
+
 
     public Cafe(String cafe_id, String cafe_name, String cafe_startHour, String cafe_endHour, String cafe_bestMenu,
                 float cafe_rating, String cafe_address, int cafe_hasWifi, float cafe_waitTime,
