@@ -2,9 +2,12 @@ package com.example.alex.cafeit;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +19,11 @@ import android.widget.Toast;
 import com.example.alex.cafeit.fragments.FavoritesFragment;
 import com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInteractionListener;
 import com.example.alex.cafeit.fragments.HistoryFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,7 +43,8 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
     private final OnListFragmentInteractionListener mListener;
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
+    private SharedPreferences myPref;
+    private SharedPreferences.Editor peditor;
     private Context context;
 
     public MyFavoritesRecyclerViewAdapter(List<com.example.alex.cafeit.Order> items, OnListFragmentInteractionListener listener) {
@@ -48,6 +55,9 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
+        myPref = PreferenceManager.getDefaultSharedPreferences(context);
+        peditor = myPref.edit();
+
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_favorites, parent, false);
         return new ViewHolder(view);
@@ -139,6 +149,37 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
         MyHistoryRecyclerViewAdapter adapter = (MyHistoryRecyclerViewAdapter)
                 ((HistoryFragment) MainActivity.HistoryFragment).mAdapter;
         ((HistoryFragment) MainActivity.HistoryFragment).updateArray(adapter);
+        updateCurrentOrder(order);
+        update_waittime(order.cafeID);
+    }
+
+    public void updateCurrentOrder(Order order) {
+        peditor.putString("CafeId", order.cafeID);
+        peditor.putString("OrderItem", order.itemName);
+        peditor.putString("OrderCafe", order.cafeName);
+        peditor.putString("OrderPrice", "$" + String.format("%.2f", order.price));
+        peditor.putString("OrderPurchasedDate", order.purchasedDate);
+        peditor.putString("OrderPurchasedTime", order.purchasedTime);
+        peditor.apply();
+    }
+
+    public void update_waittime(final String CafeId) {
+        mDatabase.child("orders").child(CafeId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Cafe cafe = dataSnapshot.getValue(Cafe.class);
+                Long OrderWaitTime = dataSnapshot.getChildrenCount() * 60;
+                //OrderWaitTime = (cafe.waitTime + order_size) * 60;
+                Log.d("$$$$$$$$$$$$$$$$$$$$$", OrderWaitTime+"");
+                mDatabase.child("cafes").child(CafeId).child("waitTime").setValue((float) OrderWaitTime / 60);
+                peditor.putLong("OrderWaitTime", OrderWaitTime);
+                peditor.apply();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
     }
     @Override
     public int getItemCount() {

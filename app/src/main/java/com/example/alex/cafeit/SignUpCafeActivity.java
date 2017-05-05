@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
@@ -57,6 +58,7 @@ public class SignUpCafeActivity extends AppCompatActivity implements View.OnClic
     private float cafe_waittime = 0.0f;
     private float cafe_latitude = 0f;
     private float cafe_longitude = 0f;
+    private boolean validAddress = false;
 
     // private variables
     private boolean paymentSetUp = false;
@@ -151,6 +153,10 @@ public class SignUpCafeActivity extends AppCompatActivity implements View.OnClic
         if (i == R.id.createButton) {
             if (validCreation()) {
                 commitCafeInfo();
+                if (!this.validAddress) {
+                    Toast.makeText(context, "Invalid Creation of Cafe", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 setResult(RESULT_OK);
                 finish();
             }
@@ -200,24 +206,25 @@ public class SignUpCafeActivity extends AppCompatActivity implements View.OnClic
 
     public String getAddress() {
         StringBuilder sb = new StringBuilder();
-        sb.append(cafe_address1_view.getText().toString() + " ");
-        sb.append(cafe_address2_view.getText().toString() + ",");
-        sb.append(cafe_state_view.getText().toString() + " ");
+        sb.append(cafe_address1_view.getText().toString() + ", ");
+        sb.append(cafe_address2_view.getText().toString() + ", ");
+        sb.append(cafe_state_view.getText().toString().toUpperCase() + " ");
         sb.append(cafe_zipcode_view.getText().toString());
         String address = sb.toString();
 
         try {
+            Log.d("DEBUG: ", "address: " + address);
             Geocoder geo = new Geocoder(this);
             Address adr = geo.getFromLocationName(address, 1).get(0);
             cafe_latitude = (float) adr.getLatitude();
             cafe_longitude = (float) adr.getLongitude();
+            this.validAddress = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            this.validAddress = false;
         }
 
         return address;
     }
-
 
 
     public int hasWifi() {

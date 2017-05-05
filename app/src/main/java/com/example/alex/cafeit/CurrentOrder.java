@@ -96,6 +96,24 @@ public class CurrentOrder extends AppCompatActivity {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                update();
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+        t.start();
     }
 
     @Override
@@ -140,23 +158,25 @@ public class CurrentOrder extends AppCompatActivity {
             try {
                 Date current = timeFormat.parse(purchasedTime);
                 Date purchased = timeFormat.parse(currentTime);
-                elapsed_time_sec = getDateDiff(purchased, current,TimeUnit.MINUTES);
+                elapsed_time_sec = getDateDiff(purchased, current);
                 remain_time_sec = myPref.getLong("OrderWaitTime", 0) - elapsed_time_sec;
             }
             catch (Exception E) {
 
             }
-            Log.d("!@!@!@!@!@@!@!@!@!", elapsed_time_sec + "");
             Log.d("!@!@!@!@!@@!@!@!@!", currentTime + "");
-
+            Log.d("!@!@!@!@!@@!@!@!@!", purchasedTime + "");
+            Log.d("!@!@!@!@!@@!@!@!@!", elapsed_time_sec + "");
             Log.d("!@!@!@!@!@@!@!@!@!", remain_time_sec + "");
             long mins = 0;
             long secs = 0;
             if (remain_time_sec >= 0) {
                 mins = remain_time_sec / 60;
                 secs = remain_time_sec % 60;
+                order_time_view.setText(mins + ":" + String.format("%02d", secs) + " remaining!");
+            } else {
+                order_time_view.setText("Your order is ready!");
             }
-            order_time_view.setText(mins + ":" + String.format("%02d", secs) + " remaining!");
         } else {
             order_item_view.setText("");
             order_cafe_view.setText("");
@@ -176,8 +196,9 @@ public class CurrentOrder extends AppCompatActivity {
         }
     }
 
-    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
-        long diffInMillies = date2.getTime() - date1.getTime();
-        return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
+    public static long getDateDiff(Date date1, Date date2) {
+        long diff = date1.getTime() - date2.getTime();
+        long diffSeconds = diff / 1000 % 60;
+        return diffSeconds;
     }
 }
