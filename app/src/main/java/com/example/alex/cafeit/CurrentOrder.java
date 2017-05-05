@@ -122,7 +122,8 @@ public class CurrentOrder extends AppCompatActivity {
             order_item_view.setText(myPref.getString("OrderItem", ""));
             order_cafe_view.setText(myPref.getString("OrderCafe", ""));
             order_price_view.setText(myPref.getString("OrderPrice", ""));
-            long wait_time_sec;
+            long elapsed_time_sec = 0;
+            long remain_time_sec = 0;
 
             final Calendar myCalendar = Calendar.getInstance();
             Date orderDate = new Date();
@@ -132,13 +133,19 @@ public class CurrentOrder extends AppCompatActivity {
             try {
                 Date current = timeFormat.parse(purchasedTime);
                 Date purchased = timeFormat.parse(currentTime);
-                wait_time_sec = getDateDiff(purchased, current,TimeUnit.MINUTES);
+                elapsed_time_sec = getDateDiff(purchased, current,TimeUnit.MINUTES);
+                remain_time_sec = Math.round(myPref.getFloat("OrderWaitTime", 0)) - elapsed_time_sec;
             }
             catch (Exception E) {
-                wait_time_sec = 0;
+
             }
-            long mins = wait_time_sec / 60;
-            long secs = wait_time_sec % 60;
+
+            long mins = 0;
+            long secs = 0;
+            if (remain_time_sec >= 0) {
+                mins = remain_time_sec / 60;
+                secs = remain_time_sec % 60;
+            }
             order_time_view.setText(mins + ":" + secs + " remaining!");
         } else {
             order_item_view.setText("");

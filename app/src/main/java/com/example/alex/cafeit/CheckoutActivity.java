@@ -46,9 +46,10 @@ public class CheckoutActivity extends AppCompatActivity {
     private SharedPreferences myPref;
     private SharedPreferences.Editor peditor;
     private String CafeId;
+    private static Float OrderWaitTime = 5.0f;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("CHECKOUTACTIVITY", "CHECKOUTACTIVITY");
         super.onCreate(savedInstanceState);
         // Preference set up
         context = getApplicationContext();
@@ -150,15 +151,17 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
         peditor = myPref.edit();
+        MainActivity.SetOrderInProgress();
+        update_waittime(orders.size());
 
         if (orders.size() > 1) {
             peditor.putString("CafeId", CafeId);
-            peditor.putString("OrderItem", first_item.itemName + "(+ " + (orders.size()-1) + ")");
+            peditor.putString("OrderItem", first_item.itemName + "( + " + (orders.size()-1) + ")");
             peditor.putString("OrderCafe", cafeName);
             peditor.putString("OrderPrice", String.format("%.2f",total_price) + "$");
             peditor.putString("OrderPurchasedDate", purchasedDate);
             peditor.putString("OrderPurchasedTime", purchasedTime);
-            peditor.putString("OrderWaitTime", orders.size()+"");
+            peditor.putFloat("OrderWaitTime", OrderWaitTime);
         }
         else {
             peditor.putString("CafeId", CafeId);
@@ -167,10 +170,9 @@ public class CheckoutActivity extends AppCompatActivity {
             peditor.putString("OrderPrice", "$ " + String.format("%.2f",total_price));
             peditor.putString("OrderPurchasedDate", purchasedDate);
             peditor.putString("OrderPurchasedTime", purchasedTime);
-            peditor.putString("OrderWaitTime", orders.size()+" Minutes Remaining");
+            peditor.putFloat("OrderWaitTime", OrderWaitTime);
         }
-        MainActivity.SetOrderInProgress();
-        update_waittime(orders.size());
+
         peditor.apply();
     }
 
@@ -179,13 +181,14 @@ public class CheckoutActivity extends AppCompatActivity {
         System.out.println(order);
     }
 
-    public void update_waittime(final int numOrders) {
+    public void update_waittime(final long order_size) {
         mDatabase.child("cafes").child(CafeId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Cafe ordered_cafe = dataSnapshot.getValue(Cafe.class);
-                ordered_cafe.waitTime += numOrders;
-                mDatabase.child("cafes").child(CafeId).setValue(ordered_cafe);
+                Cafe cafe = dataSnapshot.getValue(Cafe.class);
+                OrderWaitTime = cafe.waitTime + order_size;
+                Log.d("$$$$$$$$$$$$$$$$$$$$$", cafe.toString());
+                //mDatabase.child("cafes").child(CafeId).child("waitTime").setValue(OrderWaitTime);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
