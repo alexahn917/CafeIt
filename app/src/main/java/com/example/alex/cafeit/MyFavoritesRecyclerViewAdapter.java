@@ -17,6 +17,9 @@ import com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInterac
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -97,10 +100,18 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
                                         + holder.mItem.size, Toast.LENGTH_LONG).show();
 
 //                                // MAKE THE ONE-CLICK ORDER
-//                                // TODO: Order Object will have a Order.cafeID
                                 Order order = holder.mItem;
-                                mDatabase.child("cafes").child(order.cafeID).child("orders").push().setValue(order);
 
+                                Date orderDate = new Date();
+                                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
+                                DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+                                String purchasedDate = dateFormat.format(orderDate);
+                                String purchasedTime = timeFormat.format(orderDate);
+
+                                order.orderDate = orderDate.toString();
+
+//                                mDatabase.child("cafes").child(order.cafeID).child("orders").push().setValue(order);
+                                mDatabase.child("orders").child(order.cafeID).push().setValue(order);
 
                                 mListener.onListFragmentInteraction(holder.mItem, 0);
                             }
