@@ -13,6 +13,7 @@ import android.os.Bundle;
 //import android.support.v4.app.Fragment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -35,12 +36,17 @@ import com.example.alex.cafeit.CafeMainActivity;
 import com.example.alex.cafeit.LoginActivity;
 import com.example.alex.cafeit.R;
 import com.example.alex.cafeit.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -273,8 +279,24 @@ public class CafeProfileFragment extends Fragment {
                             getDefaultSharedPreferences(parent.getApplicationContext());
 
                     SharedPreferences.Editor peditor = myPrefs.edit();
-                    peditor.putString(CafeMainActivity.PROF_PIC_FNAME, saveToInternalStorage(bm));
+                    String im_path = saveToInternalStorage(bm);
+                    ((CafeMainActivity) getActivity()).prof_abs_path = im_path;
+                    peditor.putString(CafeMainActivity.PROF_PIC_FNAME, im_path);
                     peditor.apply();
+
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReference().
+                            child(CafeMainActivity.PROF_DIR).child(CafeMainActivity.PROF_PIC_FNAME);
+
+                    UploadTask upload = storageRef.putFile(Uri.fromFile(new File(im_path, CafeMainActivity.PROF_PIC_FNAME)));
+                    upload.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), "Profile pic upload failure. Check your Internet" +
+                                    " connection", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
                     prof_pic.setImageBitmap(bm);
                     prof_pic.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
                 }
@@ -286,12 +308,9 @@ public class CafeProfileFragment extends Fragment {
 
     private String saveToInternalStorage(Bitmap bitmapImage){
         ContextWrapper cw = new ContextWrapper(parent.getApplicationContext());
-        File directory = cw.getDir(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-        File mfile = new File(directory.getAbsolutePath(), CafeMainActivity.PROF_DIR);
-        mfile.mkdirs();
+        File directory = cw.getDir(CafeMainActivity.PROF_DIR, Context.MODE_PRIVATE);
         // Create imageDir
-        File mypath = new File(mfile.getAbsolutePath(),
-                CafeMainActivity.PROF_PIC_FNAME);
+        File mypath = new File(directory, CafeMainActivity.PROF_PIC_FNAME);
 
         FileOutputStream fos = null;
         try {
@@ -309,7 +328,7 @@ public class CafeProfileFragment extends Fragment {
                 }
             }
         }
-        return mfile.getAbsolutePath();
+        return directory.getAbsolutePath();
     }
 
 

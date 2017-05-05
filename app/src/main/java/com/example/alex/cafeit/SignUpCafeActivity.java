@@ -52,8 +52,8 @@ public class SignUpCafeActivity extends AppCompatActivity implements View.OnClic
     private EditText cafe_address_view;
 
     // values
-    private String cafe_starthour = "9:00AM";
-    private String cafe_endhour = "8:00PM";
+    private String cafe_starthour = "9:00 AM";
+    private String cafe_endhour = "8:00 PM";
     private float cafe_rating = 2.5f;
     private float cafe_waittime = 0.0f;
     private float cafe_latitude = 0f;

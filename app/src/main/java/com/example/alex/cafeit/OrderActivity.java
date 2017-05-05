@@ -3,23 +3,34 @@ package com.example.alex.cafeit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,7 +57,44 @@ public class OrderActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         String cafe_name = intent.getStringExtra("cafe_name");
+        String cafe_id = intent.getStringExtra("cafe_id");
+        String cafe_address = intent.getStringExtra("cafe_address");
+        String[] adr_lines = cafe_address.split(",", 2);
+        String cafe_distance = intent.getStringExtra("cafe_distance");
+        String cafe_start_hour = intent.getStringExtra("cafe_start_hour").replace("0A", "0 A").replace("0P", "0 P");
+        String cafe_end_hour = intent.getStringExtra("cafe_end_hour").replace("0A", "0 A").replace("0P", "0 P");
+        float cafe_rating = intent.getFloatExtra("cafe_rating", 0f);
         ((TextView) findViewById(R.id.CafeName)).setText(cafe_name);
+        ((TextView) findViewById(R.id.cafe_address1)).setText(adr_lines[0] + ",");
+        if (adr_lines[1].startsWith(" ")) {
+            adr_lines[1] = adr_lines[1].replaceFirst(" ", "");
+        }
+        ((TextView) findViewById(R.id.cafe_address2)).setText(adr_lines[1]);
+        ((TextView) findViewById(R.id.cafe_distance)).setText(cafe_distance);
+        ((RatingBar) findViewById(R.id.cafe_rating)).setRating(cafe_rating);
+        ((TextView) findViewById(R.id.hrs)).setText(cafe_start_hour + " – " + cafe_end_hour);
+        Calendar cal = Calendar.getInstance();
+        int cur_time = cal.get(Calendar.HOUR_OF_DAY);
+        SimpleDateFormat displayFormat = new SimpleDateFormat("HH");
+        SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+        try {
+            int hr1 = Integer.parseInt(displayFormat.format(parseFormat.parse(cafe_start_hour)));
+            int hr2 = Integer.parseInt(displayFormat.format(parseFormat.parse(cafe_end_hour)));
+
+            if (!(hr1 <= cur_time && cur_time <= hr2)) {
+                TextView cafe_open =  (TextView) findViewById(R.id.cafe_op_cl);
+                cafe_open.setText(getResources().getText(R.string.cafe_closed));
+                cafe_open.setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_light));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child(MainActivity.PROF_DIR).child(
+                cafe_id + MainActivity.PROF_PIC_SUFFIX);
+        ImageView pic = (ImageView) findViewById(R.id.CafePic);
+        Glide.with(this /* context */).using(new FirebaseImageLoader()).load(storageReference)
+                .error(ContextCompat.getDrawable(this, R.mipmap.ic_logo)).into(pic);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         ActionBar abar = getSupportActionBar();
@@ -152,7 +200,7 @@ public class OrderActivity extends AppCompatActivity {
                 }
                 Log.d("making", "yes");
 
-
+                refreshList();
 
             }
 

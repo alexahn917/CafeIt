@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,18 +13,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.alex.cafeit.fragments.FavoritesFragment;
 import com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInteractionListener;
 import com.example.alex.cafeit.fragments.HistoryFragment;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -67,6 +73,11 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         System.out.println(holder.mItem);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child(MainActivity.PROF_DIR).child(
+                holder.mItem.cafeID + MainActivity.PROF_PIC_SUFFIX);
+        Glide.with(context /* context */).using(new FirebaseImageLoader()).load(storageReference)
+                .error(ContextCompat.getDrawable(context, R.drawable.cafeit_logo)).into(holder.cafe_image);
 
 
         holder.cafeNameView.setText(TypefaceSpan.getSpannableString(holder.mItem.cafeName, MainActivity.FavoritesFragment.getContext()));
@@ -193,6 +204,7 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
         public final TextView menuOrderView;
         public com.example.alex.cafeit.Order mItem;
         public LinearLayout linearLayout;
+        final ImageView cafe_image;
 
 
         public ViewHolder(View view) {
@@ -202,6 +214,7 @@ public class MyFavoritesRecyclerViewAdapter extends RecyclerView.Adapter<MyFavor
             timeCostView = (TextView) view.findViewById(R.id.time_remaining);
             menuOrderView = (TextView) view.findViewById(R.id.order_items);
             linearLayout = (LinearLayout) view.findViewById(R.id.favoriteLinearLayout);
+            cafe_image = (ImageView) view.findViewById(R.id.cafe_image);
         }
 
         @Override

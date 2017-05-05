@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements
         com.example.alex.cafeit.fragments.FavoritesFragment.OnListFragmentInteractionListener {
 
     static final int ORDER_SUCCESS = 1;
+    public static final String PROF_DIR = "profiles";
+    public static final String PROF_PIC_SUFFIX = "prof_pic.png";
 
     public static ArrayList<Order> history = new ArrayList<>();
     public static ArrayList<Order> favorites = new ArrayList<>();
@@ -178,6 +180,11 @@ public class MainActivity extends AppCompatActivity implements
         Intent i = new Intent(this, OrderActivity.class);
         i.putExtra("cafe_id", cafe.ID);
         i.putExtra("cafe_name", cafe.name);
+        i.putExtra("cafe_address", cafe.address);
+        i.putExtra("cafe_distance", cafe.distance);
+        i.putExtra("cafe_start_hour", cafe.startHour);
+        i.putExtra("cafe_end_hour", cafe.endHour);
+        i.putExtra("cafe_rating", cafe.rating);
         startActivityForResult(i, ORDER_SUCCESS);
     }
 

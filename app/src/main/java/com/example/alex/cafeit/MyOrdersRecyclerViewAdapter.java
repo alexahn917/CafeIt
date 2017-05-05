@@ -2,22 +2,28 @@ package com.example.alex.cafeit;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.alex.cafeit.fragments.CafeOrdersFragment.OnListFragmentInteractionListener;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -52,6 +58,11 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child(MainActivity.PROF_DIR).child(
+                holder.mItem.cafeID + MainActivity.PROF_PIC_SUFFIX);
+        Glide.with(context /* context */).using(new FirebaseImageLoader()).load(storageReference)
+                .error(ContextCompat.getDrawable(context, R.drawable.cafeit_logo)).into(holder.cafe_logo);
         holder.nameView.setText(mValues.get(position).customerName);
         holder.costView.setText("$" + String.format("%.2f", mValues.get(position).price));
         holder.timeView.setText(mValues.get(position).purchasedTime);
@@ -140,6 +151,7 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
         public final TextView orderMenuView;
         public com.example.alex.cafeit.Order mItem;
         public LinearLayout linearLayout;
+        final ImageView cafe_logo;
 
         public ViewHolder(View view) {
             super(view);
@@ -151,6 +163,7 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
             noteView = (TextView) view.findViewById(R.id.note);
             orderMenuView = (TextView) view.findViewById(R.id.menu);
             linearLayout = (LinearLayout) view.findViewById(R.id.orderLinearLayout);
+            cafe_logo = (ImageView) view.findViewById(R.id.cafe_logo);
         }
 
         @Override

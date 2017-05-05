@@ -3,17 +3,23 @@ package com.example.alex.cafeit;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.alex.cafeit.fragments.HistoryFragment;
 import com.example.alex.cafeit.fragments.HistoryFragment.OnListFragmentInteractionListener;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 import java.util.Locale;
@@ -49,6 +55,12 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         holder.costView.setText(String.format(Locale.US, "$%.2f", mValues.get(position).price));
         holder.cafeNameView.setText(TypefaceSpan.getSpannableString(holder.mItem.cafeName, MainActivity.HistoryFragment.getContext()));
         holder.orderMenuView.setText(mValues.get(position).itemName + " " + mValues.get(position).size);
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child(MainActivity.PROF_DIR).child(
+                holder.mItem.cafeID + MainActivity.PROF_PIC_SUFFIX);
+        Glide.with(context /* context */).using(new FirebaseImageLoader()).load(storageReference)
+                .error(ContextCompat.getDrawable(context, R.drawable.cafeit_logo)).into(holder.logo);
 
         holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -105,6 +117,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         public final TextView orderMenuView;
         public com.example.alex.cafeit.Order mItem;
         public LinearLayout linearLayout;
+        final ImageView logo;
 
         public ViewHolder(View view) {
             super(view);
@@ -115,6 +128,7 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
             cafeNameView = (TextView) view.findViewById(R.id.cafeName);
             orderMenuView = (TextView) view.findViewById(R.id.menu);
             linearLayout = (LinearLayout) view.findViewById(R.id.historyLinearLayout);
+            logo = (ImageView) view.findViewById(R.id.cafe_logo);
         }
 
         @Override

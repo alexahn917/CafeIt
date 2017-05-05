@@ -2,16 +2,22 @@ package com.example.alex.cafeit;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.alex.cafeit.fragments.CafesListFragment;
 import com.example.alex.cafeit.fragments.CafesListFragment.OnListFragmentInteractionListener;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -25,6 +31,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
     private final List<Cafe> mValues;
     private final OnListFragmentInteractionListener mListener;
     private String TAG = "MyCafesRecyclerViewAdap";
+    private Context context;
 
     public MyCafesRecyclerViewAdapter(List<Cafe> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -34,6 +41,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: ");
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_cafes, parent, false);
         return new ViewHolder(view);
@@ -45,6 +53,11 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
 
         holder.mItem = mValues.get(position);
         //System.out.println(holder.mItem);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child(MainActivity.PROF_DIR).child(
+                holder.mItem.ID + MainActivity.PROF_PIC_SUFFIX);
+        Glide.with(context /* context */).using(new FirebaseImageLoader()).load(storageReference)
+                .error(ContextCompat.getDrawable(context, R.drawable.cafeit_logo)).into(holder.profile_pic);
 
         holder.cafeNameView.setText(TypefaceSpan.getSpannableString(holder.mItem.name, CafesListFragment.getFragConext()));
         holder.bestMenuView.setText(holder.mItem.bestMenu);
@@ -90,6 +103,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
         public final RatingBar ratingView;
         public final TextView wifiView;
         public final TextView waitView;
+        final ImageView profile_pic;
         public Cafe mItem;
 
         public ViewHolder(View view) {
@@ -101,6 +115,7 @@ public class MyCafesRecyclerViewAdapter extends RecyclerView.Adapter<MyCafesRecy
             ratingView = (RatingBar) view.findViewById(R.id.rating);
             wifiView = (TextView) view.findViewById(R.id.wifi);
             waitView = (TextView) view.findViewById(R.id.wait);
+            profile_pic = (ImageView) view.findViewById(R.id.cafe_image);
         }
 
         @Override

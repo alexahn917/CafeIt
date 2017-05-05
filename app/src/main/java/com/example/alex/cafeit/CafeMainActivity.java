@@ -25,10 +25,15 @@ import android.view.MenuItem;
 //import android.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.alex.cafeit.fragments.CafeMenuFragment;
 import com.example.alex.cafeit.fragments.CafeProfileFragment;
 import com.example.alex.cafeit.fragments.CafeOrdersFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,8 +44,7 @@ import java.io.InputStream;
 public class CafeMainActivity extends AppCompatActivity {
 
     public static final String PROF_PIC_FNAME = LoginActivity.userId + "prof_pic.png";
-    public static final String PROF_DIR = Environment.getExternalStorageDirectory().toString() +
-            "/profiles/";
+    public static final String PROF_DIR = "profiles";
 
     public static Bitmap prof_bitmap;
 
@@ -48,7 +52,7 @@ public class CafeMainActivity extends AppCompatActivity {
     //    private TextView mTextMessage;
     private Context context;
     private SpannableString s;
-    private String prof_abs_path;
+    public String prof_abs_path;
 
     private Fragment profileFragment = new CafeProfileFragment();
     private Fragment ordersFragment = new CafeOrdersFragment();
@@ -102,7 +106,25 @@ public class CafeMainActivity extends AppCompatActivity {
 
         SharedPreferences myPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         if (myPrefs.contains(PROF_PIC_FNAME)) {
-            prof_bitmap = loadImageFromStorage(myPrefs.getString(PROF_PIC_FNAME, null));
+            prof_abs_path = myPrefs.getString(PROF_PIC_FNAME, null);
+            prof_bitmap = loadImageFromStorage(prof_abs_path);
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            final StorageReference storageRef = storage.getReference().
+                    child(CafeMainActivity.PROF_DIR).child(CafeMainActivity.PROF_PIC_FNAME);
+
+            storageRef.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            UploadTask upload = storageRef.putFile(Uri.fromFile(new File(prof_abs_path, CafeMainActivity.PROF_PIC_FNAME)));
+                            upload.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(context, "Profile pic upload failure. Check your Internet" +
+                                            " connection", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    });
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
