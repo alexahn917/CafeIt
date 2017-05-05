@@ -21,7 +21,7 @@ public class LocalDBAdapter {
     private LocalDBhelper dbHelper;
 
     private static final String DB_NAME = "lesson.db";
-    private static int dbVersion = 1;
+    private static int dbVersion = 2;
 
     private static final String ORDER_TABLE = "orders";
     private static final String ORDER_ID = "order_id";   // column 0
@@ -37,9 +37,10 @@ public class LocalDBAdapter {
     private static final String ORDER_IMAGE_URL = "order_image_url";
     private static final String ORDER_IS_FAVORITE = "order_is_favorite";
     private static final String ORDER_CAFE_ID = "order_cafe_id";
+    private static final String ORDER_USER_ID = "order_user_id";
     private static final String[] ORDER_COLS = {ORDER_ID, ORDER_ITEM_NAME, ORDER_SIZE, ORDER_QUANTITY,
             ORDER_DATE, ORDER_TIME, ORDER_CAFE, ORDER_PRICE, ORDER_NOTE, ORDER_CUSTOMER_NAME,
-            ORDER_IMAGE_URL, ORDER_IS_FAVORITE, ORDER_CAFE_ID};
+            ORDER_IMAGE_URL, ORDER_IS_FAVORITE, ORDER_CAFE_ID, ORDER_USER_ID};
 
     public LocalDBAdapter(Context ctx) {
         dbHelper = new LocalDBhelper(ctx, DB_NAME, null, dbVersion);
@@ -88,7 +89,8 @@ public class LocalDBAdapter {
         }
         cvalues.put(ORDER_IS_FAVORITE, order.is_favorite);
         cvalues.put(ORDER_CAFE_ID, order.cafeID);
-        // add to course table in database
+        cvalues.put(ORDER_USER_ID, LoginActivity.userId);
+        // add to order table in database
         return db.insert(ORDER_TABLE, null, cvalues);
     }
 
@@ -131,12 +133,15 @@ public class LocalDBAdapter {
 
     // database query methods
     public Cursor getAllItems() {
-        return db.query(ORDER_TABLE, ORDER_COLS, null, null, null, null, "date(" + ORDER_DATE + ") ASC", null);
+        return db.query(ORDER_TABLE, ORDER_COLS, ORDER_USER_ID + " = ?",
+                new String[] {LoginActivity.userId}, null, null,
+                "date(" + ORDER_DATE + ") ASC", null);
     }
 
     public Cursor getFavorites() {
-        return db.query(ORDER_TABLE, ORDER_COLS, ORDER_IS_FAVORITE + " = ?",
-                new String[]{"1"}, null, null, "date(" + ORDER_DATE + ") ASC", null);
+        return db.query(ORDER_TABLE, ORDER_COLS, ORDER_IS_FAVORITE + " = ? AND " + ORDER_USER_ID +
+                " = ?", new String[]{"1", LoginActivity.userId}, null, null,
+                "date(" + ORDER_DATE + ") ASC", null);
     }
 
     public Cursor getItemCursor(long lid) throws SQLException {
@@ -188,7 +193,8 @@ public class LocalDBAdapter {
                 + ORDER_SIZE + " TEXT, " + ORDER_QUANTITY + " INTEGER, " + ORDER_DATE + " TEXT, " +
                 ORDER_TIME + " INTEGER, " + ORDER_CAFE + " TEXT, " + ORDER_PRICE + " REAL, " +
                 ORDER_NOTE + " TEXT, " + ORDER_CUSTOMER_NAME + " TEXT, " + ORDER_IMAGE_URL + " TEXT, "
-                + ORDER_IS_FAVORITE + " INTEGER, " + ORDER_CAFE_ID + " TEXT);";
+                + ORDER_IS_FAVORITE + " INTEGER, " + ORDER_CAFE_ID + " TEXT, " + ORDER_USER_ID +
+                " TEXT);";
 
         public LocalDBhelper(Context context, String name, SQLiteDatabase.CursorFactory fct,
                                int version) {
