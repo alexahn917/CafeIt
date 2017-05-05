@@ -53,7 +53,7 @@ public class CafeMenuItemActivity extends AppCompatActivity {
         myItem = CafeMenuEditPasser.item;
 
         nameField = (EditText) findViewById(R.id.menuItemName);
-        nameField.setText(myItem.getName());
+        nameField.setText(myItem.getNameDecoded());
 
         timeField = (EditText) findViewById(R.id.menuItemTime);
         timeField.setText(myItem.getTakesTime() + "");

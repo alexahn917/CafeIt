@@ -1,5 +1,7 @@
 package com.example.alex.cafeit;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 
 /**
@@ -19,7 +21,7 @@ public class CafeMenuItem {
     }
 
     public CafeMenuItem(String name, int category, boolean isOneSize, int takesTime, float smallPrice, float mediumPrice, float largePrice, int quantity) {
-        this.name = name;
+        this.name = Uri.encode(name).replace("\\.", "%2E");
         this.category = category;
         this.oneSize = isOneSize;
         this.takesTime = takesTime;
@@ -31,6 +33,10 @@ public class CafeMenuItem {
 
     public String getName() {
         return name;
+    }
+
+    public String getNameDecoded() {
+        return Uri.decode(name.replace("%2E", "\\."));
     }
 
     public int getCategory() {
