@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.cafeit.fragments.CafeOrdersFragment.OnListFragmentInteractionListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -26,6 +32,7 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
     private final OnListFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
     private Context context;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
     public MyOrdersRecyclerViewAdapter(List<Order> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -67,8 +74,9 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Delete from database
-                                Toast.makeText(context, "Beverage Complete: " + holder.mItem.itemName
+                                Toast.makeText(context, "Order Completed: " + holder.mItem.itemName
                                         + " " + holder.mItem.size, Toast.LENGTH_LONG).show();
+                                completeOrder(holder.mItem);
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -79,6 +87,25 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
 //                Toast.makeText(context, "Clicked " + holder.mItem.cafeName, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void completeOrder(final Order order) {
+        mDatabase.child("orders").child(AuthHandler.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot orderSnapshot: dataSnapshot.getChildren()) {
+                    Order curr_order = orderSnapshot.getValue(Order.class);
+                    if (order.equals(curr_order)) {
+                        orderSnapshot.getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
             }
         });
     }

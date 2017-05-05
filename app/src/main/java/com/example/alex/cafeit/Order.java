@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Order extends OrderItem implements Comparable {
-
+    public String orderID;
     public String cafeID; // equivalent to Cafe.ID string
     public String orderTime;
     public String orderDate;
@@ -91,5 +91,10 @@ public class Order extends OrderItem implements Comparable {
                 " remainingTime " + remainingTime + " cafeName " + cafeName +
                 " note " + note + " customerName " + customerName + " image_url " + image_url +
                 " is_favorite " + is_favorite + "";
+    }
+
+    public boolean equals(Order other) {
+        return (this.cafeID.equals(other.cafeID) && this.customerName.equals(other.customerName) &&
+                this.itemName.equals(other.itemName) && this.purchasedTime.equals(other.purchasedTime));
     }
 }

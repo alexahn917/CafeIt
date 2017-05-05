@@ -69,23 +69,7 @@ public class CafeOrdersFragment extends Fragment {
         setUpAdapter(fragView);
         return fragView;
     }
-/*
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("OnResume", "here");
-        populateOrders();
-        setUpAdapter(fragView);
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("OnStart", "here");
-        populateOrders();
-        setUpAdapter(fragView);
-    }
-*/
     public void setUpAdapter(View view) {
         // Set the adapter
         if (view instanceof RecyclerView) {
