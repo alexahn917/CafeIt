@@ -152,7 +152,8 @@ public class OrderActivity extends AppCompatActivity {
                 }
                 Log.d("making", "yes");
 
-                refreshList();
+
+
             }
 
             @Override
