@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -97,6 +98,12 @@ public class CurrentOrder extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        update();
+    }
+
     public void ask_for_rating() {
         new AlertDialog.Builder(CurrentOrder.this, R.style.CafeItDialogue)
                 .setMessage("How was the service?")
@@ -134,19 +141,21 @@ public class CurrentOrder extends AppCompatActivity {
                 Date current = timeFormat.parse(purchasedTime);
                 Date purchased = timeFormat.parse(currentTime);
                 elapsed_time_sec = getDateDiff(purchased, current,TimeUnit.MINUTES);
-                remain_time_sec = Math.round(myPref.getFloat("OrderWaitTime", 0)) - elapsed_time_sec;
+                remain_time_sec = myPref.getLong("OrderWaitTime", 0) - elapsed_time_sec;
             }
             catch (Exception E) {
 
             }
-
+            Log.d("!@!@!@!@!@@!@!@!@!", elapsed_time_sec + "");
+            Log.d("!@!@!@!@!@@!@!@!@!", currentTime + "");
+            Log.d("!@!@!@!@!@@!@!@!@!", remain_time_sec + "");
             long mins = 0;
             long secs = 0;
             if (remain_time_sec >= 0) {
                 mins = remain_time_sec / 60;
                 secs = remain_time_sec % 60;
             }
-            order_time_view.setText(mins + ":" + secs + " remaining!");
+            order_time_view.setText(mins + ":" + String.format("%02d", secs) + " remaining!");
         } else {
             order_item_view.setText("");
             order_cafe_view.setText("");

@@ -25,8 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp"
-            android:layout_marginTop="10dp">
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/cafe_logo"
@@ -34,6 +33,7 @@
                 android:layout_height="80dp"
                 app:srcCompat="@drawable/cafeit_logo_cup"
                 android:padding="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 />
 
@@ -47,19 +47,33 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="TextView"
-                        android:padding="5dp"
-                        android:textSize="15sp"
-                        android:textColor="@color/colorAccent" />
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="TextView"
+                            android:padding="5dp"
+                            android:textSize="15sp"
+                            android:textColor="@color/colorAccent" />
+                        <TextView
+                            android:id="@+id/cost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="TextView"
+                            android:padding="5dp"
+                            android:textSize="15sp"
+                            android:gravity="right"
+                            android:textColor="@color/colorAccent" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/cost"
+                        android:id="@+id/purchased_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -68,8 +82,6 @@
                         android:textSize="15sp"
                         android:gravity="right"
                         android:textColor="@color/colorAccent" />
-
-
 
                 </LinearLayout>
 

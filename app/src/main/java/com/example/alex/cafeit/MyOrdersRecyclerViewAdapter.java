@@ -54,6 +54,7 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
         holder.mItem = mValues.get(position);
         holder.nameView.setText(mValues.get(position).customerName);
         holder.costView.setText("$" + String.format("%.2f", mValues.get(position).price));
+        holder.timeView.setText(mValues.get(position).purchasedTime);
         holder.noteView.setText(mValues.get(position).note);
         holder.orderMenuView.setText((mValues.get(position).itemName + " " + mValues.get(position).size));
 
@@ -134,6 +135,7 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
         //        public final ImageView cafeLogoView;
         public final TextView nameView;
         public final TextView costView;
+        public final TextView timeView;
         public final TextView noteView;
         public final TextView orderMenuView;
         public com.example.alex.cafeit.Order mItem;
@@ -145,6 +147,7 @@ public class MyOrdersRecyclerViewAdapter extends RecyclerView.Adapter<MyOrdersRe
 //            cafeLogoView = (ImageView) view.findViewById(R.id.cafe_logo);
             nameView = (TextView) view.findViewById(R.id.name);
             costView = (TextView) view.findViewById(R.id.cost);
+            timeView = (TextView) view.findViewById(R.id.purchased_time);
             noteView = (TextView) view.findViewById(R.id.note);
             orderMenuView = (TextView) view.findViewById(R.id.menu);
             linearLayout = (LinearLayout) view.findViewById(R.id.orderLinearLayout);

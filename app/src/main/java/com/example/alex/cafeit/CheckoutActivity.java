@@ -46,7 +46,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private SharedPreferences myPref;
     private SharedPreferences.Editor peditor;
     private String CafeId;
-    private static Float OrderWaitTime = 5.0f;
+    private static Long OrderWaitTime = (long) (5 * 60);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +161,6 @@ public class CheckoutActivity extends AppCompatActivity {
             peditor.putString("OrderPrice", String.format("%.2f",total_price) + "$");
             peditor.putString("OrderPurchasedDate", purchasedDate);
             peditor.putString("OrderPurchasedTime", purchasedTime);
-            peditor.putFloat("OrderWaitTime", OrderWaitTime);
         }
         else {
             peditor.putString("CafeId", CafeId);
@@ -170,7 +169,6 @@ public class CheckoutActivity extends AppCompatActivity {
             peditor.putString("OrderPrice", "$ " + String.format("%.2f",total_price));
             peditor.putString("OrderPurchasedDate", purchasedDate);
             peditor.putString("OrderPurchasedTime", purchasedTime);
-            peditor.putFloat("OrderWaitTime", OrderWaitTime);
         }
 
         peditor.apply();
@@ -182,13 +180,16 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     public void update_waittime(final long order_size) {
-        mDatabase.child("cafes").child(CafeId).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("orders").child(CafeId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Cafe cafe = dataSnapshot.getValue(Cafe.class);
-                OrderWaitTime = cafe.waitTime + order_size;
-                Log.d("$$$$$$$$$$$$$$$$$$$$$", cafe.toString());
-                //mDatabase.child("cafes").child(CafeId).child("waitTime").setValue(OrderWaitTime);
+                //Cafe cafe = dataSnapshot.getValue(Cafe.class);
+                OrderWaitTime = dataSnapshot.getChildrenCount() * 60;
+                //OrderWaitTime = (cafe.waitTime + order_size) * 60;
+                Log.d("$$$$$$$$$$$$$$$$$$$$$", OrderWaitTime+"");
+                mDatabase.child("cafes").child(CafeId).child("waitTime").setValue((float) OrderWaitTime / 60);
+                peditor.putLong("OrderWaitTime", OrderWaitTime);
+                peditor.apply();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
