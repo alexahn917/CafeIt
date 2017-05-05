@@ -3,11 +3,17 @@ package com.example.alex.cafeit.fragments;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +42,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -182,6 +190,10 @@ public class CafeProfileFragment extends Fragment {
         cafe_address2_view = (EditText) v.findViewById(R.id.addressInput2);
         cafe_state_view = (EditText) v.findViewById(R.id.state);
         cafe_zipcode_view = (EditText) v.findViewById(R.id.zipcode);
+        if (CafeMainActivity.prof_bitmap != null) {
+            prof_pic.setImageBitmap(CafeMainActivity.prof_bitmap);
+            prof_pic.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
+        }
         populateFB();
         bulkSetOnclick();
 
@@ -222,13 +234,15 @@ public class CafeProfileFragment extends Fragment {
     }
 
     public void populateData(Cafe cafe) {
-        cafe_bestmenu_view.setText(cafe.bestMenu);
-        if (cafe.hasWifi == 0) {
-            cafe_haswifi_switch.setChecked(true);
-        } else {
-            cafe_haswifi_switch.setChecked(false);
+        if (cafe != null) {
+            cafe_bestmenu_view.setText(cafe.bestMenu);
+            if (cafe.hasWifi == 0) {
+                cafe_haswifi_switch.setChecked(true);
+            } else {
+                cafe_haswifi_switch.setChecked(false);
+            }
+            cafe_address1_view.setText(cafe.address);
         }
-        cafe_address1_view.setText(cafe.address);
     }
 
     public void pickImage() {
@@ -254,14 +268,48 @@ public class CafeProfileFragment extends Fragment {
                     inputStream.close();
                 }
                 if (bm != null) {
+                    CafeMainActivity.prof_bitmap = bm;
+                    SharedPreferences myPrefs = PreferenceManager.
+                            getDefaultSharedPreferences(parent.getApplicationContext());
+
+                    SharedPreferences.Editor peditor = myPrefs.edit();
+                    peditor.putString(CafeMainActivity.PROF_PIC_FNAME, saveToInternalStorage(bm));
+                    peditor.apply();
                     prof_pic.setImageBitmap(bm);
-                    ((CafeMenuFragment) parent.menuFragment).setPicture(bm);
+                    prof_pic.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
         }
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage){
+        ContextWrapper cw = new ContextWrapper(parent.getApplicationContext());
+        File directory = cw.getDir(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+        File mfile = new File(directory.getAbsolutePath(), CafeMainActivity.PROF_DIR);
+        mfile.mkdirs();
+        // Create imageDir
+        File mypath = new File(mfile.getAbsolutePath(),
+                CafeMainActivity.PROF_PIC_FNAME);
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return mfile.getAbsolutePath();
     }
 
 

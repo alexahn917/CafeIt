@@ -1,12 +1,9 @@
 package com.example.alex.cafeit;
 
-import android.*;
 import android.Manifest;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,11 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.alex.cafeit.fragments.CafesListFragment;
 import com.example.alex.cafeit.fragments.FavoritesFragment;
@@ -50,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements
     private SpannableString s;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-    private static Toolbar toolbar;
+    private Toolbar toolbar;
     public static LocalDBAdapter dbAdapter;
     public static ArrayList<Order> history = new ArrayList<>();
     public static ArrayList<Order> favorites = new ArrayList<>();

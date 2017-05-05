@@ -3,9 +3,11 @@ package com.example.alex.cafeit.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.example.alex.cafeit.AuthHandler;
 import com.example.alex.cafeit.Cafe;
 import com.example.alex.cafeit.CafeExpandableListAdapter;
+import com.example.alex.cafeit.CafeMainActivity;
 import com.example.alex.cafeit.CafeMenuEditPasser;
 import com.example.alex.cafeit.CafeMenuItem;
 import com.example.alex.cafeit.CafeMenuItemActivity;
@@ -30,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,11 +70,11 @@ public class CafeMenuFragment extends Fragment {
         expListView = (ExpandableListView) v.findViewById(R.id.cafeMenu);
         populateMenuList();
         prof_pic = (ImageView) v.findViewById(R.id.CafeProfPic_menu);
+        if (CafeMainActivity.prof_bitmap != null) {
+            prof_pic.setImageBitmap(CafeMainActivity.prof_bitmap);
+            prof_pic.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
+        }
         return v;
-    }
-
-    public void setPicture(Bitmap bm) {
-        prof_pic.setImageBitmap(bm);
     }
 
     @Override
