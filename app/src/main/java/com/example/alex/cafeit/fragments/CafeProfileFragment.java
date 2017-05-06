@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -15,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.alex.cafeit.AuthHandler;
 import com.example.alex.cafeit.Cafe;
 import com.example.alex.cafeit.CafeMainActivity;
 import com.example.alex.cafeit.LoginActivity;
@@ -64,18 +67,10 @@ import java.io.InputStream;
  * create an instance of this fragment.
  */
 public class CafeProfileFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private final int PICK_PIC = 1;
 
     private static final String TAG = "CafeProfileFragment";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     CafeMainActivity parent;
 
@@ -101,7 +96,7 @@ public class CafeProfileFragment extends Fragment {
     private EditText cafe_bestmenu_view;
     private Switch cafe_haswifi_switch;
     private EditText cafe_address_view;
-
+    private Context context;
     private EditText monStart, monEnd, tueStart, tueEnd, wedStart, wedEnd,
             thuStart, thuEnd, friStart, friEnd, satStart, satEnd, sunStart, sunEnd;
 
@@ -122,8 +117,6 @@ public class CafeProfileFragment extends Fragment {
     public static CafeProfileFragment newInstance(String param1, String param2) {
         CafeProfileFragment fragment = new CafeProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -131,10 +124,7 @@ public class CafeProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        context = getContext();
     }
 
     @Override
@@ -242,7 +232,7 @@ public class CafeProfileFragment extends Fragment {
     public void populateData(Cafe cafe) {
         if (cafe != null) {
             cafe_bestmenu_view.setText(cafe.bestMenu);
-            if (cafe.hasWifi == 0) {
+            if (cafe.hasWifi == 1) {
                 cafe_haswifi_switch.setChecked(true);
             } else {
                 cafe_haswifi_switch.setChecked(false);
@@ -365,13 +355,33 @@ public class CafeProfileFragment extends Fragment {
     }
 
     private void saveProfile(){
-        Toast.makeText(getActivity().getApplicationContext(), "Saved successfully!",
-                Toast.LENGTH_SHORT).show();
-
+        createAndShowAlertDialog();
     }
+
     private void linkPayment(){
         Toast.makeText(getActivity().getApplicationContext(), "Sending you to outside payment API...", Toast.LENGTH_SHORT).show();
     }
+
+    public void createAndShowAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Save changes?");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                updateChanges();
+                Toast.makeText(context, "Changes saved successfully.", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Toast.makeText(context, "Changes discarded.", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     private void bulkSetOnclick(){
         customSetOnclick(monStart);
@@ -426,5 +436,19 @@ public class CafeProfileFragment extends Fragment {
                 mTimePicker.show();
             }
         });
+    }
+
+    public void updateChanges() {
+        String userID = AuthHandler.getUid();
+        mDatabase.child("users").child(userID).child("email").setValue(cafe_email_view.getText().toString());
+        mDatabase.child("users").child(userID).child("username").setValue(cafe_name_view.getText().toString());
+        mDatabase.child("cafes").child(userID).child("bestMenu").setValue(cafe_bestmenu_view.getText().toString());
+        mDatabase.child("cafes").child(userID).child("address").setValue(cafe_address1_view.getText().toString());
+        boolean hasWifi = cafe_haswifi_switch.isChecked();
+        if (hasWifi){
+            mDatabase.child("cafes").child(userID).child("hasWifi").setValue(1);
+        } else {
+            mDatabase.child("cafes").child(userID).child("hasWifi").setValue(0);
+        }
     }
 }

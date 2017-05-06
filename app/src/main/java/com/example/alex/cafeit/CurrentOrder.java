@@ -21,10 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class CurrentOrder extends AppCompatActivity {
 
@@ -110,6 +108,7 @@ public class CurrentOrder extends AppCompatActivity {
                         });
                     }
                 } catch (InterruptedException e) {
+
                 }
             }
         };
@@ -150,7 +149,6 @@ public class CurrentOrder extends AppCompatActivity {
             long elapsed_time_sec = 0;
             long remain_time_sec = 0;
 
-            final Calendar myCalendar = Calendar.getInstance();
             Date orderDate = new Date();
             DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
             String purchasedTime = myPref.getString("OrderPurchasedTime", "");
@@ -164,13 +162,13 @@ public class CurrentOrder extends AppCompatActivity {
             catch (Exception E) {
 
             }
-            Log.d("!@!@!@!@!@@!@!@!@!", currentTime + "");
-            Log.d("!@!@!@!@!@@!@!@!@!", purchasedTime + "");
-            Log.d("!@!@!@!@!@@!@!@!@!", elapsed_time_sec + "");
-            Log.d("!@!@!@!@!@@!@!@!@!", remain_time_sec + "");
+            Log.d("!@!@!@!@!@!currentTime", currentTime + "");
+            Log.d("!@!@!@!@purchasedTime", purchasedTime + "");
+            Log.d("!@!!@!elapsed_time_sec", elapsed_time_sec + "");
+            Log.d("!@@!@!@!remain_time_sec", remain_time_sec + "");
             long mins = 0;
             long secs = 0;
-            if (remain_time_sec >= 0) {
+            if (remain_time_sec > 0) {
                 mins = remain_time_sec / 60;
                 secs = remain_time_sec % 60;
                 order_time_view.setText(mins + ":" + String.format("%02d", secs) + " remaining!");
@@ -198,7 +196,7 @@ public class CurrentOrder extends AppCompatActivity {
 
     public static long getDateDiff(Date date1, Date date2) {
         long diff = date1.getTime() - date2.getTime();
-        long diffSeconds = diff / 1000 % 60;
+        long diffSeconds = diff / 1000;
         return diffSeconds;
     }
 }
