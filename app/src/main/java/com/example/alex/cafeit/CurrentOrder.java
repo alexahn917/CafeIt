@@ -181,6 +181,7 @@ public class CurrentOrder extends AppCompatActivity {
             order_price_view.setText("");
             String line = "Make your purchase.";
             order_time_view.setText(line);
+            order_time_view.setEnabled(false);
         }
     }
 

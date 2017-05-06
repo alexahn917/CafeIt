@@ -23,5 +23,4 @@ public class AuthHandler {
         Log.d("(***AUTHHANDLER***", uid);
         return uid;
     }
-
 }
