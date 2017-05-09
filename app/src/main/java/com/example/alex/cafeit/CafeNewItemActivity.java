@@ -35,6 +35,16 @@ public class CafeNewItemActivity extends AppCompatActivity {
     private Button addButton;
     private RadioButton oneSize, threeSize;
     private LinearLayout secondSize, thirdSize;
+    private EditText estTimeText;
+    private TextView smallTextLabel;
+
+
+    String smallText, mediumText, largeText;
+    boolean isOneSize;
+    int time;
+    float smallPrice, mediumPrice, largePrice;
+    String name;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +54,9 @@ public class CafeNewItemActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Add an item");
+
+        estTimeText = (EditText) findViewById(R.id.menuItemTime);
+        smallTextLabel = (TextView) findViewById(R.id.size1);
 
         spinnerArray.add("Espresso Drinks");
         spinnerArray.add("Non-Espresso Drinks");
@@ -77,11 +90,15 @@ public class CafeNewItemActivity extends AppCompatActivity {
 
                 //TODO: transform entry into cafeMenuItem, use NewMenuItemPusher to push to FB
                 CafeMenuItem item = menuItemMaker();
-                NewMenuItemPusher.pushItem(item);
+                if(item != null) {
+                    NewMenuItemPusher.pushItem(item);
 
-                Toast.makeText(getApplicationContext(), "Successfully added!", Toast.LENGTH_SHORT).show();
-                CafeMenuFragment.count = 0;
-                finish();
+                    Toast.makeText(getApplicationContext(), "Successfully added!", Toast.LENGTH_SHORT).show();
+                    CafeMenuFragment.count = 0;
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Invalid item!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -94,9 +111,11 @@ public class CafeNewItemActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(oneSize.isChecked()){
+                    smallTextLabel.setText("One Size");
                     secondSize.setVisibility(View.GONE);
                     thirdSize.setVisibility(View.GONE);
                 } else {
+                    smallTextLabel.setText("Small");
                     secondSize.setVisibility(View.VISIBLE);
                     thirdSize.setVisibility(View.VISIBLE);
                 }
@@ -116,18 +135,23 @@ public class CafeNewItemActivity extends AppCompatActivity {
     }
 
     public CafeMenuItem menuItemMaker(){
-        TextView estTimeText = (TextView) findViewById(R.id.menuItemTime);
-        int time = Integer.parseInt(estTimeText.getText() + "");
+        String timeText = estTimeText.getText().toString();
 
-        String name = ((TextView) findViewById(R.id.menuItemName)).getText() + "";
+        name = ((TextView) findViewById(R.id.menuItemName)).getText() + "";
         int category = ((Spinner) findViewById(R.id.menuItemCategorySpinner)).getSelectedItemPosition();
 
-        boolean isOneSize;
         RadioButton oneSizeRb = (RadioButton) findViewById(R.id.oneSizeRadio);
         if(oneSizeRb.isChecked()) isOneSize = true;
         else isOneSize = false;
 
-        float smallPrice, mediumPrice, largePrice;
+        smallText = ((EditText) findViewById(R.id.price1)).getText().toString();
+        mediumText = ((EditText) findViewById(R.id.price2)).getText().toString();
+        largeText = ((EditText) findViewById(R.id.price3)).getText().toString();
+
+        if(!validateAll()){
+            return null;
+        }
+        time = Integer.parseInt(timeText);
         smallPrice = Float.parseFloat(((EditText) findViewById(R.id.price1)).getText() + "");
 
         if(isOneSize){
@@ -137,8 +161,35 @@ public class CafeNewItemActivity extends AppCompatActivity {
             mediumPrice = Float.parseFloat(((EditText) findViewById(R.id.price2)).getText() + "");
             largePrice = Float.parseFloat(((EditText) findViewById(R.id.price3)).getText() + "");
         }
-
         return new CafeMenuItem(name, category, isOneSize, time, smallPrice, mediumPrice, largePrice, 0);
+    }
+
+    public boolean validateName(){
+        return !name.equals("");
+    }
+
+    public boolean validateEST(){
+        if(estTimeText.getText().toString().equals("")){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validatePrice(){
+        if(smallText.equals("")){
+            return false;
+        }
+
+        if(!isOneSize){
+            if(mediumText.equals("") || largeText.equals(""))
+                return false;
+        }
+
+        return true;
+    }
+
+    public boolean validateAll(){
+        return validateName() && validateEST() && validatePrice();
     }
 
 }

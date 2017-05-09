@@ -139,8 +139,25 @@ public class SignUpCafeActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    public boolean validateAddress(){
+        if(cafe_address1_view.getText().toString().equals("") || cafe_address2_view.getText().toString().equals("")
+                || cafe_state_view.getText().toString().equals("") || cafe_zipcode_view.getText().toString().equals("")){
+            Toast.makeText(context, "Invalid address.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        Toast.makeText(context, "\"" + cafe_address1_view.getText().toString() + "\"", Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    public boolean validateBestMenu(){
+        if(cafe_bestmenu_view.getText().toString().equals("")){
+            return false;
+        }
+        return true;
+    }
+
     public boolean validCreation() {
-        if (validateID() && validatePW()) {
+        if (validateID() && validatePW() && validateAddress() && validateBestMenu()) {
             return true;
         }
         return false;

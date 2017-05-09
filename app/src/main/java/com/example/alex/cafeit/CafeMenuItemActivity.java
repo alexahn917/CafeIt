@@ -15,11 +15,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.cafeit.fragments.CafeMenuFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,13 @@ public class CafeMenuItemActivity extends AppCompatActivity {
     private LinearLayout secondSize, thirdSize;
     private EditText nameField, timeField, smallField, mediumField, largeField;
 
+
+    private TextView smallTextLabel;
+    boolean isOneSize;
+    int time;
+    float smallPrice, mediumPrice, largePrice;
+    String name;
+
     private CafeMenuItem myItem;
 
 
@@ -51,6 +61,8 @@ public class CafeMenuItemActivity extends AppCompatActivity {
         setTitle("Edit Menu");
 
         myItem = CafeMenuEditPasser.item;
+
+        smallTextLabel = (TextView) findViewById(R.id.size1);
 
         nameField = (EditText) findViewById(R.id.menuItemName);
         nameField.setText(myItem.getNameDecoded());
@@ -102,10 +114,14 @@ public class CafeMenuItemActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Successfully saved!", Toast.LENGTH_SHORT).show();
-                updateItem();
-                CafeMenuFragment.count = 0;
-                finish();
+                if(updateItem()) {
+                    Toast.makeText(getApplicationContext(), "Successfully saved!", Toast.LENGTH_SHORT).show();
+                    CafeMenuFragment.count = 0;
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Invalid update!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -127,9 +143,11 @@ public class CafeMenuItemActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(oneSize.isChecked()){
+                    smallTextLabel.setText("One Size");
                     secondSize.setVisibility(View.GONE);
                     thirdSize.setVisibility(View.GONE);
                 } else {
+                    smallTextLabel.setText("Small");
                     secondSize.setVisibility(View.VISIBLE);
                     thirdSize.setVisibility(View.VISIBLE);
                 }
@@ -155,9 +173,14 @@ public class CafeMenuItemActivity extends AppCompatActivity {
     }
 
     public CafeMenuItem transformItem(){
-        String name = nameField.getText() + "";
+        name = nameField.getText() + "";
         int category = categorySpinner.getSelectedItemPosition();
-        boolean isOneSize = oneSize.isChecked();
+        isOneSize = oneSize.isChecked();
+
+        if(!validateAll()){
+            return null;
+        }
+
         int time = Integer.parseInt(timeField.getText() + "");
         float small, medium, large;
         if(!(smallField.getText() + "").equals("")) {
@@ -180,11 +203,16 @@ public class CafeMenuItemActivity extends AppCompatActivity {
         return new CafeMenuItem(name, category, isOneSize, time, small, medium, large, 0);
     }
 
-    public void updateItem(){
+    public boolean updateItem(){
         CafeMenuItem cmi = transformItem();
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("cafeMenu").child(AuthHandler.getUid()).child(myItem.getName()).removeValue();
-        mDatabase.child("cafeMenu").child(AuthHandler.getUid()).child(cmi.getName()).setValue(cmi);
+        if(cmi != null) {
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            mDatabase.child("cafeMenu").child(AuthHandler.getUid()).child(myItem.getName()).removeValue();
+            mDatabase.child("cafeMenu").child(AuthHandler.getUid()).child(cmi.getName()).setValue(cmi);
+            return true;
+        } else {
+           return false;
+        }
     }
 
     public void deleteItem(){
@@ -192,4 +220,31 @@ public class CafeMenuItemActivity extends AppCompatActivity {
         mDatabase.child("cafeMenu").child(AuthHandler.getUid()).child(myItem.getName()).removeValue();
     }
 
+    public boolean validateName(){
+        return !name.equals("");
+    }
+
+    public boolean validateEST(){
+        if(timeField.getText().toString().equals("")){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validatePrice(){
+        if(smallField.getText().toString().equals("")){
+            return false;
+        }
+
+        if(!isOneSize){
+            if(mediumField.getText().toString().equals("") || largeField.getText().toString().equals(""))
+                return false;
+        }
+
+        return true;
+    }
+
+    public boolean validateAll(){
+        return validateName() && validateEST() && validatePrice();
+    }
 }
