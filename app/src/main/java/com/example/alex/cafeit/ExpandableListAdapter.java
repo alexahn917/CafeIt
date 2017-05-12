@@ -69,6 +69,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         final CheckBox choice = (CheckBox) convertView.findViewById(R.id.checkBox);
         choice.setChecked(cur.selected);
+        choice.jumpDrawablesToCurrentState();
         if (!cur.selected) {
             amt.setVisibility(View.INVISIBLE);
             minus.setVisibility(View.INVISIBLE);
