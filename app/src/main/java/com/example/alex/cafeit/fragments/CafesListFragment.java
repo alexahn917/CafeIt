@@ -176,6 +176,19 @@ public class CafesListFragment extends Fragment implements GoogleApiClient.Conne
         }
         else if (id == R.id.sort_rating) {
             Toast.makeText(context, "Sorted by ratings", Toast.LENGTH_SHORT).show();
+
+            Collections.sort(cafeList, new Comparator<Cafe>() {
+                @Override
+                public int compare(Cafe o1, Cafe o2) {
+                    if (o1.rating - o2.rating > 0) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
+
+            recyclerView.setAdapter(new MyCafesRecyclerViewAdapter(cafeList, mListener));
         } else if (id == R.id.google_maps) {
             Toast.makeText(context, "Opening Maps View...", Toast.LENGTH_SHORT).show();
 

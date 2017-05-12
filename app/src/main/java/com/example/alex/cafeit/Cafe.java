@@ -19,10 +19,10 @@ public class Cafe implements Comparable {
     public String startHour;
     public String endHour;
     public String bestMenu;
-    public float rating;
+    public float rating = 0f;
     public String address;
     public int hasWifi;
-    public float waitTime;
+    public float waitTime = 0f;
     public float latitude;
     public float longitude;
     public String distance = "0.5 mi";
@@ -36,7 +36,7 @@ public class Cafe implements Comparable {
 
     @Override
     public int compareTo(@NonNull Object other) {
-        if (other instanceof Order) {
+        if (other instanceof Cafe) {
             float ret = this.waitTime - ((Cafe) other).waitTime;
             if (ret > 0) {
                 return 1;
