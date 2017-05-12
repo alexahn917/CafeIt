@@ -67,12 +67,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         final Button minus = (Button) convertView.findViewById(R.id.minus);
         final Button plus = (Button) convertView.findViewById(R.id.plus);
 
-        CheckBox choice = (CheckBox) convertView.findViewById(R.id.checkBox);
+        final CheckBox choice = (CheckBox) convertView.findViewById(R.id.checkBox);
         choice.setChecked(cur.selected);
-        choice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        if (!cur.selected) {
+            amt.setVisibility(View.INVISIBLE);
+            minus.setVisibility(View.INVISIBLE);
+            plus.setVisibility(View.INVISIBLE);
+            cur.selected = false;
+            cur.quantity = 1;
+            amt.setText(String.format(Locale.US, "%d", cur.quantity));
+        } else {
+            amt.setVisibility(View.VISIBLE);
+            minus.setVisibility(View.VISIBLE);
+            plus.setVisibility(View.VISIBLE);
+        }
+        choice.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
+            public void onClick(View view) {
+                if (choice.isChecked()) {
                     amt.setVisibility(View.VISIBLE);
                     minus.setVisibility(View.VISIBLE);
                     plus.setVisibility(View.VISIBLE);
